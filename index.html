@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>美國生活記帳</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">US Ledger for Family</p>
+          <h1>美國生活記帳</h1>
+          <p class="hero-copy">
+            用美元記錄日常收支，自動換算台幣，讓台灣家人快速了解每月花費、收入與餘額。
+          </p>
+        </div>
+        <section class="rate-card" aria-label="匯率設定">
+          <label for="exchangeRate">匯率 USD → TWD</label>
+          <div class="rate-input">
+            <span>1 USD =</span>
+            <input id="exchangeRate" type="number" min="1" step="0.01" />
+            <span>TWD</span>
+          </div>
+          <small>可依銀行或 Google 匯率手動調整。</small>
+        </section>
+      </header>
+
+      <main>
+        <section class="dashboard" aria-label="本月摘要">
+          <article class="stat-card income">
+            <span>本月收入</span>
+            <strong id="monthlyIncome">$0</strong>
+            <small id="monthlyIncomeTwd">約 NT$0</small>
+          </article>
+          <article class="stat-card expense">
+            <span>本月支出</span>
+            <strong id="monthlyExpense">$0</strong>
+            <small id="monthlyExpenseTwd">約 NT$0</small>
+          </article>
+          <article class="stat-card balance">
+            <span>本月結餘</span>
+            <strong id="monthlyBalance">$0</strong>
+            <small id="monthlyBalanceTwd">約 NT$0</small>
+          </article>
+          <article class="stat-card average">
+            <span>每日平均支出</span>
+            <strong id="dailyAverage">$0</strong>
+            <small>用本月已過天數估算</small>
+          </article>
+        </section>
+
+        <section class="content-grid">
+          <form class="panel entry-panel" id="transactionForm">
+            <div class="panel-heading">
+              <p class="eyebrow">Add Record</p>
+              <h2>新增一筆</h2>
+            </div>
+
+            <label>
+              日期
+              <input id="date" type="date" required />
+            </label>
+
+            <div class="split">
+              <label>
+                類型
+                <select id="type" required>
+                  <option value="expense">支出</option>
+                  <option value="income">收入</option>
+                </select>
+              </label>
+              <label>
+                金額 USD
+                <input id="amount" type="number" min="0.01" step="0.01" required />
+              </label>
+            </div>
+
+            <label>
+              分類
+              <select id="category" required>
+                <option>房租</option>
+                <option>超市</option>
+                <option>外食</option>
+                <option>交通</option>
+                <option>學費</option>
+                <option>醫療</option>
+                <option>娛樂</option>
+                <option>收入</option>
+                <option>其他</option>
+              </select>
+            </label>
+
+            <label>
+              說明
+              <input id="note" type="text" placeholder="例如：Costco、房租、薪水" />
+            </label>
+
+            <button class="primary-button" type="submit">加入記帳</button>
+          </form>
+
+          <section class="panel">
+            <div class="panel-heading row-heading">
+              <div>
+                <p class="eyebrow">Overview</p>
+                <h2>分類支出</h2>
+              </div>
+              <select id="monthFilter" aria-label="月份篩選"></select>
+            </div>
+            <div id="categoryBars" class="category-bars" aria-live="polite"></div>
+          </section>
+        </section>
+
+        <section class="panel table-panel">
+          <div class="panel-heading table-heading">
+            <div>
+              <p class="eyebrow">Transactions</p>
+              <h2>收支明細</h2>
+            </div>
+            <div class="actions">
+              <button id="exportJson" type="button">匯出 JSON</button>
+              <button id="exportCsv" type="button">匯出 CSV</button>
+              <label class="file-button">
+                匯入 JSON
+                <input id="importJson" type="file" accept="application/json" />
+              </label>
+              <label class="file-button">
+                匯入 CSV
+                <input id="importCsv" type="file" accept=".csv,text/csv" />
+              </label>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>日期</th>
+                  <th>類型</th>
+                  <th>分類</th>
+                  <th>說明</th>
+                  <th>USD</th>
+                  <th>TWD</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="transactionRows"></tbody>
+            </table>
+          </div>
+          <p class="empty-state" id="emptyState">還沒有資料，先新增一筆或匯入 CSV/JSON。</p>
+        </section>
+      </main>
+    </div>
+
+    <template id="barTemplate">
+      <div class="bar-row">
+        <div class="bar-label">
+          <span class="category-name"></span>
+          <span class="category-amount"></span>
+        </div>
+        <div class="bar-track">
+          <span class="bar-fill"></span>
+        </div>
+      </div>
+    </template>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,411 @@
+const STORAGE_KEY = "us-ledger-transactions";
+const RATE_KEY = "us-ledger-exchange-rate";
+
+const sampleTransactions = [
+  {
+    id: "工作表1-2026-05-01-1",
+    date: "2026-05-01",
+    type: "expense",
+    category: "美國電信",
+    note: "永豐信用卡",
+    amount: 91.2,
+  },
+  {
+    id: "工作表1-2026-05-07-2",
+    date: "2026-05-07",
+    type: "expense",
+    category: "早餐",
+    note: "永豐信用卡",
+    amount: 7.8,
+  },
+  {
+    id: "工作表1-2026-05-07-3",
+    date: "2026-05-07",
+    type: "expense",
+    category: "超商",
+    note: "cash",
+    amount: 14.75,
+  },
+  {
+    id: "工作表1-2026-05-08-4",
+    date: "2026-05-08",
+    type: "expense",
+    category: "Walmart/大賣場",
+    note: "cash",
+    amount: 70.19,
+  },
+  {
+    id: "工作表1-2026-05-09-5",
+    date: "2026-05-09",
+    type: "expense",
+    category: "Walmart/大賣場",
+    note: "cash",
+    amount: 31.65,
+  },
+];
+
+const elements = {
+  form: document.querySelector("#transactionForm"),
+  date: document.querySelector("#date"),
+  type: document.querySelector("#type"),
+  category: document.querySelector("#category"),
+  amount: document.querySelector("#amount"),
+  note: document.querySelector("#note"),
+  exchangeRate: document.querySelector("#exchangeRate"),
+  monthFilter: document.querySelector("#monthFilter"),
+  monthlyIncome: document.querySelector("#monthlyIncome"),
+  monthlyIncomeTwd: document.querySelector("#monthlyIncomeTwd"),
+  monthlyExpense: document.querySelector("#monthlyExpense"),
+  monthlyExpenseTwd: document.querySelector("#monthlyExpenseTwd"),
+  monthlyBalance: document.querySelector("#monthlyBalance"),
+  monthlyBalanceTwd: document.querySelector("#monthlyBalanceTwd"),
+  dailyAverage: document.querySelector("#dailyAverage"),
+  categoryBars: document.querySelector("#categoryBars"),
+  transactionRows: document.querySelector("#transactionRows"),
+  emptyState: document.querySelector("#emptyState"),
+  exportJson: document.querySelector("#exportJson"),
+  exportCsv: document.querySelector("#exportCsv"),
+  importJson: document.querySelector("#importJson"),
+  importCsv: document.querySelector("#importCsv"),
+  barTemplate: document.querySelector("#barTemplate"),
+};
+
+let transactions = [];
+let selectedMonth = "";
+
+elements.date.value = new Date().toISOString().slice(0, 10);
+elements.exchangeRate.value = localStorage.getItem(RATE_KEY) || "32.50";
+
+elements.exchangeRate.addEventListener("input", () => {
+  localStorage.setItem(RATE_KEY, elements.exchangeRate.value);
+  render();
+});
+
+elements.monthFilter.addEventListener("change", (event) => {
+  selectedMonth = event.target.value;
+  render();
+});
+
+elements.form.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const transaction = {
+    id: crypto.randomUUID(),
+    date: elements.date.value,
+    type: elements.type.value,
+    category: elements.category.value,
+    note: elements.note.value.trim(),
+    amount: Number(elements.amount.value),
+  };
+
+  transactions = [transaction, ...transactions];
+  saveTransactions();
+  elements.form.reset();
+  elements.date.value = new Date().toISOString().slice(0, 10);
+  elements.type.value = "expense";
+  render();
+});
+
+elements.exportJson.addEventListener("click", () => {
+  downloadFile("us-ledger.json", JSON.stringify(transactions, null, 2), "application/json");
+});
+
+elements.exportCsv.addEventListener("click", () => {
+  const csv = [
+    ["date", "type", "category", "note", "amount"],
+    ...transactions.map((item) => [
+      item.date,
+      item.type,
+      item.category,
+      item.note,
+      item.amount,
+    ]),
+  ]
+    .map((row) => row.map(csvCell).join(","))
+    .join("\n");
+
+  downloadFile("us-ledger.csv", csv, "text/csv;charset=utf-8");
+});
+
+elements.importJson.addEventListener("change", async (event) => {
+  const file = event.target.files?.[0];
+  if (!file) return;
+
+  const imported = JSON.parse(await file.text());
+  transactions = normalizeTransactions(imported);
+  saveTransactions();
+  render();
+  event.target.value = "";
+});
+
+elements.importCsv.addEventListener("change", async (event) => {
+  const file = event.target.files?.[0];
+  if (!file) return;
+
+  transactions = normalizeTransactions(parseCsv(await file.text()));
+  saveTransactions();
+  render();
+  event.target.value = "";
+});
+
+elements.transactionRows.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-delete-id]");
+  if (!button) return;
+
+  transactions = transactions.filter((item) => item.id !== button.dataset.deleteId);
+  saveTransactions();
+  render();
+});
+
+init();
+
+async function init() {
+  transactions = await loadTransactions();
+  render();
+}
+
+async function loadTransactions() {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (!stored) {
+    return loadPublicTransactions();
+  }
+
+  try {
+    return normalizeTransactions(JSON.parse(stored));
+  } catch {
+    return loadPublicTransactions();
+  }
+}
+
+async function loadPublicTransactions() {
+  try {
+    const response = await fetch("./data/transactions.json", { cache: "no-store" });
+    if (!response.ok) return sampleTransactions;
+    const publicTransactions = normalizeTransactions(await response.json());
+    return publicTransactions.length ? publicTransactions : sampleTransactions;
+  } catch {
+    return sampleTransactions;
+  }
+}
+
+function saveTransactions() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
+}
+
+function normalizeTransactions(items) {
+  if (!Array.isArray(items)) return [];
+
+  return items
+    .map((item) => ({
+      id: item.id || makeId(),
+      date: String(item.date || "").slice(0, 10),
+      type: item.type === "income" ? "income" : "expense",
+      category: String(item.category || "其他"),
+      note: String(item.note || ""),
+      amount: Number(item.amount || 0),
+    }))
+    .filter((item) => item.date && item.amount > 0);
+}
+
+function makeId() {
+  if (globalThis.crypto?.randomUUID) return crypto.randomUUID();
+  return `txn-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+function render() {
+  const months = getAvailableMonths();
+  if (!selectedMonth || !months.includes(selectedMonth)) {
+    selectedMonth = months[0] || new Date().toISOString().slice(0, 7);
+  }
+
+  renderMonthOptions(months);
+
+  const filtered = transactions
+    .filter((item) => item.date.startsWith(selectedMonth))
+    .sort((a, b) => b.date.localeCompare(a.date));
+
+  renderStats(filtered);
+  renderCategoryBars(filtered);
+  renderRows(filtered);
+}
+
+function getAvailableMonths() {
+  return [...new Set(transactions.map((item) => item.date.slice(0, 7)))].sort().reverse();
+}
+
+function renderMonthOptions(months) {
+  elements.monthFilter.innerHTML = "";
+
+  const list = months.length ? months : [selectedMonth];
+  for (const month of list) {
+    const option = document.createElement("option");
+    option.value = month;
+    option.textContent = formatMonth(month);
+    option.selected = month === selectedMonth;
+    elements.monthFilter.append(option);
+  }
+}
+
+function renderStats(items) {
+  const income = sumByType(items, "income");
+  const expense = sumByType(items, "expense");
+  const balance = income - expense;
+  const average = expense / getElapsedDaysInSelectedMonth();
+
+  elements.monthlyIncome.textContent = formatUsd(income);
+  elements.monthlyIncomeTwd.textContent = formatTwdLine(income);
+  elements.monthlyExpense.textContent = formatUsd(expense);
+  elements.monthlyExpenseTwd.textContent = formatTwdLine(expense);
+  elements.monthlyBalance.textContent = formatUsd(balance);
+  elements.monthlyBalanceTwd.textContent = formatTwdLine(balance);
+  elements.dailyAverage.textContent = formatUsd(average || 0);
+}
+
+function renderCategoryBars(items) {
+  const expenses = items.filter((item) => item.type === "expense");
+  const totals = expenses.reduce((acc, item) => {
+    acc[item.category] = (acc[item.category] || 0) + item.amount;
+    return acc;
+  }, {});
+  const entries = Object.entries(totals).sort((a, b) => b[1] - a[1]);
+  const max = Math.max(...entries.map((entry) => entry[1]), 0);
+
+  elements.categoryBars.innerHTML = "";
+
+  if (!entries.length) {
+    elements.categoryBars.innerHTML = '<p class="empty-state">這個月份沒有支出資料。</p>';
+    return;
+  }
+
+  for (const [category, amount] of entries) {
+    const node = elements.barTemplate.content.cloneNode(true);
+    node.querySelector(".category-name").textContent = category;
+    node.querySelector(".category-amount").textContent = formatUsd(amount);
+    node.querySelector(".bar-fill").style.width = `${Math.max((amount / max) * 100, 4)}%`;
+    elements.categoryBars.append(node);
+  }
+}
+
+function renderRows(items) {
+  elements.transactionRows.innerHTML = "";
+  elements.emptyState.hidden = items.length > 0;
+
+  for (const item of items) {
+    const tr = document.createElement("tr");
+    const signedAmount = item.type === "income" ? item.amount : -item.amount;
+
+    tr.innerHTML = `
+      <td>${escapeHtml(item.date)}</td>
+      <td><span class="type-pill ${item.type}">${item.type === "income" ? "收入" : "支出"}</span></td>
+      <td>${escapeHtml(item.category)}</td>
+      <td>${escapeHtml(item.note || "-")}</td>
+      <td class="amount">${formatUsd(signedAmount)}</td>
+      <td class="amount">${formatTwd(signedAmount)}</td>
+      <td><button class="delete-button" type="button" data-delete-id="${item.id}">刪除</button></td>
+    `;
+
+    elements.transactionRows.append(tr);
+  }
+}
+
+function sumByType(items, type) {
+  return items
+    .filter((item) => item.type === type)
+    .reduce((total, item) => total + item.amount, 0);
+}
+
+function getElapsedDaysInSelectedMonth() {
+  const now = new Date();
+  const currentMonth = now.toISOString().slice(0, 7);
+  if (selectedMonth === currentMonth) return now.getDate();
+
+  const [year, month] = selectedMonth.split("-").map(Number);
+  return new Date(year, month, 0).getDate();
+}
+
+function formatUsd(value) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(value);
+}
+
+function formatTwd(value) {
+  const rate = Number(elements.exchangeRate.value) || 0;
+  return new Intl.NumberFormat("zh-TW", {
+    style: "currency",
+    currency: "TWD",
+    maximumFractionDigits: 0,
+  }).format(value * rate);
+}
+
+function formatTwdLine(value) {
+  return `約 ${formatTwd(value)}`;
+}
+
+function formatMonth(month) {
+  const [year, monthNumber] = month.split("-");
+  return `${year} 年 ${Number(monthNumber)} 月`;
+}
+
+function downloadFile(filename, content, type) {
+  const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+function csvCell(value) {
+  const text = String(value ?? "");
+  return `"${text.replaceAll('"', '""')}"`;
+}
+
+function parseCsv(text) {
+  const rows = text.trim().split(/\r?\n/).map(parseCsvLine);
+  const headers = rows.shift()?.map((header) => header.trim()) || [];
+
+  return rows.map((row) =>
+    headers.reduce((item, header, index) => {
+      item[header] = row[index] ?? "";
+      return item;
+    }, {}),
+  );
+}
+
+function parseCsvLine(line) {
+  const cells = [];
+  let cell = "";
+  let quoted = false;
+
+  for (let index = 0; index < line.length; index += 1) {
+    const char = line[index];
+    const next = line[index + 1];
+
+    if (char === '"' && quoted && next === '"') {
+      cell += '"';
+      index += 1;
+    } else if (char === '"') {
+      quoted = !quoted;
+    } else if (char === "," && !quoted) {
+      cells.push(cell);
+      cell = "";
+    } else {
+      cell += char;
+    }
+  }
+
+  cells.push(cell);
+  return cells;
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}

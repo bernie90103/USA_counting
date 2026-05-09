@@ -7,21 +7,21 @@
 1. 直接用瀏覽器開啟 `index.html`。
 2. 新增收入或支出，資料會存在目前瀏覽器的 `localStorage`。
 3. 用「匯出 JSON」備份資料，或用「匯出 CSV」給 Excel/Google Sheets 使用。
-4. 若要從 Excel 匯入，先將 Excel 另存成 CSV，欄位需包含：`date,type,category,note,amount`。
+4. 若要讓部署後的網站顯示最新公開資料，匯出 JSON 後覆蓋 `data/transactions.json`，再重新部署。
 
 ## 即時匯率
 
 網頁載入時會自動從 `fxapi.app` 抓取最新 USD → TWD 匯率，也可以按「更新匯率」手動刷新。若 API 暫時失敗，網頁會保留上一個可用匯率，仍可手動輸入。
 
-## 從目前 Excel 更新公開資料
+## 更新公開資料
 
-這個專案已附一個轉換腳本，可把 `my account.xlsx` 的 `日期 / 東西 / 錢 / 備注` 欄位轉成網站會讀取的 JSON：
+以後可以直接在網頁新增資料。資料會先存在你目前使用的瀏覽器，所以建議定期按「匯出 JSON」備份。
 
-```powershell
-python tools/convert_xlsx.py "my account.xlsx" data/transactions.json
-```
+如果要讓台灣家人看到最新資料：
 
-轉換後重新整理網頁。如果瀏覽器之前已經新增過本機資料，會優先使用本機資料；可在瀏覽器清除這個網站的 localStorage，或改用匯入 JSON。
+1. 在網頁按「匯出 JSON」。
+2. 用匯出的 JSON 覆蓋 `data/transactions.json`。
+3. 提交並推送到 GitHub，讓 GitHub Pages 或部署平台更新網站。
 
 ## 分享給台灣家人
 

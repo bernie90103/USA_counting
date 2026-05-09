@@ -114,6 +114,10 @@ form label {
   margin: 12px 0;
 }
 
+.rate-actions {
+  margin: 4px 0 10px;
+}
+
 .rate-input input,
 form input,
 form select,
@@ -224,6 +228,7 @@ small {
 }
 
 .primary-button,
+.secondary-button,
 .actions button,
 .file-button {
   min-height: 44px;
@@ -237,6 +242,7 @@ small {
 }
 
 .primary-button:hover,
+.secondary-button:hover,
 .actions button:hover,
 .file-button:hover {
   transform: translateY(-1px);
@@ -245,6 +251,20 @@ small {
 
 .primary-button {
   margin-top: 6px;
+}
+
+.secondary-button {
+  min-height: 38px;
+  padding: 8px 14px;
+  color: var(--ink);
+  background: #efe2cd;
+}
+
+.secondary-button:disabled {
+  cursor: wait;
+  opacity: 0.68;
+  transform: none;
+  box-shadow: none;
 }
 
 .category-bars {

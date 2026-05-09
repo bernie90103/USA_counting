@@ -23,7 +23,10 @@
             <input id="exchangeRate" type="number" min="1" step="0.01" />
             <span>TWD</span>
           </div>
-          <small>可依銀行或 Google 匯率手動調整。</small>
+          <div class="rate-actions">
+            <button id="refreshRate" class="secondary-button" type="button">更新匯率</button>
+          </div>
+          <small id="rateStatus">載入後會自動抓取即時匯率，也可手動調整。</small>
         </section>
       </header>
 

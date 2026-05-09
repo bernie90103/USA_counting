@@ -1,5 +1,7 @@
 const STORAGE_KEY = "us-ledger-transactions";
 const RATE_KEY = "us-ledger-exchange-rate";
+const RATE_UPDATED_KEY = "us-ledger-exchange-rate-updated";
+const LIVE_RATE_URL = "https://fxapi.app/api/USD/TWD.json";
 
 const sampleTransactions = [
   {
@@ -52,6 +54,8 @@ const elements = {
   amount: document.querySelector("#amount"),
   note: document.querySelector("#note"),
   exchangeRate: document.querySelector("#exchangeRate"),
+  refreshRate: document.querySelector("#refreshRate"),
+  rateStatus: document.querySelector("#rateStatus"),
   monthFilter: document.querySelector("#monthFilter"),
   monthlyIncome: document.querySelector("#monthlyIncome"),
   monthlyIncomeTwd: document.querySelector("#monthlyIncomeTwd"),
@@ -75,10 +79,17 @@ let selectedMonth = "";
 
 elements.date.value = new Date().toISOString().slice(0, 10);
 elements.exchangeRate.value = localStorage.getItem(RATE_KEY) || "32.50";
+setRateStatusFromStorage();
 
 elements.exchangeRate.addEventListener("input", () => {
   localStorage.setItem(RATE_KEY, elements.exchangeRate.value);
+  localStorage.setItem(RATE_UPDATED_KEY, new Date().toISOString());
+  setRateStatus("手動匯率已套用。");
   render();
+});
+
+elements.refreshRate.addEventListener("click", () => {
+  refreshLiveRate();
 });
 
 elements.monthFilter.addEventListener("change", (event) => {
@@ -162,6 +173,36 @@ init();
 async function init() {
   transactions = await loadTransactions();
   render();
+  refreshLiveRate({ quiet: true });
+}
+
+async function refreshLiveRate(options = {}) {
+  const { quiet = false } = options;
+  elements.refreshRate.disabled = true;
+  if (!quiet) setRateStatus("正在更新 USD → TWD 匯率...");
+
+  try {
+    const response = await fetch(LIVE_RATE_URL, { cache: "no-store" });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+    const data = await response.json();
+    const rate = Number(data.rate);
+    if (!Number.isFinite(rate) || rate <= 0) throw new Error("Invalid rate");
+
+    const timestamp = data.timestamp || new Date().toISOString();
+    elements.exchangeRate.value = rate.toFixed(2);
+    localStorage.setItem(RATE_KEY, elements.exchangeRate.value);
+    localStorage.setItem(RATE_UPDATED_KEY, timestamp);
+    setRateStatus(`即時匯率已更新：${formatRateTime(timestamp)}，來源 fxapi.app。`);
+    render();
+  } catch {
+    const fallback = localStorage.getItem(RATE_KEY) || elements.exchangeRate.value;
+    elements.exchangeRate.value = fallback || "32.50";
+    setRateStatus("即時匯率暫時無法更新，已保留目前匯率，可手動調整。");
+    render();
+  } finally {
+    elements.refreshRate.disabled = false;
+  }
 }
 
 async function loadTransactions() {
@@ -346,6 +387,30 @@ function formatTwdLine(value) {
 function formatMonth(month) {
   const [year, monthNumber] = month.split("-");
   return `${year} 年 ${Number(monthNumber)} 月`;
+}
+
+function setRateStatus(message) {
+  elements.rateStatus.textContent = message;
+}
+
+function setRateStatusFromStorage() {
+  const updatedAt = localStorage.getItem(RATE_UPDATED_KEY);
+  if (!updatedAt) {
+    setRateStatus("載入後會自動抓取即時匯率，也可手動調整。");
+    return;
+  }
+
+  setRateStatus(`目前使用上次匯率：${formatRateTime(updatedAt)}。`);
+}
+
+function formatRateTime(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "時間未知";
+
+  return new Intl.DateTimeFormat("zh-TW", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(date);
 }
 
 function downloadFile(filename, content, type) {

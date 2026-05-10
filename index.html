@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>美國生活記帳</title>
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./styles.css?v=20260510-2" />
   </head>
   <body>
     <div class="page-shell">
@@ -55,7 +55,7 @@
         </section>
 
         <section class="content-grid">
-          <form class="panel entry-panel edit-only" id="transactionForm">
+          <form class="panel entry-panel edit-only" id="transactionForm" hidden>
             <div class="panel-heading">
               <p class="eyebrow">Add Record</p>
               <h2>新增一筆</h2>
@@ -124,7 +124,7 @@
               <p class="eyebrow">Transactions</p>
               <h2>收支明細</h2>
             </div>
-            <div class="actions edit-only">
+            <div class="actions edit-only" hidden>
               <button id="exportJson" type="button">匯出 JSON</button>
               <button id="exportCsv" type="button">匯出 CSV</button>
               <label class="file-button">
@@ -148,7 +148,7 @@
                   <th>說明</th>
                   <th>USD</th>
                   <th>TWD</th>
-                  <th class="edit-only">操作</th>
+                  <th class="edit-only" hidden>操作</th>
                 </tr>
               </thead>
               <tbody id="transactionRows"></tbody>
@@ -171,6 +171,6 @@
       </div>
     </template>
 
-    <script src="./app.js"></script>
+    <script src="./app.js?v=20260510-2"></script>
   </body>
 </html>

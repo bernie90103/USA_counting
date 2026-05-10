@@ -83,6 +83,11 @@ let editingId = "";
 
 document.body.classList.toggle("edit-mode", isEditMode);
 document.body.classList.toggle("view-mode", !isEditMode);
+if (isEditMode) {
+  document.querySelectorAll(".edit-only[hidden]").forEach((element) => {
+    element.hidden = false;
+  });
+}
 elements.date.value = new Date().toISOString().slice(0, 10);
 elements.exchangeRate.value = localStorage.getItem(RATE_KEY) || "32.50";
 setRateStatusFromStorage();

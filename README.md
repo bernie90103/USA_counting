@@ -15,13 +15,23 @@
 
 ## 更新公開資料
 
-以後可以直接在網頁新增資料。資料會先存在你目前使用的瀏覽器，所以建議定期按「匯出 JSON」備份。
+本機新增、修改或刪除後，先在網頁按「匯出 JSON」，再執行：
 
-如果要讓台灣家人看到最新資料：
+```powershell
+python tools/publish_ledger.py
+```
 
-1. 在網頁按「匯出 JSON」。
-2. 用匯出的 JSON 覆蓋 `data/transactions.json`。
-3. 提交並推送到 GitHub，讓 GitHub Pages 或部署平台更新網站。
+腳本會自動找下載資料夾最新的 `us-ledger.json`，更新 `data/transactions.json`，提交到 GitHub，並同步到 `gh-pages` 給 GitHub Pages 使用。若要指定檔案：
+
+```powershell
+python tools/publish_ledger.py --json C:\Users\你的名字\Downloads\us-ledger.json
+```
+
+如果只想先更新 `data/transactions.json`，但不提交：
+
+```powershell
+python tools/publish_ledger.py --no-git
+```
 
 ## 分享給台灣家人
 

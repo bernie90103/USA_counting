@@ -221,6 +221,31 @@ small {
   gap: 16px;
 }
 
+.edit-only {
+  display: none !important;
+}
+
+.edit-mode .entry-panel.edit-only {
+  display: grid !important;
+}
+
+.edit-mode .actions.edit-only {
+  display: flex !important;
+}
+
+.edit-mode th.edit-only,
+.edit-mode td.edit-only {
+  display: table-cell !important;
+}
+
+.view-mode .content-grid {
+  grid-template-columns: 1fr;
+}
+
+.view-mode table {
+  min-width: 720px;
+}
+
 .split {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -251,6 +276,12 @@ small {
 
 .primary-button {
   margin-top: 6px;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .secondary-button {

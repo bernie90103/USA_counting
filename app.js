@@ -2,6 +2,7 @@ const STORAGE_KEY = "us-ledger-transactions";
 const RATE_KEY = "us-ledger-exchange-rate";
 const RATE_UPDATED_KEY = "us-ledger-exchange-rate-updated";
 const LIVE_RATE_URL = "https://fxapi.app/api/USD/TWD.json";
+const isEditMode = isLocalEditingContext();
 
 const sampleTransactions = [
   {
@@ -71,12 +72,17 @@ const elements = {
   exportCsv: document.querySelector("#exportCsv"),
   importJson: document.querySelector("#importJson"),
   importCsv: document.querySelector("#importCsv"),
+  saveTransaction: document.querySelector("#saveTransaction"),
+  cancelEdit: document.querySelector("#cancelEdit"),
   barTemplate: document.querySelector("#barTemplate"),
 };
 
 let transactions = [];
 let selectedMonth = "";
+let editingId = "";
 
+document.body.classList.toggle("edit-mode", isEditMode);
+document.body.classList.toggle("view-mode", !isEditMode);
 elements.date.value = new Date().toISOString().slice(0, 10);
 elements.exchangeRate.value = localStorage.getItem(RATE_KEY) || "32.50";
 setRateStatusFromStorage();
@@ -97,75 +103,109 @@ elements.monthFilter.addEventListener("change", (event) => {
   render();
 });
 
-elements.form.addEventListener("submit", (event) => {
-  event.preventDefault();
+if (isEditMode) {
+  elements.form.addEventListener("submit", (event) => {
+    event.preventDefault();
 
-  const transaction = {
-    id: crypto.randomUUID(),
-    date: elements.date.value,
-    type: elements.type.value,
-    category: elements.category.value,
-    note: elements.note.value.trim(),
-    amount: Number(elements.amount.value),
-  };
+    const transaction = {
+      id: editingId || makeId(),
+      date: elements.date.value,
+      type: elements.type.value,
+      category: elements.category.value,
+      note: elements.note.value.trim(),
+      amount: Number(elements.amount.value),
+    };
 
-  transactions = [transaction, ...transactions];
-  saveTransactions();
-  elements.form.reset();
-  elements.date.value = new Date().toISOString().slice(0, 10);
-  elements.type.value = "expense";
-  render();
-});
+    if (editingId) {
+      transactions = transactions.map((item) => (item.id === editingId ? transaction : item));
+    } else {
+      transactions = [transaction, ...transactions];
+    }
 
-elements.exportJson.addEventListener("click", () => {
-  downloadFile("us-ledger.json", JSON.stringify(transactions, null, 2), "application/json");
-});
+    saveTransactions();
+    resetForm();
+    render();
+  });
 
-elements.exportCsv.addEventListener("click", () => {
-  const csv = [
-    ["date", "type", "category", "note", "amount"],
-    ...transactions.map((item) => [
-      item.date,
-      item.type,
-      item.category,
-      item.note,
-      item.amount,
-    ]),
-  ]
-    .map((row) => row.map(csvCell).join(","))
-    .join("\n");
+  elements.cancelEdit.addEventListener("click", () => {
+    resetForm();
+  });
 
-  downloadFile("us-ledger.csv", csv, "text/csv;charset=utf-8");
-});
+  elements.exportJson.addEventListener("click", () => {
+    downloadFile("us-ledger.json", JSON.stringify(transactions, null, 2), "application/json");
+  });
 
-elements.importJson.addEventListener("change", async (event) => {
-  const file = event.target.files?.[0];
-  if (!file) return;
+  elements.exportCsv.addEventListener("click", () => {
+    const csv = [
+      ["date", "type", "category", "note", "amount"],
+      ...transactions.map((item) => [
+        item.date,
+        item.type,
+        item.category,
+        item.note,
+        item.amount,
+      ]),
+    ]
+      .map((row) => row.map(csvCell).join(","))
+      .join("\n");
 
-  const imported = JSON.parse(await file.text());
-  transactions = normalizeTransactions(imported);
-  saveTransactions();
-  render();
-  event.target.value = "";
-});
+    downloadFile("us-ledger.csv", csv, "text/csv;charset=utf-8");
+  });
 
-elements.importCsv.addEventListener("change", async (event) => {
-  const file = event.target.files?.[0];
-  if (!file) return;
+  elements.importJson.addEventListener("change", async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
 
-  transactions = normalizeTransactions(parseCsv(await file.text()));
-  saveTransactions();
-  render();
-  event.target.value = "";
-});
+    const imported = JSON.parse(await file.text());
+    transactions = normalizeTransactions(imported);
+    saveTransactions();
+    resetForm();
+    render();
+    event.target.value = "";
+  });
+
+  elements.importCsv.addEventListener("change", async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    transactions = normalizeTransactions(parseCsv(await file.text()));
+    saveTransactions();
+    resetForm();
+    render();
+    event.target.value = "";
+  });
+}
 
 elements.transactionRows.addEventListener("click", (event) => {
-  const button = event.target.closest("[data-delete-id]");
-  if (!button) return;
+  if (!isEditMode) return;
 
-  transactions = transactions.filter((item) => item.id !== button.dataset.deleteId);
+  const editButton = event.target.closest("[data-edit-id]");
+  if (editButton) {
+    beginEdit(editButton.dataset.editId);
+    return;
+  }
+
+  const deleteButton = event.target.closest("[data-delete-id]");
+  if (!deleteButton) return;
+
+  transactions = transactions.filter((item) => item.id !== deleteButton.dataset.deleteId);
   saveTransactions();
+  if (editingId === deleteButton.dataset.deleteId) resetForm();
   render();
+});
+
+window.addEventListener("storage", (event) => {
+  if (!isEditMode) return;
+
+  if (event.key === STORAGE_KEY) {
+    transactions = normalizeTransactions(JSON.parse(event.newValue || "[]"));
+    render();
+  }
+
+  if (event.key === RATE_KEY) {
+    elements.exchangeRate.value = event.newValue || "32.50";
+    render();
+  }
 });
 
 init();
@@ -206,6 +246,10 @@ async function refreshLiveRate(options = {}) {
 }
 
 async function loadTransactions() {
+  if (!isEditMode) {
+    return loadPublicTransactions();
+  }
+
   const stored = localStorage.getItem(STORAGE_KEY);
   if (!stored) {
     return loadPublicTransactions();
@@ -230,6 +274,7 @@ async function loadPublicTransactions() {
 }
 
 function saveTransactions() {
+  if (!isEditMode) return;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
 }
 
@@ -342,11 +387,49 @@ function renderRows(items) {
       <td>${escapeHtml(item.note || "-")}</td>
       <td class="amount">${formatUsd(signedAmount)}</td>
       <td class="amount">${formatTwd(signedAmount)}</td>
-      <td><button class="delete-button" type="button" data-delete-id="${item.id}">刪除</button></td>
+      <td class="edit-only row-actions">
+        <button class="secondary-button" type="button" data-edit-id="${escapeHtml(item.id)}">修改</button>
+        <button class="delete-button" type="button" data-delete-id="${escapeHtml(item.id)}">刪除</button>
+      </td>
     `;
 
     elements.transactionRows.append(tr);
   }
+}
+
+function beginEdit(id) {
+  const transaction = transactions.find((item) => item.id === id);
+  if (!transaction) return;
+
+  editingId = id;
+  ensureCategoryOption(transaction.category);
+  elements.date.value = transaction.date;
+  elements.type.value = transaction.type;
+  elements.category.value = transaction.category;
+  elements.amount.value = transaction.amount;
+  elements.note.value = transaction.note;
+  elements.saveTransaction.textContent = "儲存修改";
+  elements.cancelEdit.hidden = false;
+  elements.form.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function resetForm() {
+  editingId = "";
+  elements.form.reset();
+  elements.date.value = new Date().toISOString().slice(0, 10);
+  elements.type.value = "expense";
+  elements.saveTransaction.textContent = "加入記帳";
+  elements.cancelEdit.hidden = true;
+}
+
+function ensureCategoryOption(category) {
+  const exists = [...elements.category.options].some((option) => option.value === category);
+  if (exists) return;
+
+  const option = document.createElement("option");
+  option.textContent = category;
+  option.value = category;
+  elements.category.append(option);
 }
 
 function sumByType(items, type) {
@@ -473,4 +556,9 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function isLocalEditingContext() {
+  const localHosts = new Set(["", "localhost", "127.0.0.1", "::1"]);
+  return location.protocol === "file:" || localHosts.has(location.hostname);
 }

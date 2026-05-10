@@ -55,7 +55,7 @@
         </section>
 
         <section class="content-grid">
-          <form class="panel entry-panel" id="transactionForm">
+          <form class="panel entry-panel edit-only" id="transactionForm">
             <div class="panel-heading">
               <p class="eyebrow">Add Record</p>
               <h2>新增一筆</h2>
@@ -100,7 +100,10 @@
               <input id="note" type="text" placeholder="例如：Costco、房租、薪水" />
             </label>
 
-            <button class="primary-button" type="submit">加入記帳</button>
+            <div class="form-actions">
+              <button class="primary-button" id="saveTransaction" type="submit">加入記帳</button>
+              <button class="secondary-button" id="cancelEdit" type="button" hidden>取消修改</button>
+            </div>
           </form>
 
           <section class="panel">
@@ -121,7 +124,7 @@
               <p class="eyebrow">Transactions</p>
               <h2>收支明細</h2>
             </div>
-            <div class="actions">
+            <div class="actions edit-only">
               <button id="exportJson" type="button">匯出 JSON</button>
               <button id="exportCsv" type="button">匯出 CSV</button>
               <label class="file-button">
@@ -145,7 +148,7 @@
                   <th>說明</th>
                   <th>USD</th>
                   <th>TWD</th>
-                  <th></th>
+                  <th class="edit-only">操作</th>
                 </tr>
               </thead>
               <tbody id="transactionRows"></tbody>

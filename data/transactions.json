@@ -1,13 +1,5 @@
 [
   {
-    "id": "27290488-48c8-4831-b63f-3ab7e5168e8d",
-    "date": "2026-05-10",
-    "type": "expense",
-    "category": "超市",
-    "note": "Costco",
-    "amount": 10
-  },
-  {
     "id": "工作表1-2026-05-01-1",
     "date": "2026-05-01",
     "type": "expense",

@@ -410,20 +410,23 @@ function renderPretripStats() {
   const required = sumPretripByGroup("必要花費");
   const optional = sumPretripByGroup("非必要花費");
   const total = required + optional;
+  const requiredUsd = sumPretripUsdByGroup("必要花費");
+  const optionalUsd = sumPretripUsdByGroup("非必要花費");
+  const totalUsd = requiredUsd + optionalUsd;
   const largest = [...pretripExpenses].sort((a, b) => b.twd - a.twd)[0];
 
   elements.monthlyIncomeLabel.textContent = "必要花費";
   elements.monthlyIncome.textContent = formatTwdAmount(required);
-  elements.monthlyIncomeTwd.textContent = `約 ${formatUsd(required / getExchangeRate())}`;
+  elements.monthlyIncomeTwd.textContent = formatFixedUsdSummary(requiredUsd);
   elements.monthlyExpenseLabel.textContent = "非必要花費";
   elements.monthlyExpense.textContent = formatTwdAmount(optional);
-  elements.monthlyExpenseTwd.textContent = `約 ${formatUsd(optional / getExchangeRate())}`;
+  elements.monthlyExpenseTwd.textContent = formatFixedUsdSummary(optionalUsd);
   elements.monthlyBalanceLabel.textContent = "行前總計";
   elements.monthlyBalance.textContent = formatTwdAmount(total);
-  elements.monthlyBalanceTwd.textContent = `約 ${formatUsd(total / getExchangeRate())}`;
+  elements.monthlyBalanceTwd.textContent = `固定匯率已記錄 ${formatUsd(totalUsd)}`;
   elements.dailyAverageLabel.textContent = "最大項目";
   elements.dailyAverage.textContent = formatTwdAmount(largest.twd);
-  elements.dailyAverageNote.textContent = largest.item;
+  elements.dailyAverageNote.textContent = `${largest.item}｜匯率 ${formatRate(largest.rate)}`;
 }
 
 function renderPretripCategoryBars() {
@@ -454,7 +457,7 @@ function renderPretripRows() {
       <td>行前</td>
       <td><span class="type-pill expense">支出</span></td>
       <td>${escapeHtml(item.group)}</td>
-      <td>${escapeHtml(item.note ? `${item.item}｜${item.note}` : item.item)}</td>
+      <td>${escapeHtml(formatPretripNote(item))}</td>
       <td class="amount">${formatPretripUsd(item)}</td>
       <td class="amount">${formatTwdAmount(item.twd)}</td>
       <td class="edit-only row-actions"></td>
@@ -560,8 +563,10 @@ function sumPretripByGroup(group) {
     .reduce((total, expense) => total + expense.twd, 0);
 }
 
-function getExchangeRate() {
-  return Number(elements.exchangeRate.value) || 32.5;
+function sumPretripUsdByGroup(group) {
+  return pretripExpenses
+    .filter((expense) => expense.group === group)
+    .reduce((total, expense) => total + (expense.usd || 0), 0);
 }
 
 function getElapsedDaysInSelectedMonth() {
@@ -598,8 +603,30 @@ function formatTwdAmount(value) {
 }
 
 function formatPretripUsd(expense) {
-  if (expense.usd) return `已付 ${formatUsd(expense.usd)}`;
-  return `約 ${formatUsd(expense.twd / getExchangeRate())}`;
+  if (expense.usd && expense.rate) {
+    return `${formatUsd(expense.usd)}｜匯率 ${formatRate(expense.rate)}`;
+  }
+
+  if (expense.usd) return formatUsd(expense.usd);
+  return "未記錄匯率";
+}
+
+function formatPretripNote(expense) {
+  const note = expense.note ? `｜${expense.note}` : "";
+  const rate = expense.rate ? `｜當時匯率 ${formatRate(expense.rate)}` : "";
+  return `${expense.item}${note}${rate}`;
+}
+
+function formatFixedUsdSummary(value) {
+  if (!value) return "未記錄當時匯率";
+  return `固定匯率已記錄 ${formatUsd(value)}`;
+}
+
+function formatRate(value) {
+  return Number(value).toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 3,
+  });
 }
 
 function formatTwdLine(value) {

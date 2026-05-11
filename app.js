@@ -2,7 +2,37 @@ const STORAGE_KEY = "us-ledger-transactions";
 const RATE_KEY = "us-ledger-exchange-rate";
 const RATE_UPDATED_KEY = "us-ledger-exchange-rate-updated";
 const LIVE_RATE_URL = "https://fxapi.app/api/USD/TWD.json";
+const PRETRIP_FILTER = "pretrip";
 const isEditMode = isLocalEditingContext();
+
+const pretripExpenses = [
+  { group: "必要花費", item: "護照更新", twd: 1300 },
+  { group: "必要花費", item: "密封文件申請", twd: 169 },
+  { group: "必要花費", item: "IELTS-1", twd: 7700 },
+  { group: "必要花費", item: "IELTS-2", twd: 7700 },
+  { group: "必要花費", item: "IELTS-3", twd: 8300, note: "免讀語言學校" },
+  { group: "必要花費", item: "保證金", twd: 125859, rate: 31.607, usd: 3982 },
+  { group: "必要花費", item: "電匯手續費", twd: 600 },
+  {
+    group: "必要花費",
+    item: "學費+住宿+膳食計畫+保險(第一次)",
+    twd: 1260111,
+    rate: 31.95,
+    usd: 39393,
+    note: "03/17 繳費",
+  },
+  { group: "必要花費", item: "DS-160-AIT面試", twd: 5842 },
+  { group: "必要花費", item: "DS-160-AIT面試(高鐵票來回)", twd: 660 },
+  { group: "必要花費", item: "SEVIS I-901", twd: 11068, rate: 31.622, usd: 350 },
+  { group: "必要花費", item: "美簽5X5大頭照", twd: 400 },
+  { group: "必要花費", item: "學校疫苗-MMR", twd: 1200 },
+  { group: "必要花費", item: "學校疫苗-水痘", twd: 5649 },
+  { group: "必要花費", item: "財力證明+戶籍-英版", twd: 60 },
+  { group: "必要花費", item: "機票錢", twd: 36917 },
+  { group: "非必要花費", item: "IDP代辦", twd: 28000 },
+  { group: "非必要花費", item: "IELTS補習費用", twd: 30100 },
+  { group: "非必要花費", item: "IELTS-4", twd: 8300 },
+];
 
 const sampleTransactions = [
   {
@@ -58,13 +88,18 @@ const elements = {
   refreshRate: document.querySelector("#refreshRate"),
   rateStatus: document.querySelector("#rateStatus"),
   monthFilter: document.querySelector("#monthFilter"),
+  monthlyIncomeLabel: document.querySelector("#monthlyIncomeLabel"),
   monthlyIncome: document.querySelector("#monthlyIncome"),
   monthlyIncomeTwd: document.querySelector("#monthlyIncomeTwd"),
+  monthlyExpenseLabel: document.querySelector("#monthlyExpenseLabel"),
   monthlyExpense: document.querySelector("#monthlyExpense"),
   monthlyExpenseTwd: document.querySelector("#monthlyExpenseTwd"),
+  monthlyBalanceLabel: document.querySelector("#monthlyBalanceLabel"),
   monthlyBalance: document.querySelector("#monthlyBalance"),
   monthlyBalanceTwd: document.querySelector("#monthlyBalanceTwd"),
+  dailyAverageLabel: document.querySelector("#dailyAverageLabel"),
   dailyAverage: document.querySelector("#dailyAverage"),
+  dailyAverageNote: document.querySelector("#dailyAverageNote"),
   categoryBars: document.querySelector("#categoryBars"),
   transactionRows: document.querySelector("#transactionRows"),
   emptyState: document.querySelector("#emptyState"),
@@ -305,11 +340,18 @@ function makeId() {
 
 function render() {
   const months = getAvailableMonths();
-  if (!selectedMonth || !months.includes(selectedMonth)) {
+  if (!selectedMonth || (selectedMonth !== PRETRIP_FILTER && !months.includes(selectedMonth))) {
     selectedMonth = months[0] || new Date().toISOString().slice(0, 7);
   }
 
   renderMonthOptions(months);
+
+  if (selectedMonth === PRETRIP_FILTER) {
+    renderPretripStats();
+    renderPretripCategoryBars();
+    renderPretripRows();
+    return;
+  }
 
   const filtered = transactions
     .filter((item) => item.date.startsWith(selectedMonth))
@@ -327,7 +369,7 @@ function getAvailableMonths() {
 function renderMonthOptions(months) {
   elements.monthFilter.innerHTML = "";
 
-  const list = months.length ? months : [selectedMonth];
+  const list = months.length ? months : [new Date().toISOString().slice(0, 7)];
   for (const month of list) {
     const option = document.createElement("option");
     option.value = month;
@@ -335,9 +377,21 @@ function renderMonthOptions(months) {
     option.selected = month === selectedMonth;
     elements.monthFilter.append(option);
   }
+
+  const pretripOption = document.createElement("option");
+  pretripOption.value = PRETRIP_FILTER;
+  pretripOption.textContent = "行前總花費";
+  pretripOption.selected = selectedMonth === PRETRIP_FILTER;
+  elements.monthFilter.append(pretripOption);
 }
 
 function renderStats(items) {
+  elements.monthlyIncomeLabel.textContent = "本月收入";
+  elements.monthlyExpenseLabel.textContent = "本月支出";
+  elements.monthlyBalanceLabel.textContent = "本月結餘";
+  elements.dailyAverageLabel.textContent = "每日平均支出";
+  elements.dailyAverageNote.textContent = "用本月已過天數估算";
+
   const income = sumByType(items, "income");
   const expense = sumByType(items, "expense");
   const balance = income - expense;
@@ -350,6 +404,63 @@ function renderStats(items) {
   elements.monthlyBalance.textContent = formatUsd(balance);
   elements.monthlyBalanceTwd.textContent = formatTwdLine(balance);
   elements.dailyAverage.textContent = formatUsd(average || 0);
+}
+
+function renderPretripStats() {
+  const required = sumPretripByGroup("必要花費");
+  const optional = sumPretripByGroup("非必要花費");
+  const total = required + optional;
+  const largest = [...pretripExpenses].sort((a, b) => b.twd - a.twd)[0];
+
+  elements.monthlyIncomeLabel.textContent = "必要花費";
+  elements.monthlyIncome.textContent = formatTwdAmount(required);
+  elements.monthlyIncomeTwd.textContent = `約 ${formatUsd(required / getExchangeRate())}`;
+  elements.monthlyExpenseLabel.textContent = "非必要花費";
+  elements.monthlyExpense.textContent = formatTwdAmount(optional);
+  elements.monthlyExpenseTwd.textContent = `約 ${formatUsd(optional / getExchangeRate())}`;
+  elements.monthlyBalanceLabel.textContent = "行前總計";
+  elements.monthlyBalance.textContent = formatTwdAmount(total);
+  elements.monthlyBalanceTwd.textContent = `約 ${formatUsd(total / getExchangeRate())}`;
+  elements.dailyAverageLabel.textContent = "最大項目";
+  elements.dailyAverage.textContent = formatTwdAmount(largest.twd);
+  elements.dailyAverageNote.textContent = largest.item;
+}
+
+function renderPretripCategoryBars() {
+  const groups = [
+    ["必要花費", sumPretripByGroup("必要花費")],
+    ["非必要花費", sumPretripByGroup("非必要花費")],
+  ];
+  const max = Math.max(...groups.map((group) => group[1]));
+
+  elements.categoryBars.innerHTML = "";
+  for (const [category, amount] of groups) {
+    const node = elements.barTemplate.content.cloneNode(true);
+    node.querySelector(".category-name").textContent = category;
+    node.querySelector(".category-amount").textContent = formatTwdAmount(amount);
+    node.querySelector(".bar-fill").style.width = `${Math.max((amount / max) * 100, 4)}%`;
+    elements.categoryBars.append(node);
+  }
+}
+
+function renderPretripRows() {
+  const items = [...pretripExpenses].sort((a, b) => b.twd - a.twd);
+  elements.transactionRows.innerHTML = "";
+  elements.emptyState.hidden = items.length > 0;
+
+  for (const item of items) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>行前</td>
+      <td><span class="type-pill expense">支出</span></td>
+      <td>${escapeHtml(item.group)}</td>
+      <td>${escapeHtml(item.note ? `${item.item}｜${item.note}` : item.item)}</td>
+      <td class="amount">${formatPretripUsd(item)}</td>
+      <td class="amount">${formatTwdAmount(item.twd)}</td>
+      <td class="edit-only row-actions"></td>
+    `;
+    elements.transactionRows.append(tr);
+  }
 }
 
 function renderCategoryBars(items) {
@@ -443,6 +554,16 @@ function sumByType(items, type) {
     .reduce((total, item) => total + item.amount, 0);
 }
 
+function sumPretripByGroup(group) {
+  return pretripExpenses
+    .filter((expense) => expense.group === group)
+    .reduce((total, expense) => total + expense.twd, 0);
+}
+
+function getExchangeRate() {
+  return Number(elements.exchangeRate.value) || 32.5;
+}
+
 function getElapsedDaysInSelectedMonth() {
   const now = new Date();
   const currentMonth = now.toISOString().slice(0, 7);
@@ -466,6 +587,19 @@ function formatTwd(value) {
     currency: "TWD",
     maximumFractionDigits: 0,
   }).format(value * rate);
+}
+
+function formatTwdAmount(value) {
+  return new Intl.NumberFormat("zh-TW", {
+    style: "currency",
+    currency: "TWD",
+    maximumFractionDigits: 0,
+  }).format(value);
+}
+
+function formatPretripUsd(expense) {
+  if (expense.usd) return `已付 ${formatUsd(expense.usd)}`;
+  return `約 ${formatUsd(expense.twd / getExchangeRate())}`;
 }
 
 function formatTwdLine(value) {

@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>美國生活記帳</title>
-    <link rel="stylesheet" href="./styles.css?v=20260510-2" />
+    <link rel="stylesheet" href="./styles.css?v=20260510-4" />
   </head>
   <body>
     <div class="page-shell">
@@ -33,24 +33,24 @@
       <main>
         <section class="dashboard" aria-label="本月摘要">
           <article class="stat-card income">
-            <span>本月收入</span>
+            <span id="monthlyIncomeLabel">本月收入</span>
             <strong id="monthlyIncome">$0</strong>
             <small id="monthlyIncomeTwd">約 NT$0</small>
           </article>
           <article class="stat-card expense">
-            <span>本月支出</span>
+            <span id="monthlyExpenseLabel">本月支出</span>
             <strong id="monthlyExpense">$0</strong>
             <small id="monthlyExpenseTwd">約 NT$0</small>
           </article>
           <article class="stat-card balance">
-            <span>本月結餘</span>
+            <span id="monthlyBalanceLabel">本月結餘</span>
             <strong id="monthlyBalance">$0</strong>
             <small id="monthlyBalanceTwd">約 NT$0</small>
           </article>
           <article class="stat-card average">
-            <span>每日平均支出</span>
+            <span id="dailyAverageLabel">每日平均支出</span>
             <strong id="dailyAverage">$0</strong>
-            <small>用本月已過天數估算</small>
+            <small id="dailyAverageNote">用本月已過天數估算</small>
           </article>
         </section>
 
@@ -171,6 +171,6 @@
       </div>
     </template>
 
-    <script src="./app.js?v=20260510-2"></script>
+    <script src="./app.js?v=20260510-4"></script>
   </body>
 </html>

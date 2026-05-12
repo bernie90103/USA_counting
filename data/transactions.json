@@ -1,5 +1,21 @@
 [
   {
+    "id": "cdf1209b-90c3-4bde-93d0-279eb03510a9",
+    "date": "2026-05-12",
+    "type": "expense",
+    "category": "學費",
+    "note": "3本書合買",
+    "amount": 84.93
+  },
+  {
+    "id": "a41c8a15-ec56-41bc-8cc3-d3a7cd71fa45",
+    "date": "2026-05-12",
+    "type": "expense",
+    "category": "外食",
+    "note": "午餐/火雞漢堡",
+    "amount": 8
+  },
+  {
     "id": "42dd56f3-b46c-46f3-94b2-11f49faf0413",
     "date": "2026-05-10",
     "type": "expense",

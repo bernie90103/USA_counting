@@ -1,5 +1,21 @@
 [
   {
+    "id": "e6ccfa66-244e-4932-b2e0-67a4c0f00087",
+    "date": "2026-05-13",
+    "type": "income",
+    "category": "學費",
+    "note": "另一本書給我現金",
+    "amount": 30
+  },
+  {
+    "id": "aa21024a-b768-446d-9fb1-a2f5bbf6e423",
+    "date": "2026-05-12",
+    "type": "income",
+    "category": "學費",
+    "note": "1本書",
+    "amount": 28.5
+  },
+  {
     "id": "cdf1209b-90c3-4bde-93d0-279eb03510a9",
     "date": "2026-05-12",
     "type": "expense",

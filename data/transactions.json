@@ -1,5 +1,21 @@
 [
   {
+    "id": "e99feadc-7083-4ed9-bdb8-7e9fb35367bd",
+    "date": "2026-05-13",
+    "type": "expense",
+    "category": "外食",
+    "note": "星巴克/抹茶星冰樂",
+    "amount": 6.88
+  },
+  {
+    "id": "4bfa90af-adf1-495a-a5a8-4e956b4c0206",
+    "date": "2026-05-13",
+    "type": "expense",
+    "category": "外食",
+    "note": "午餐/三明治套餐",
+    "amount": 9
+  },
+  {
     "id": "e6ccfa66-244e-4932-b2e0-67a4c0f00087",
     "date": "2026-05-13",
     "type": "income",

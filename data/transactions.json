@@ -1,5 +1,23 @@
 [
   {
+    "id": "35416b9b-bc6d-4513-930a-558bcf49c988",
+    "date": "2026-05-15",
+    "type": "expense",
+    "category": "外食",
+    "paymentMethod": "現金",
+    "note": "雞胸",
+    "amount": 6
+  },
+  {
+    "id": "d1cee708-97e6-40c3-a110-9fb4eb9ddf8c",
+    "date": "2026-05-15",
+    "type": "expense",
+    "category": "Walmart/大賣場",
+    "paymentMethod": "現金",
+    "note": "日常用品/食品",
+    "amount": 24.21
+  },
+  {
     "id": "64d8de0a-4e91-4735-a326-31ad9f044b0d",
     "date": "2026-05-14",
     "type": "expense",

@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>美國生活記帳</title>
-    <link rel="stylesheet" href="./styles.css?v=20260510-4" />
+    <link rel="stylesheet" href="./styles.css?v=20260514-1" />
   </head>
   <body>
     <div class="page-shell">
@@ -52,6 +52,11 @@
             <strong id="dailyAverage">$0</strong>
             <small id="dailyAverageNote">用本月已過天數估算</small>
           </article>
+          <article class="stat-card campus-card">
+            <span>學生證餘額</span>
+            <strong id="campusCardBalance">$0</strong>
+            <small id="campusCardNote">5/11 加值 $500.00</small>
+          </article>
         </section>
 
         <section class="content-grid">
@@ -85,6 +90,7 @@
               <select id="category" required>
                 <option>房租</option>
                 <option>超市</option>
+                <option>Publix超市</option>
                 <option>Walmart/大賣場</option>
                 <option>外食</option>
                 <option>交通</option>
@@ -93,6 +99,16 @@
                 <option>娛樂</option>
                 <option>收入</option>
                 <option>其他</option>
+              </select>
+            </label>
+
+            <label>
+              付款方式
+              <select id="paymentMethod" required>
+                <option>台灣信用卡</option>
+                <option>美國信用卡</option>
+                <option selected>學生證</option>
+                <option>現金</option>
               </select>
             </label>
 
@@ -146,6 +162,7 @@
                   <th>日期</th>
                   <th>類型</th>
                   <th>分類</th>
+                  <th>付款方式</th>
                   <th>說明</th>
                   <th>USD</th>
                   <th>TWD</th>
@@ -172,6 +189,6 @@
       </div>
     </template>
 
-    <script src="./app.js?v=20260510-4"></script>
+    <script src="./app.js?v=20260514-1"></script>
   </body>
 </html>

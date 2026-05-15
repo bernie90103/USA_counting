@@ -141,7 +141,7 @@ small {
 
 .dashboard {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   gap: 16px;
   margin: 24px 0;
 }
@@ -177,6 +177,10 @@ small {
 
 .stat-card.average::after {
   background: var(--gold);
+}
+
+.stat-card.campus-card::after {
+  background: var(--blue);
 }
 
 .stat-card span,
@@ -367,7 +371,7 @@ small {
 table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 820px;
+  min-width: 940px;
 }
 
 th,

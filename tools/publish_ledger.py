@@ -11,6 +11,7 @@ from pathlib import Path
 STORAGE_KEY = "us-ledger-transactions"
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DATA_FILE = REPO_ROOT / "data" / "transactions.json"
+PAYMENT_METHODS = {"台灣信用卡", "美國信用卡", "學生證", "現金"}
 
 
 def main():
@@ -298,12 +299,50 @@ def normalize_transactions(items):
                 "date": date,
                 "type": "income" if item.get("type") == "income" else "expense",
                 "category": str(item.get("category") or "其他"),
+                "paymentMethod": normalize_payment_method(item),
                 "note": str(item.get("note") or ""),
                 "amount": int(amount) if amount.is_integer() else amount,
             },
         )
 
     return normalized
+
+
+def normalize_payment_method(item):
+    method = str(item.get("paymentMethod") or item.get("payment") or item.get("method") or "").strip()
+    if method in PAYMENT_METHODS:
+        return method
+
+    if is_known_campus_card_transaction(item):
+        return "學生證"
+
+    text = f"{item.get('note', '')} {item.get('category', '')}".lower()
+    if "學生證" in text or "campuscard" in text or "campus card" in text:
+        return "學生證"
+    if "永豐" in text or "台灣信用卡" in text:
+        return "台灣信用卡"
+    if "美國信用卡" in text:
+        return "美國信用卡"
+    if "cash" in text or "現金" in text:
+        return "現金"
+
+    return "現金"
+
+
+def is_known_campus_card_transaction(item):
+    try:
+        amount = float(item.get("amount") or 0)
+    except (TypeError, ValueError):
+        amount = 0
+
+    note = str(item.get("note") or "")
+    if str(item.get("date") or "")[:10] != "2026-05-13" or item.get("type") == "income":
+        return False
+
+    return (
+        (amount == 6.88 and "星巴克" in note)
+        or (amount == 9 and ("午餐" in note or "三明治" in note))
+    )
 
 
 def write_transactions(transactions):

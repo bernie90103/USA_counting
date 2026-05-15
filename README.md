@@ -1,53 +1,39 @@
-# 美國生活記帳網頁
+# 美國生活記帳
 
-這是一個可直接部署的靜態記帳網頁，介面以繁體中文呈現，適合在美國記錄美元收支，並換算成台幣給台灣家人查看。
+這是一個給家人查看的美國生活收支紀錄網站。  
+主要用美元記帳，畫面會同時換算成台幣，方便在台灣的家人了解每月花費、收入、結餘，以及行前已經花掉的費用。
 
-## 使用方式
+## 觀看網址
 
-1. 直接用瀏覽器開啟 `index.html`。
-2. 新增收入或支出，資料會存在目前瀏覽器的 `localStorage`。
-3. 用「匯出 JSON」備份資料，或用「匯出 CSV」給 Excel/Google Sheets 使用。
-4. 若要讓部署後的網站顯示最新公開資料，匯出 JSON 後覆蓋 `data/transactions.json`，再重新部署。
+公開網站：<https://bernie90103.github.io/USA_counting/>
 
-## 即時匯率
+## 網站可以看什麼
 
-網頁載入時會自動從 `fxapi.app` 抓取最新 USD → TWD 匯率，也可以按「更新匯率」手動刷新。若 API 暫時失敗，網頁會保留上一個可用匯率，仍可手動輸入。
+- 每個月的收入、支出與結餘
+- 每日平均支出
+- 各分類花費，例如外食、超市、Walmart、學費、交通等
+- 每一筆收支明細，包含日期、類型、分類、付款方式、說明、美元金額與台幣換算
+- 學生證餘額，從學校學生證可刷的金額中扣掉已用學生證支付的消費
+- 行前總花費，包含必要花費與非必要花費
 
-## 更新公開資料
+## 付款方式說明
 
-本機新增、修改或刪除後，先在網頁按「匯出 JSON」，再執行：
+收支明細會標示每筆錢是用哪一種方式支付：
 
-```powershell
-python tools/publish_ledger.py
-```
+- 台灣信用卡
+- 美國信用卡
+- 學生證
+- 現金
 
-腳本會自動找下載資料夾最新的 `us-ledger.json`，更新 `data/transactions.json`，提交到 GitHub，並同步到 `gh-pages` 給 GitHub Pages 使用。若要指定檔案：
+如果是學生證消費，網站會自動從學生證餘額中扣除。
 
-```powershell
-python tools/publish_ledger.py --json C:\Users\你的名字\Downloads\us-ledger.json
-```
+## 匯率說明
 
-如果只想先更新 `data/transactions.json`，但不提交：
+網站會把美元金額換算成台幣，方便家人估算實際花費。  
+一般生活收支會使用網站上方顯示的 USD → TWD 匯率。
 
-```powershell
-python tools/publish_ledger.py --no-git
-```
+行前花費中，如果當時有記錄實際匯率，就會固定使用當時匯率，不會改用現在的即時匯率。這樣可以保留當時真正付出的台幣成本。
 
-## 分享給台灣家人
+## 注意事項
 
-這個版本是靜態網頁，最簡單的分享方式是部署到 GitHub Pages、Netlify 或 Vercel。家人可以看到網頁本身，但瀏覽器本機新增的資料不會自動同步到其他人電腦。
-
-若要讓家人看到最新資料，有兩種做法：
-
-1. 匯出 JSON 後，覆蓋 `data/transactions.json`，再重新部署網站。
-2. 下一階段改成雲端同步版本，例如 Firebase、Supabase 或 Google Sheets API。
-
-## CSV 格式
-
-```csv
-date,type,category,note,amount
-2026-05-01,expense,房租,五月房租,1250
-2026-05-05,income,收入,Part-time paycheck,820
-```
-
-`type` 只能用 `expense` 或 `income`。
+網站上的資料是公開頁面可以看到的內容，所以只會放適合公開分享的收支紀錄，不會放私人密碼、銀行帳號或完整信用卡資訊。

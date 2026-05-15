@@ -3,6 +3,8 @@ const RATE_KEY = "us-ledger-exchange-rate";
 const RATE_UPDATED_KEY = "us-ledger-exchange-rate-updated";
 const LIVE_RATE_URL = "https://fxapi.app/api/USD/TWD.json";
 const PRETRIP_FILTER = "pretrip";
+const CAMPUS_CARD_STARTING_BALANCE = 500;
+const PAYMENT_METHODS = ["台灣信用卡", "美國信用卡", "學生證", "現金"];
 const isEditMode = isLocalEditingContext();
 
 const pretripExpenses = [
@@ -42,6 +44,7 @@ const sampleTransactions = [
     category: "美國電信",
     note: "永豐信用卡",
     amount: 91.2,
+    paymentMethod: "台灣信用卡",
   },
   {
     id: "工作表1-2026-05-07-2",
@@ -50,6 +53,7 @@ const sampleTransactions = [
     category: "早餐",
     note: "永豐信用卡",
     amount: 7.8,
+    paymentMethod: "台灣信用卡",
   },
   {
     id: "工作表1-2026-05-07-3",
@@ -58,6 +62,7 @@ const sampleTransactions = [
     category: "超商",
     note: "cash",
     amount: 14.75,
+    paymentMethod: "現金",
   },
   {
     id: "工作表1-2026-05-08-4",
@@ -66,6 +71,7 @@ const sampleTransactions = [
     category: "Walmart/大賣場",
     note: "cash",
     amount: 70.19,
+    paymentMethod: "現金",
   },
   {
     id: "工作表1-2026-05-09-5",
@@ -74,6 +80,7 @@ const sampleTransactions = [
     category: "Walmart/大賣場",
     note: "cash",
     amount: 31.65,
+    paymentMethod: "現金",
   },
 ];
 
@@ -82,6 +89,7 @@ const elements = {
   date: document.querySelector("#date"),
   type: document.querySelector("#type"),
   category: document.querySelector("#category"),
+  paymentMethod: document.querySelector("#paymentMethod"),
   amount: document.querySelector("#amount"),
   note: document.querySelector("#note"),
   exchangeRate: document.querySelector("#exchangeRate"),
@@ -100,6 +108,8 @@ const elements = {
   dailyAverageLabel: document.querySelector("#dailyAverageLabel"),
   dailyAverage: document.querySelector("#dailyAverage"),
   dailyAverageNote: document.querySelector("#dailyAverageNote"),
+  campusCardBalance: document.querySelector("#campusCardBalance"),
+  campusCardNote: document.querySelector("#campusCardNote"),
   categoryBars: document.querySelector("#categoryBars"),
   transactionRows: document.querySelector("#transactionRows"),
   emptyState: document.querySelector("#emptyState"),
@@ -123,7 +133,7 @@ if (isEditMode) {
     element.hidden = false;
   });
 }
-elements.date.value = new Date().toISOString().slice(0, 10);
+setDefaultFormValues();
 elements.exchangeRate.value = localStorage.getItem(RATE_KEY) || "32.50";
 setRateStatusFromStorage();
 
@@ -152,6 +162,7 @@ if (isEditMode) {
       date: elements.date.value,
       type: elements.type.value,
       category: elements.category.value,
+      paymentMethod: elements.paymentMethod.value,
       note: elements.note.value.trim(),
       amount: Number(elements.amount.value),
     };
@@ -177,11 +188,12 @@ if (isEditMode) {
 
   elements.exportCsv.addEventListener("click", () => {
     const csv = [
-      ["date", "type", "category", "note", "amount"],
+      ["date", "type", "category", "paymentMethod", "note", "amount"],
       ...transactions.map((item) => [
         item.date,
         item.type,
         item.category,
+        item.paymentMethod,
         item.note,
         item.amount,
       ]),
@@ -327,6 +339,9 @@ function normalizeTransactions(items) {
       date: String(item.date || "").slice(0, 10),
       type: item.type === "income" ? "income" : "expense",
       category: String(item.category || "其他"),
+      paymentMethod:
+        normalizePaymentMethod(item.paymentMethod || item.payment || item.method) ||
+        inferPaymentMethod(item),
       note: String(item.note || ""),
       amount: Number(item.amount || 0),
     }))
@@ -348,6 +363,7 @@ function render() {
 
   if (selectedMonth === PRETRIP_FILTER) {
     renderPretripStats();
+    renderCampusCardSummary(transactions);
     renderPretripCategoryBars();
     renderPretripRows();
     return;
@@ -358,6 +374,7 @@ function render() {
     .sort((a, b) => b.date.localeCompare(a.date));
 
   renderStats(filtered);
+  renderCampusCardSummary(transactions);
   renderCategoryBars(filtered);
   renderRows(filtered);
 }
@@ -457,6 +474,7 @@ function renderPretripRows() {
       <td>行前</td>
       <td><span class="type-pill expense">支出</span></td>
       <td>${escapeHtml(item.group)}</td>
+      <td>-</td>
       <td>${escapeHtml(formatPretripNote(item))}</td>
       <td class="amount">${formatPretripUsd(item)}</td>
       <td class="amount">${formatTwdAmount(item.twd)}</td>
@@ -503,6 +521,7 @@ function renderRows(items) {
       <td>${escapeHtml(item.date)}</td>
       <td><span class="type-pill ${item.type}">${item.type === "income" ? "收入" : "支出"}</span></td>
       <td>${escapeHtml(item.category)}</td>
+      <td>${escapeHtml(item.paymentMethod || "-")}</td>
       <td>${escapeHtml(item.note || "-")}</td>
       <td class="amount">${formatUsd(signedAmount)}</td>
       <td class="amount">${formatTwd(signedAmount)}</td>
@@ -525,6 +544,7 @@ function beginEdit(id) {
   elements.date.value = transaction.date;
   elements.type.value = transaction.type;
   elements.category.value = transaction.category;
+  elements.paymentMethod.value = transaction.paymentMethod || inferPaymentMethod(transaction);
   elements.amount.value = transaction.amount;
   elements.note.value = transaction.note;
   elements.saveTransaction.textContent = "儲存修改";
@@ -535,10 +555,32 @@ function beginEdit(id) {
 function resetForm() {
   editingId = "";
   elements.form.reset();
-  elements.date.value = new Date().toISOString().slice(0, 10);
-  elements.type.value = "expense";
+  setDefaultFormValues();
   elements.saveTransaction.textContent = "加入記帳";
   elements.cancelEdit.hidden = true;
+}
+
+function setDefaultFormValues() {
+  elements.date.value = getLocalDateValue();
+  elements.type.value = "expense";
+  elements.paymentMethod.value = "學生證";
+}
+
+function getLocalDateValue(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function renderCampusCardSummary(items) {
+  const spent = items
+    .filter((item) => item.type === "expense" && item.paymentMethod === "學生證")
+    .reduce((total, item) => total + item.amount, 0);
+  const balance = CAMPUS_CARD_STARTING_BALANCE - spent;
+
+  elements.campusCardBalance.textContent = formatUsd(balance);
+  elements.campusCardNote.textContent = `5/11 加值 ${formatUsd(CAMPUS_CARD_STARTING_BALANCE)}，已扣 ${formatUsd(spent)}`;
 }
 
 function ensureCategoryOption(category) {
@@ -549,6 +591,51 @@ function ensureCategoryOption(category) {
   option.textContent = category;
   option.value = category;
   elements.category.append(option);
+}
+
+function normalizePaymentMethod(value) {
+  const method = String(value || "").trim();
+  return PAYMENT_METHODS.includes(method) ? method : "";
+}
+
+function inferPaymentMethod(item) {
+  const text = `${item.paymentMethod || ""} ${item.note || ""} ${item.category || ""}`.toLowerCase();
+
+  if (isKnownCampusCardTransaction(item)) {
+    return "學生證";
+  }
+
+  if (text.includes("學生證") || text.includes("campuscard") || text.includes("campus card")) {
+    return "學生證";
+  }
+
+  if (text.includes("永豐") || text.includes("台灣信用卡")) {
+    return "台灣信用卡";
+  }
+
+  if (text.includes("美國信用卡")) {
+    return "美國信用卡";
+  }
+
+  if (text.includes("cash") || text.includes("現金")) {
+    return "現金";
+  }
+
+  return "現金";
+}
+
+function isKnownCampusCardTransaction(item) {
+  const amount = Number(item.amount || 0);
+  const note = String(item.note || "");
+
+  if (item.date !== "2026-05-13" || item.type === "income") {
+    return false;
+  }
+
+  return (
+    (amount === 6.88 && note.includes("星巴克")) ||
+    (amount === 9 && (note.includes("午餐") || note.includes("三明治")))
+  );
 }
 
 function sumByType(items, type) {

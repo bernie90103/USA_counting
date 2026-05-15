@@ -4,6 +4,7 @@
     "date": "2026-05-13",
     "type": "expense",
     "category": "外食",
+    "paymentMethod": "學生證",
     "note": "星巴克/抹茶星冰樂",
     "amount": 6.88
   },
@@ -12,6 +13,7 @@
     "date": "2026-05-13",
     "type": "expense",
     "category": "外食",
+    "paymentMethod": "學生證",
     "note": "午餐/三明治套餐",
     "amount": 9
   },
@@ -20,6 +22,7 @@
     "date": "2026-05-13",
     "type": "income",
     "category": "學費",
+    "paymentMethod": "現金",
     "note": "另一本書給我現金",
     "amount": 30
   },
@@ -28,6 +31,7 @@
     "date": "2026-05-12",
     "type": "income",
     "category": "學費",
+    "paymentMethod": "現金",
     "note": "1本書",
     "amount": 28.5
   },
@@ -36,6 +40,7 @@
     "date": "2026-05-12",
     "type": "expense",
     "category": "學費",
+    "paymentMethod": "現金",
     "note": "3本書合買",
     "amount": 84.93
   },
@@ -44,6 +49,7 @@
     "date": "2026-05-12",
     "type": "expense",
     "category": "外食",
+    "paymentMethod": "現金",
     "note": "午餐/火雞漢堡",
     "amount": 8
   },
@@ -52,6 +58,7 @@
     "date": "2026-05-10",
     "type": "expense",
     "category": "外食",
+    "paymentMethod": "現金",
     "note": "晚餐",
     "amount": 15.35
   },
@@ -60,6 +67,7 @@
     "date": "2026-05-01",
     "type": "expense",
     "category": "美國電信",
+    "paymentMethod": "台灣信用卡",
     "note": "永豐信用卡",
     "amount": 91.2
   },
@@ -68,6 +76,7 @@
     "date": "2026-05-07",
     "type": "expense",
     "category": "早餐",
+    "paymentMethod": "台灣信用卡",
     "note": "永豐信用卡",
     "amount": 7.8
   },
@@ -76,6 +85,7 @@
     "date": "2026-05-07",
     "type": "expense",
     "category": "超商",
+    "paymentMethod": "現金",
     "note": "cash",
     "amount": 14.75
   },
@@ -84,6 +94,7 @@
     "date": "2026-05-08",
     "type": "expense",
     "category": "Walmart/大賣場",
+    "paymentMethod": "現金",
     "note": "cash",
     "amount": 70.19
   },
@@ -92,6 +103,7 @@
     "date": "2026-05-09",
     "type": "expense",
     "category": "Walmart/大賣場",
+    "paymentMethod": "現金",
     "note": "cash",
     "amount": 31.65
   }

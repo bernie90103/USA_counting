@@ -68,11 +68,15 @@ def load_transactions(json_path=None, debug=False):
     if json_path:
         return load_exported_json(json_path), str(json_path)
 
+    browser_transactions = find_latest_transactions(debug=debug)
+    if browser_transactions:
+        return browser_transactions, "browser localStorage"
+
     export = find_latest_export()
     if export:
         return load_exported_json(export), str(export)
 
-    return find_latest_transactions(debug=debug), "browser localStorage"
+    return [], "browser localStorage"
 
 
 def load_exported_json(path):

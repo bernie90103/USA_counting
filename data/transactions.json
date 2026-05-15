@@ -1,5 +1,23 @@
 [
   {
+    "id": "64d8de0a-4e91-4735-a326-31ad9f044b0d",
+    "date": "2026-05-14",
+    "type": "expense",
+    "category": "Publix超市",
+    "paymentMethod": "美國信用卡",
+    "note": "豬肉/紅茶/一 堆蛋",
+    "amount": 15.49
+  },
+  {
+    "id": "e2b5a908-6692-4d02-828d-713042b01111",
+    "date": "2026-05-14",
+    "type": "expense",
+    "category": "外食",
+    "paymentMethod": "美國信用卡",
+    "note": "珍珠奶茶",
+    "amount": 6.7
+  },
+  {
     "id": "e99feadc-7083-4ed9-bdb8-7e9fb35367bd",
     "date": "2026-05-13",
     "type": "expense",
@@ -31,7 +49,7 @@
     "date": "2026-05-12",
     "type": "income",
     "category": "學費",
-    "paymentMethod": "現金",
+    "paymentMethod": "美國信用卡",
     "note": "1本書",
     "amount": 28.5
   },
@@ -40,7 +58,7 @@
     "date": "2026-05-12",
     "type": "expense",
     "category": "學費",
-    "paymentMethod": "現金",
+    "paymentMethod": "台灣信用卡",
     "note": "3本書合買",
     "amount": 84.93
   },

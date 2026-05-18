@@ -1,5 +1,32 @@
 [
   {
+    "id": "d5ef3ce7-173c-4a70-ab87-1c2058bdac7c",
+    "date": "2026-05-18",
+    "type": "expense",
+    "category": "外食",
+    "paymentMethod": "學生證",
+    "note": "Starbucks HSC",
+    "amount": 7.43
+  },
+  {
+    "id": "1c89c4ad-180a-4eb3-a7c2-4edfc5bd5372",
+    "date": "2026-05-18",
+    "type": "expense",
+    "category": "外食",
+    "paymentMethod": "學生證",
+    "note": "午餐",
+    "amount": 13.19
+  },
+  {
+    "id": "368d49d5-6fd7-44ca-a0da-1a3b4abf362d",
+    "date": "2026-05-17",
+    "type": "income",
+    "category": "超市",
+    "paymentMethod": "現金",
+    "note": "costco",
+    "amount": 10
+  },
+  {
     "id": "c0110050-8109-4a16-835a-f0cbf5a71e2e",
     "date": "2026-05-17",
     "type": "expense",

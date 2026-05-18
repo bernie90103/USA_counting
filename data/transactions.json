@@ -1,5 +1,32 @@
 [
   {
+    "id": "c0110050-8109-4a16-835a-f0cbf5a71e2e",
+    "date": "2026-05-17",
+    "type": "expense",
+    "category": "超市",
+    "paymentMethod": "美國信用卡",
+    "note": "ALDI",
+    "amount": 2.4
+  },
+  {
+    "id": "4140c884-faad-4b1b-b2d9-61d931687505",
+    "date": "2026-05-17",
+    "type": "expense",
+    "category": "超市",
+    "paymentMethod": "美國信用卡",
+    "note": "Costco",
+    "amount": 85.01
+  },
+  {
+    "id": "c56ee0a9-6e77-49f8-bec4-3d5e53794adf",
+    "date": "2026-05-17",
+    "type": "expense",
+    "category": "超市",
+    "paymentMethod": "美國信用卡",
+    "note": "Trader Joe's",
+    "amount": 9.52
+  },
+  {
     "id": "9ef11fee-7932-4648-b973-cc53a1b9dd66",
     "date": "2026-05-16",
     "type": "expense",

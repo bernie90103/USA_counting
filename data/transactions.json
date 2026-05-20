@@ -1,5 +1,23 @@
 [
   {
+    "id": "054e31b8-5bcb-4f1d-a9f5-6e33e7cda475",
+    "date": "2026-05-19",
+    "type": "expense",
+    "category": "交通",
+    "paymentMethod": "美國信用卡",
+    "note": "車費",
+    "amount": 3.5
+  },
+  {
+    "id": "641992b9-8fc5-4b60-a207-c538d6943a05",
+    "date": "2026-05-19",
+    "type": "expense",
+    "category": "房租",
+    "paymentMethod": "美國信用卡",
+    "note": "珍奶",
+    "amount": 7.37
+  },
+  {
     "id": "d5ef3ce7-173c-4a70-ab87-1c2058bdac7c",
     "date": "2026-05-18",
     "type": "expense",

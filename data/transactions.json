@@ -1,5 +1,23 @@
 [
   {
+    "id": "d0cfff1a-f614-42c0-a7e8-f129d3d6fa21",
+    "date": "2026-05-20",
+    "type": "expense",
+    "category": "外食",
+    "paymentMethod": "學生證",
+    "note": "Starbucks草莓星冰樂",
+    "amount": 6.88
+  },
+  {
+    "id": "89dd991f-417a-4753-8f4a-6673991f4969",
+    "date": "2026-05-20",
+    "type": "expense",
+    "category": "外食",
+    "paymentMethod": "學生證",
+    "note": "午餐",
+    "amount": 10.99
+  },
+  {
     "id": "054e31b8-5bcb-4f1d-a9f5-6e33e7cda475",
     "date": "2026-05-19",
     "type": "expense",

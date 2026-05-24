@@ -1,5 +1,14 @@
 [
   {
+    "id": "728c9810-b357-427a-b1db-ab00fa8366e3",
+    "date": "2026-05-24",
+    "type": "expense",
+    "category": "Walmart/大賣場",
+    "paymentMethod": "美國信用卡",
+    "note": "蛋白粉/雞蛋",
+    "amount": 34.32
+  },
+  {
     "id": "d0cfff1a-f614-42c0-a7e8-f129d3d6fa21",
     "date": "2026-05-20",
     "type": "expense",

@@ -1,5 +1,14 @@
 [
   {
+    "id": "5d816746-b276-43ba-8379-95fe0930f5d4",
+    "date": "2026-05-24",
+    "type": "expense",
+    "category": "外食",
+    "paymentMethod": "美國信用卡",
+    "note": "Canes漢堡/超好吃",
+    "amount": 11.4
+  },
+  {
     "id": "728c9810-b357-427a-b1db-ab00fa8366e3",
     "date": "2026-05-24",
     "type": "expense",

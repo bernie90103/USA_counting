@@ -1,5 +1,23 @@
 [
   {
+    "id": "c979a03b-9ecd-470d-811a-90b31684a1c3",
+    "date": "2026-05-29",
+    "type": "expense",
+    "category": "外食",
+    "paymentMethod": "學生證",
+    "note": "Starbucks HSC Jane",
+    "amount": 7.1
+  },
+  {
+    "id": "3e60f1ff-8049-4a2e-9619-98a583582620",
+    "date": "2026-05-29",
+    "type": "expense",
+    "category": "外食",
+    "paymentMethod": "學生證",
+    "note": "Starbucks HSC",
+    "amount": 7.43
+  },
+  {
     "id": "6b871a73-aa6b-4ccd-ba17-34f09a5ca8dc",
     "date": "2026-05-27",
     "type": "expense",

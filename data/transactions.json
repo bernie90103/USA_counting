@@ -1,5 +1,32 @@
 [
   {
+    "id": "2286afb3-cb42-44b2-b4a4-4ff8f4b6c883",
+    "date": "2026-05-30",
+    "type": "expense",
+    "category": "Walmart/大賣場",
+    "paymentMethod": "美國信用卡",
+    "note": "吃的",
+    "amount": 28.13
+  },
+  {
+    "id": "4b87e7c8-ac10-4cca-869b-a4a70b37216a",
+    "date": "2026-05-30",
+    "type": "expense",
+    "category": "超市",
+    "paymentMethod": "美國信用卡",
+    "note": "Hometown market",
+    "amount": 7.4
+  },
+  {
+    "id": "5bbca93e-ef17-4b6e-aca4-71a8f7cf08d3",
+    "date": "2026-05-29",
+    "type": "expense",
+    "category": "外食",
+    "paymentMethod": "學生證",
+    "note": "午餐/便當",
+    "amount": 10.99
+  },
+  {
     "id": "c979a03b-9ecd-470d-811a-90b31684a1c3",
     "date": "2026-05-29",
     "type": "expense",

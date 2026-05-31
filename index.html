@@ -4,7 +4,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>美國生活記帳</title>
-    <link rel="stylesheet" href="./styles.css?v=20260514-1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css?v=20260530-3" />
   </head>
   <body>
     <div class="page-shell">
@@ -85,29 +91,30 @@
               </label>
             </div>
 
-            <label>
-              分類
-              <select id="category" required>
-                <option>房租</option>
-                <option>超市</option>
-                <option>Publix超市</option>
-                <option>Trader Joe's</option>
-                <option>Target</option>
-                <option>Hometown market</option>
-                <option>ALDI</option>
-                <option>Dollar Tree</option>
-                <option>好市多</option>
-                <option>Walmart/大賣場</option>
-                <option>外食</option>
-                <option>星巴克</option>
-                <option>交通</option>
-                <option>學費</option>
-                <option>醫療</option>
-                <option>娛樂</option>
-                <option>收入</option>
-                <option>其他</option>
-              </select>
-            </label>
+            <div class="split">
+              <label>
+                分類
+                <select id="category" required>
+                  <option>房租</option>
+                  <option>超市</option>
+                  <option>學餐</option>
+                  <option>外食</option>
+                  <option>交通</option>
+                  <option>學費</option>
+                  <option>醫療</option>
+                  <option>娛樂</option>
+                  <option>收入</option>
+                  <option>其他</option>
+                </select>
+              </label>
+              <label>
+                店家
+                <select id="merchant">
+                  <option value="">未指定</option>
+                  <option>其他</option>
+                </select>
+              </label>
+            </div>
 
             <label>
               付款方式
@@ -134,11 +141,20 @@
             <div class="panel-heading row-heading">
               <div>
                 <p class="eyebrow">Overview</p>
-                <h2>分類支出</h2>
+                <h2>支出分析</h2>
               </div>
               <select id="monthFilter" aria-label="月份篩選"></select>
             </div>
-            <div id="categoryBars" class="category-bars" aria-live="polite"></div>
+            <div class="analysis-grid">
+              <section>
+                <h3>大分類支出</h3>
+                <div id="categoryBars" class="category-bars" aria-live="polite"></div>
+              </section>
+              <section>
+                <h3>店家支出</h3>
+                <div id="merchantBars" class="category-bars" aria-live="polite"></div>
+              </section>
+            </div>
           </section>
         </section>
 
@@ -169,6 +185,7 @@
                   <th>日期</th>
                   <th>類型</th>
                   <th>分類</th>
+                  <th>店家</th>
                   <th>付款方式</th>
                   <th>說明</th>
                   <th>USD</th>
@@ -196,6 +213,6 @@
       </div>
     </template>
 
-    <script src="./app.js?v=20260514-1"></script>
+    <script src="./app.js?v=20260530-2"></script>
   </body>
 </html>

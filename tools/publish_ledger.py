@@ -303,6 +303,7 @@ def normalize_transactions(items):
                 "date": date,
                 "type": "income" if item.get("type") == "income" else "expense",
                 "category": str(item.get("category") or "其他"),
+                "merchant": str(item.get("merchant") or ""),
                 "paymentMethod": normalize_payment_method(item),
                 "note": str(item.get("note") or ""),
                 "amount": int(amount) if amount.is_integer() else amount,

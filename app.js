@@ -4,6 +4,74 @@ const RATE_UPDATED_KEY = "us-ledger-exchange-rate-updated";
 const LIVE_RATE_URL = "https://fxapi.app/api/USD/TWD.json";
 const PRETRIP_FILTER = "pretrip";
 const CAMPUS_CARD_STARTING_BALANCE = 500;
+const CATEGORIES = ["房租", "超市", "學餐", "外食", "交通", "學費", "醫療", "娛樂", "收入", "其他"];
+const MERCHANTS = [
+  "Publix",
+  "Trader Joe's",
+  "Target",
+  "Hometown market",
+  "ALDI",
+  "Dollar Tree",
+  "好市多",
+  "Walmart",
+  "The Commons on the Green",
+  "Chick-fil-A",
+  "Starbucks HSC",
+  "Mein Bowl",
+  "Panera Bread",
+  "Vocelli Pizza",
+  "The Den by Denny's",
+  "Moe's Southwest Grill",
+  "WOW American Eats",
+  "Einstein Bros. Bagels",
+  "Blenz",
+  "WOW Bao",
+  "The Grid",
+  "Magic City Eats",
+  "校園餐車",
+  "C-Store",
+  "UAB 校內餐飲",
+  "星巴克",
+  "Canes",
+  "珍珠奶茶",
+  "一般外食",
+  "其他",
+];
+const SCHOOL_MEAL_MERCHANTS = [
+  "The Commons on the Green",
+  "Chick-fil-A",
+  "Starbucks HSC",
+  "Mein Bowl",
+  "Panera Bread",
+  "Vocelli Pizza",
+  "The Den by Denny's",
+  "Moe's Southwest Grill",
+  "WOW American Eats",
+  "Einstein Bros. Bagels",
+  "Blenz",
+  "WOW Bao",
+  "The Grid",
+  "Magic City Eats",
+  "校園餐車",
+  "C-Store",
+  "UAB 校內餐飲",
+];
+const GROCERY_MERCHANTS = [
+  "Publix",
+  "Trader Joe's",
+  "Target",
+  "Hometown market",
+  "ALDI",
+  "Dollar Tree",
+  "好市多",
+  "Walmart",
+];
+const DINING_MERCHANTS = ["星巴克", "Canes", "珍珠奶茶", "一般外食"];
+const CATEGORY_MERCHANTS = {
+  超市: GROCERY_MERCHANTS,
+  學餐: SCHOOL_MEAL_MERCHANTS,
+  外食: DINING_MERCHANTS,
+};
 const PAYMENT_METHODS = ["台灣信用卡", "美國信用卡", "學生證", "現金"];
 const isEditMode = isLocalEditingContext();
 
@@ -41,7 +109,8 @@ const sampleTransactions = [
     id: "工作表1-2026-05-01-1",
     date: "2026-05-01",
     type: "expense",
-    category: "美國電信",
+    category: "其他",
+    merchant: "",
     note: "永豐信用卡",
     amount: 91.2,
     paymentMethod: "台灣信用卡",
@@ -50,7 +119,8 @@ const sampleTransactions = [
     id: "工作表1-2026-05-07-2",
     date: "2026-05-07",
     type: "expense",
-    category: "早餐",
+    category: "外食",
+    merchant: "",
     note: "永豐信用卡",
     amount: 7.8,
     paymentMethod: "台灣信用卡",
@@ -59,7 +129,8 @@ const sampleTransactions = [
     id: "工作表1-2026-05-07-3",
     date: "2026-05-07",
     type: "expense",
-    category: "超商",
+    category: "其他",
+    merchant: "",
     note: "cash",
     amount: 14.75,
     paymentMethod: "現金",
@@ -68,7 +139,8 @@ const sampleTransactions = [
     id: "工作表1-2026-05-08-4",
     date: "2026-05-08",
     type: "expense",
-    category: "Walmart/大賣場",
+    category: "超市",
+    merchant: "Walmart",
     note: "cash",
     amount: 70.19,
     paymentMethod: "現金",
@@ -77,7 +149,8 @@ const sampleTransactions = [
     id: "工作表1-2026-05-09-5",
     date: "2026-05-09",
     type: "expense",
-    category: "Walmart/大賣場",
+    category: "超市",
+    merchant: "Walmart",
     note: "cash",
     amount: 31.65,
     paymentMethod: "現金",
@@ -89,6 +162,7 @@ const elements = {
   date: document.querySelector("#date"),
   type: document.querySelector("#type"),
   category: document.querySelector("#category"),
+  merchant: document.querySelector("#merchant"),
   paymentMethod: document.querySelector("#paymentMethod"),
   amount: document.querySelector("#amount"),
   note: document.querySelector("#note"),
@@ -111,6 +185,7 @@ const elements = {
   campusCardBalance: document.querySelector("#campusCardBalance"),
   campusCardNote: document.querySelector("#campusCardNote"),
   categoryBars: document.querySelector("#categoryBars"),
+  merchantBars: document.querySelector("#merchantBars"),
   transactionRows: document.querySelector("#transactionRows"),
   emptyState: document.querySelector("#emptyState"),
   exportJson: document.querySelector("#exportJson"),
@@ -154,6 +229,10 @@ elements.monthFilter.addEventListener("change", (event) => {
 });
 
 if (isEditMode) {
+  elements.category.addEventListener("change", () => {
+    renderMerchantOptions(elements.category.value);
+  });
+
   elements.form.addEventListener("submit", (event) => {
     event.preventDefault();
 
@@ -162,6 +241,7 @@ if (isEditMode) {
       date: elements.date.value,
       type: elements.type.value,
       category: elements.category.value,
+      merchant: elements.merchant.value,
       paymentMethod: elements.paymentMethod.value,
       note: elements.note.value.trim(),
       amount: Number(elements.amount.value),
@@ -188,11 +268,12 @@ if (isEditMode) {
 
   elements.exportCsv.addEventListener("click", () => {
     const csv = [
-      ["date", "type", "category", "paymentMethod", "note", "amount"],
+      ["date", "type", "category", "merchant", "paymentMethod", "note", "amount"],
       ...transactions.map((item) => [
         item.date,
         item.type,
         item.category,
+        item.merchant || "",
         item.paymentMethod,
         item.note,
         item.amount,
@@ -334,18 +415,114 @@ function normalizeTransactions(items) {
   if (!Array.isArray(items)) return [];
 
   return items
-    .map((item) => ({
-      id: item.id || makeId(),
-      date: String(item.date || "").slice(0, 10),
-      type: item.type === "income" ? "income" : "expense",
-      category: String(item.category || "其他"),
-      paymentMethod:
-        normalizePaymentMethod(item.paymentMethod || item.payment || item.method) ||
-        inferPaymentMethod(item),
-      note: String(item.note || ""),
-      amount: Number(item.amount || 0),
-    }))
+    .map((item) => {
+      const normalizedCategory = normalizeCategoryAndMerchant(item);
+
+      return {
+        id: item.id || makeId(),
+        date: String(item.date || "").slice(0, 10),
+        type: item.type === "income" ? "income" : "expense",
+        category: normalizedCategory.category,
+        merchant: normalizedCategory.merchant,
+        paymentMethod:
+          normalizePaymentMethod(item.paymentMethod || item.payment || item.method) ||
+          inferPaymentMethod(item),
+        note: String(item.note || ""),
+        amount: Number(item.amount || 0),
+      };
+    })
     .filter((item) => item.date && item.amount > 0);
+}
+
+function normalizeCategoryAndMerchant(item) {
+  const rawCategory = String(item.category || "").trim();
+  const rawMerchant = String(item.merchant || "").trim();
+  const note = String(item.note || "");
+  const inferredMerchant =
+    normalizeMerchant(rawMerchant) || inferMerchant(rawCategory, note) || inferGenericSchoolMeal(item);
+  const detectedMerchant =
+    inferredMerchant === "星巴克" && isCampusCardPayment(item) ? "Starbucks HSC" : inferredMerchant;
+  const schoolMealCategory = SCHOOL_MEAL_MERCHANTS.includes(detectedMerchant) ? "學餐" : "";
+  const storeCategory = GROCERY_MERCHANTS.includes(detectedMerchant) ? "超市" : "";
+  const categoryFromMerchant =
+    schoolMealCategory || (detectedMerchant === "星巴克" ? "外食" : storeCategory);
+  const category = categoryFromMerchant || normalizeCategory(rawCategory, item.type);
+
+  return {
+    category,
+    merchant: detectedMerchant,
+  };
+}
+
+function normalizeCategory(value, type) {
+  const category = String(value || "").trim();
+
+  if (CATEGORIES.includes(category)) return category;
+
+  if (category === "Walmart/大賣場" || category === "Publix超市") return "超市";
+  if (category === "早餐" || category === "星巴克") return "外食";
+
+  return type === "income" ? "收入" : "其他";
+}
+
+function normalizeMerchant(value) {
+  const merchant = String(value || "").trim();
+  if (!merchant) return "";
+  if (MERCHANTS.includes(merchant)) return merchant;
+
+  return inferMerchant(merchant, "");
+}
+
+function inferMerchant(category, note) {
+  const text = `${category || ""} ${note || ""}`.toLowerCase();
+
+  if (text.includes("commons") || text.includes("the commons")) return "The Commons on the Green";
+  if (text.includes("chick-fil-a") || text.includes("chick fil a")) return "Chick-fil-A";
+  if (text.includes("starbucks hsc") || text.includes("星巴克 hsc")) return "Starbucks HSC";
+  if (text.includes("mein bowl")) return "Mein Bowl";
+  if (text.includes("panera")) return "Panera Bread";
+  if (text.includes("vocelli")) return "Vocelli Pizza";
+  if (text.includes("denny") || text.includes("the den")) return "The Den by Denny's";
+  if (text.includes("moe's") || text.includes("moes southwest")) return "Moe's Southwest Grill";
+  if (text.includes("wow american")) return "WOW American Eats";
+  if (text.includes("einstein")) return "Einstein Bros. Bagels";
+  if (text.includes("blenz")) return "Blenz";
+  if (text.includes("wow bao")) return "WOW Bao";
+  if (text.includes("the grid")) return "The Grid";
+  if (text.includes("magic city eats")) return "Magic City Eats";
+  if (text.includes("校園餐車") || text.includes("餐車") || text.includes("food truck")) return "校園餐車";
+  if (text.includes("c-store") || text.includes("c store")) return "C-Store";
+  if (text.includes("uab") || text.includes("學餐") || text.includes("校內餐飲")) return "UAB 校內餐飲";
+  if (text.includes("starbucks") || text.includes("星巴克")) return "星巴克";
+  if (text.includes("canes")) return "Canes";
+  if (text.includes("珍珠奶茶") || text.includes("珍奶")) return "珍珠奶茶";
+  if (text.includes("costco") || text.includes("好市多")) return "好市多";
+  if (text.includes("trader joe")) return "Trader Joe's";
+  if (text.includes("dollar tree")) return "Dollar Tree";
+  if (text.includes("hometown market")) return "Hometown market";
+  if (text.includes("publix")) return "Publix";
+  if (text.includes("walmart")) return "Walmart";
+  if (text.includes("target")) return "Target";
+  if (text.includes("aldi")) return "ALDI";
+
+  return "";
+}
+
+function inferGenericSchoolMeal(item) {
+  const text = `${item.category || ""} ${item.note || ""}`.toLowerCase();
+  const looksLikeSchoolMeal =
+    text.includes("午餐") ||
+    text.includes("晚餐") ||
+    text.includes("三明治") ||
+    text.includes("便當") ||
+    text.includes("學餐");
+
+  return isCampusCardPayment(item) && looksLikeSchoolMeal ? "UAB 校內餐飲" : "";
+}
+
+function isCampusCardPayment(item) {
+  const paymentMethod = String(item.paymentMethod || item.payment || item.method || "");
+  return paymentMethod === "學生證";
 }
 
 function makeId() {
@@ -365,6 +542,7 @@ function render() {
     renderPretripStats();
     renderCampusCardSummary(transactions);
     renderPretripCategoryBars();
+    renderEmptyMerchantBars("行前花費沒有店家資料。");
     renderPretripRows();
     return;
   }
@@ -376,6 +554,7 @@ function render() {
   renderStats(filtered);
   renderCampusCardSummary(transactions);
   renderCategoryBars(filtered);
+  renderMerchantBars(filtered);
   renderRows(filtered);
 }
 
@@ -475,6 +654,7 @@ function renderPretripRows() {
       <td><span class="type-pill expense">支出</span></td>
       <td>${escapeHtml(item.group)}</td>
       <td>-</td>
+      <td>-</td>
       <td>${escapeHtml(formatPretripNote(item))}</td>
       <td class="amount">${formatPretripUsd(item)}</td>
       <td class="amount">${formatTwdAmount(item.twd)}</td>
@@ -485,27 +665,43 @@ function renderPretripRows() {
 }
 
 function renderCategoryBars(items) {
-  const expenses = items.filter((item) => item.type === "expense");
-  const totals = expenses.reduce((acc, item) => {
-    acc[item.category] = (acc[item.category] || 0) + item.amount;
-    return acc;
-  }, {});
+  renderBars(elements.categoryBars, getExpenseTotals(items, "category"), "這個月份沒有支出資料。");
+}
+
+function renderMerchantBars(items) {
+  renderBars(elements.merchantBars, getExpenseTotals(items, "merchant"), "這個月份沒有店家資料。");
+}
+
+function renderEmptyMerchantBars(message) {
+  elements.merchantBars.innerHTML = `<p class="empty-state">${escapeHtml(message)}</p>`;
+}
+
+function getExpenseTotals(items, field) {
+  return items
+    .filter((item) => item.type === "expense" && item[field])
+    .reduce((acc, item) => {
+      acc[item[field]] = (acc[item[field]] || 0) + item.amount;
+      return acc;
+    }, {});
+}
+
+function renderBars(container, totals, emptyMessage) {
   const entries = Object.entries(totals).sort((a, b) => b[1] - a[1]);
   const max = Math.max(...entries.map((entry) => entry[1]), 0);
 
-  elements.categoryBars.innerHTML = "";
+  container.innerHTML = "";
 
   if (!entries.length) {
-    elements.categoryBars.innerHTML = '<p class="empty-state">這個月份沒有支出資料。</p>';
+    container.innerHTML = `<p class="empty-state">${escapeHtml(emptyMessage)}</p>`;
     return;
   }
 
-  for (const [category, amount] of entries) {
+  for (const [label, amount] of entries) {
     const node = elements.barTemplate.content.cloneNode(true);
-    node.querySelector(".category-name").textContent = category;
+    node.querySelector(".category-name").textContent = label;
     node.querySelector(".category-amount").textContent = formatUsd(amount);
     node.querySelector(".bar-fill").style.width = `${Math.max((amount / max) * 100, 4)}%`;
-    elements.categoryBars.append(node);
+    container.append(node);
   }
 }
 
@@ -521,6 +717,7 @@ function renderRows(items) {
       <td>${escapeHtml(item.date)}</td>
       <td><span class="type-pill ${item.type}">${item.type === "income" ? "收入" : "支出"}</span></td>
       <td>${escapeHtml(item.category)}</td>
+      <td>${escapeHtml(item.merchant || "-")}</td>
       <td>${escapeHtml(item.paymentMethod || "-")}</td>
       <td>${escapeHtml(item.note || "-")}</td>
       <td class="amount">${formatUsd(signedAmount)}</td>
@@ -544,6 +741,8 @@ function beginEdit(id) {
   elements.date.value = transaction.date;
   elements.type.value = transaction.type;
   elements.category.value = transaction.category;
+  renderMerchantOptions(transaction.category, transaction.merchant);
+  elements.merchant.value = transaction.merchant || "";
   elements.paymentMethod.value = transaction.paymentMethod || inferPaymentMethod(transaction);
   elements.amount.value = transaction.amount;
   elements.note.value = transaction.note;
@@ -563,6 +762,8 @@ function resetForm() {
 function setDefaultFormValues() {
   elements.date.value = getLocalDateValue();
   elements.type.value = "expense";
+  elements.category.value = "超市";
+  renderMerchantOptions(elements.category.value);
   elements.paymentMethod.value = "學生證";
 }
 
@@ -591,6 +792,52 @@ function ensureCategoryOption(category) {
   option.textContent = category;
   option.value = category;
   elements.category.append(option);
+}
+
+function ensureMerchantOption(merchant) {
+  if (!merchant) return;
+
+  const exists = [...elements.merchant.options].some((option) => option.value === merchant);
+  if (exists) return;
+
+  const option = document.createElement("option");
+  option.textContent = merchant;
+  option.value = merchant;
+  elements.merchant.append(option);
+}
+
+function renderMerchantOptions(category, selectedMerchant = "") {
+  const merchants = getMerchantsForCategory(category);
+  elements.merchant.innerHTML = "";
+  appendMerchantOption("", "未指定");
+
+  for (const merchant of merchants) {
+    appendMerchantOption(merchant, merchant);
+  }
+
+  if (selectedMerchant && !merchants.includes(selectedMerchant)) {
+    appendMerchantOption(selectedMerchant, selectedMerchant);
+  }
+
+  appendMerchantOption("其他", "其他");
+  elements.merchant.value = selectedMerchant && hasMerchantOption(selectedMerchant) ? selectedMerchant : "";
+}
+
+function getMerchantsForCategory(category) {
+  return CATEGORY_MERCHANTS[category] || [];
+}
+
+function appendMerchantOption(value, label) {
+  if (hasMerchantOption(value)) return;
+
+  const option = document.createElement("option");
+  option.value = value;
+  option.textContent = label;
+  elements.merchant.append(option);
+}
+
+function hasMerchantOption(value) {
+  return [...elements.merchant.options].some((option) => option.value === value);
 }
 
 function normalizePaymentMethod(value) {

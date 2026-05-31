@@ -1,9 +1,40 @@
 [
   {
+    "id": "4138ff36-5f4c-4607-b035-a978d82f9e47",
+    "date": "2026-05-30",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Hometown market",
+    "paymentMethod": "美國信用卡",
+    "note": "杏包菇",
+    "amount": 4.19
+  },
+  {
+    "id": "64fda937-d093-44d9-986e-54d4fb98e14c",
+    "date": "2026-05-30",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Target",
+    "paymentMethod": "美國信用卡",
+    "note": "檯燈/保養品",
+    "amount": 46.24
+  },
+  {
+    "id": "8502d0b9-0c9a-4ac1-9d4e-69a8261e246a",
+    "date": "2026-05-30",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Trader Joe's",
+    "paymentMethod": "美國信用卡",
+    "note": "日常用品/冷凍食品",
+    "amount": 42.49
+  },
+  {
     "id": "2286afb3-cb42-44b2-b4a4-4ff8f4b6c883",
     "date": "2026-05-30",
     "type": "expense",
-    "category": "Walmart/大賣場",
+    "category": "超市",
+    "merchant": "Walmart",
     "paymentMethod": "美國信用卡",
     "note": "吃的",
     "amount": 28.13
@@ -13,6 +44,7 @@
     "date": "2026-05-30",
     "type": "expense",
     "category": "超市",
+    "merchant": "Hometown market",
     "paymentMethod": "美國信用卡",
     "note": "Hometown market",
     "amount": 7.4
@@ -21,7 +53,8 @@
     "id": "5bbca93e-ef17-4b6e-aca4-71a8f7cf08d3",
     "date": "2026-05-29",
     "type": "expense",
-    "category": "外食",
+    "category": "學餐",
+    "merchant": "Mein Bowl",
     "paymentMethod": "學生證",
     "note": "午餐/便當",
     "amount": 10.99
@@ -30,7 +63,8 @@
     "id": "c979a03b-9ecd-470d-811a-90b31684a1c3",
     "date": "2026-05-29",
     "type": "expense",
-    "category": "外食",
+    "category": "學餐",
+    "merchant": "Starbucks HSC",
     "paymentMethod": "學生證",
     "note": "Starbucks HSC Jane",
     "amount": 7.1
@@ -39,7 +73,8 @@
     "id": "3e60f1ff-8049-4a2e-9619-98a583582620",
     "date": "2026-05-29",
     "type": "expense",
-    "category": "外食",
+    "category": "學餐",
+    "merchant": "Starbucks HSC",
     "paymentMethod": "學生證",
     "note": "Starbucks HSC",
     "amount": 7.43
@@ -48,7 +83,8 @@
     "id": "6b871a73-aa6b-4ccd-ba17-34f09a5ca8dc",
     "date": "2026-05-27",
     "type": "expense",
-    "category": "外食",
+    "category": "學餐",
+    "merchant": "Starbucks HSC",
     "paymentMethod": "學生證",
     "note": "Starbucks HSC",
     "amount": 7.43
@@ -58,6 +94,7 @@
     "date": "2026-05-24",
     "type": "expense",
     "category": "外食",
+    "merchant": "Canes",
     "paymentMethod": "美國信用卡",
     "note": "Canes漢堡/超好吃",
     "amount": 11.4
@@ -66,7 +103,8 @@
     "id": "728c9810-b357-427a-b1db-ab00fa8366e3",
     "date": "2026-05-24",
     "type": "expense",
-    "category": "Walmart/大賣場",
+    "category": "超市",
+    "merchant": "Walmart",
     "paymentMethod": "美國信用卡",
     "note": "蛋白粉/雞蛋",
     "amount": 34.32
@@ -75,7 +113,8 @@
     "id": "d0cfff1a-f614-42c0-a7e8-f129d3d6fa21",
     "date": "2026-05-20",
     "type": "expense",
-    "category": "外食",
+    "category": "學餐",
+    "merchant": "Starbucks HSC",
     "paymentMethod": "學生證",
     "note": "Starbucks草莓星冰樂",
     "amount": 6.88
@@ -84,7 +123,8 @@
     "id": "89dd991f-417a-4753-8f4a-6673991f4969",
     "date": "2026-05-20",
     "type": "expense",
-    "category": "外食",
+    "category": "學餐",
+    "merchant": "UAB 校內餐飲",
     "paymentMethod": "學生證",
     "note": "午餐",
     "amount": 10.99
@@ -94,6 +134,7 @@
     "date": "2026-05-19",
     "type": "expense",
     "category": "交通",
+    "merchant": "",
     "paymentMethod": "美國信用卡",
     "note": "車費",
     "amount": 3.5
@@ -102,7 +143,8 @@
     "id": "641992b9-8fc5-4b60-a207-c538d6943a05",
     "date": "2026-05-19",
     "type": "expense",
-    "category": "房租",
+    "category": "外食",
+    "merchant": "珍珠奶茶",
     "paymentMethod": "美國信用卡",
     "note": "珍奶",
     "amount": 7.37
@@ -111,7 +153,8 @@
     "id": "d5ef3ce7-173c-4a70-ab87-1c2058bdac7c",
     "date": "2026-05-18",
     "type": "expense",
-    "category": "外食",
+    "category": "學餐",
+    "merchant": "Starbucks HSC",
     "paymentMethod": "學生證",
     "note": "Starbucks HSC",
     "amount": 7.43
@@ -120,7 +163,8 @@
     "id": "1c89c4ad-180a-4eb3-a7c2-4edfc5bd5372",
     "date": "2026-05-18",
     "type": "expense",
-    "category": "外食",
+    "category": "學餐",
+    "merchant": "UAB 校內餐飲",
     "paymentMethod": "學生證",
     "note": "午餐",
     "amount": 13.19
@@ -130,6 +174,7 @@
     "date": "2026-05-17",
     "type": "income",
     "category": "超市",
+    "merchant": "好市多",
     "paymentMethod": "現金",
     "note": "costco",
     "amount": 10
@@ -139,6 +184,7 @@
     "date": "2026-05-17",
     "type": "expense",
     "category": "超市",
+    "merchant": "ALDI",
     "paymentMethod": "美國信用卡",
     "note": "ALDI",
     "amount": 2.4
@@ -148,6 +194,7 @@
     "date": "2026-05-17",
     "type": "expense",
     "category": "超市",
+    "merchant": "好市多",
     "paymentMethod": "美國信用卡",
     "note": "Costco",
     "amount": 85.01
@@ -157,6 +204,7 @@
     "date": "2026-05-17",
     "type": "expense",
     "category": "超市",
+    "merchant": "Trader Joe's",
     "paymentMethod": "美國信用卡",
     "note": "Trader Joe's",
     "amount": 9.52
@@ -166,6 +214,7 @@
     "date": "2026-05-16",
     "type": "expense",
     "category": "超市",
+    "merchant": "Dollar Tree",
     "paymentMethod": "美國信用卡",
     "note": "DOLLAR Tree/文具",
     "amount": 10.06
@@ -175,6 +224,7 @@
     "date": "2026-05-16",
     "type": "expense",
     "category": "超市",
+    "merchant": "",
     "paymentMethod": "美國信用卡",
     "note": "東方市場",
     "amount": 7.54
@@ -184,6 +234,7 @@
     "date": "2026-05-15",
     "type": "expense",
     "category": "外食",
+    "merchant": "",
     "paymentMethod": "現金",
     "note": "雞胸",
     "amount": 6
@@ -192,7 +243,8 @@
     "id": "d1cee708-97e6-40c3-a110-9fb4eb9ddf8c",
     "date": "2026-05-15",
     "type": "expense",
-    "category": "Walmart/大賣場",
+    "category": "超市",
+    "merchant": "Walmart",
     "paymentMethod": "現金",
     "note": "日常用品/食品",
     "amount": 24.21
@@ -201,7 +253,8 @@
     "id": "64d8de0a-4e91-4735-a326-31ad9f044b0d",
     "date": "2026-05-14",
     "type": "expense",
-    "category": "Publix超市",
+    "category": "超市",
+    "merchant": "Publix",
     "paymentMethod": "美國信用卡",
     "note": "豬肉/紅茶/一 堆蛋",
     "amount": 15.49
@@ -211,6 +264,7 @@
     "date": "2026-05-14",
     "type": "expense",
     "category": "外食",
+    "merchant": "珍珠奶茶",
     "paymentMethod": "美國信用卡",
     "note": "珍珠奶茶",
     "amount": 6.7
@@ -219,7 +273,8 @@
     "id": "e99feadc-7083-4ed9-bdb8-7e9fb35367bd",
     "date": "2026-05-13",
     "type": "expense",
-    "category": "外食",
+    "category": "學餐",
+    "merchant": "Starbucks HSC",
     "paymentMethod": "學生證",
     "note": "星巴克/抹茶星冰樂",
     "amount": 6.88
@@ -228,7 +283,8 @@
     "id": "4bfa90af-adf1-495a-a5a8-4e956b4c0206",
     "date": "2026-05-13",
     "type": "expense",
-    "category": "外食",
+    "category": "學餐",
+    "merchant": "UAB 校內餐飲",
     "paymentMethod": "學生證",
     "note": "午餐/三明治套餐",
     "amount": 9
@@ -238,6 +294,7 @@
     "date": "2026-05-13",
     "type": "income",
     "category": "學費",
+    "merchant": "",
     "paymentMethod": "現金",
     "note": "另一本書給我現金",
     "amount": 30
@@ -247,6 +304,7 @@
     "date": "2026-05-12",
     "type": "income",
     "category": "學費",
+    "merchant": "",
     "paymentMethod": "美國信用卡",
     "note": "1本書",
     "amount": 28.5
@@ -256,6 +314,7 @@
     "date": "2026-05-12",
     "type": "expense",
     "category": "學費",
+    "merchant": "",
     "paymentMethod": "台灣信用卡",
     "note": "3本書合買",
     "amount": 84.93
@@ -265,6 +324,7 @@
     "date": "2026-05-12",
     "type": "expense",
     "category": "外食",
+    "merchant": "",
     "paymentMethod": "現金",
     "note": "午餐/火雞漢堡",
     "amount": 8
@@ -274,6 +334,7 @@
     "date": "2026-05-10",
     "type": "expense",
     "category": "外食",
+    "merchant": "",
     "paymentMethod": "現金",
     "note": "晚餐",
     "amount": 15.35
@@ -282,7 +343,8 @@
     "id": "工作表1-2026-05-01-1",
     "date": "2026-05-01",
     "type": "expense",
-    "category": "美國電信",
+    "category": "其他",
+    "merchant": "",
     "paymentMethod": "台灣信用卡",
     "note": "永豐信用卡",
     "amount": 91.2
@@ -291,7 +353,8 @@
     "id": "工作表1-2026-05-07-2",
     "date": "2026-05-07",
     "type": "expense",
-    "category": "早餐",
+    "category": "外食",
+    "merchant": "",
     "paymentMethod": "台灣信用卡",
     "note": "永豐信用卡",
     "amount": 7.8
@@ -300,7 +363,8 @@
     "id": "工作表1-2026-05-07-3",
     "date": "2026-05-07",
     "type": "expense",
-    "category": "超商",
+    "category": "其他",
+    "merchant": "",
     "paymentMethod": "現金",
     "note": "cash",
     "amount": 14.75
@@ -309,7 +373,8 @@
     "id": "工作表1-2026-05-08-4",
     "date": "2026-05-08",
     "type": "expense",
-    "category": "Walmart/大賣場",
+    "category": "超市",
+    "merchant": "Walmart",
     "paymentMethod": "現金",
     "note": "cash",
     "amount": 70.19
@@ -318,7 +383,8 @@
     "id": "工作表1-2026-05-09-5",
     "date": "2026-05-09",
     "type": "expense",
-    "category": "Walmart/大賣場",
+    "category": "超市",
+    "merchant": "Walmart",
     "paymentMethod": "現金",
     "note": "cash",
     "amount": 31.65

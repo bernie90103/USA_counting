@@ -1,5 +1,15 @@
 [
   {
+    "id": "ab772627-a29c-4b55-943e-d71f7120411d",
+    "date": "2026-05-31",
+    "type": "expense",
+    "category": "外食",
+    "merchant": "一般外食",
+    "paymentMethod": "美國信用卡",
+    "note": "壽司生魚片",
+    "amount": 13.15
+  },
+  {
     "id": "4138ff36-5f4c-4607-b035-a978d82f9e47",
     "date": "2026-05-30",
     "type": "expense",

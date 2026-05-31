@@ -28,9 +28,15 @@
 
 維持純 HTML、CSS、JavaScript 與 Python，不要為小改動新增框架。JavaScript 使用兩格縮排、分號、雙引號；DOM 參照、函式與變數使用 `camelCase`。儲存鍵、固定 URL 與特殊篩選值可使用大寫常數。Python 使用四格縮排、`snake_case`、`pathlib.Path`，讀寫資料時明確指定 UTF-8。
 
+## UI 與版面風格
+
+網站介面採 Apple 官網式的極簡白灰風格：大標題、中央對齊 Hero、充足留白、簡潔卡片、柔和陰影與膠囊 CTA。保持純 HTML/CSS，Google Fonts 使用 Inter；修改 UI 時應維持乾淨的 section 分隔、RWD、`0.3s` 左右的 hover/transition，以及可讀性優先的表格與表單。不要加入大型框架、過度裝飾、深色高對比背景或雜亂的卡片堆疊。
+
 ## 資料與匯率規則
 
-月度收支資料來自 `data/transactions.json` 或瀏覽器 localStorage。行前總花費目前寫在 `app.js` 的 `pretripExpenses`，來源是 `總花費.xlsx`；其中有記錄「當時匯率」的項目必須固定使用該匯率，不可改用頁面上方的即時匯率。沒有歷史匯率的項目應標示未記錄匯率。
+月度收支資料來自 `data/transactions.json` 或瀏覽器 localStorage。交易資料使用「大分類 + 店家」兩層結構：`category` 只放大分類，例如 `房租`、`超市`、`學餐`、`外食`、`交通`、`學費`、`醫療`、`娛樂`、`收入`、`其他`；`merchant` 放店家，例如 `Trader Joe's`、`Walmart`、`Starbucks HSC`、`校園餐車`。店家選單會依分類動態篩選，避免顯示不相關選項；更新匯入、匯出或發布工具時必須保留 `merchant` 欄位。
+
+行前總花費目前寫在 `app.js` 的 `pretripExpenses`，來源是 `總花費.xlsx`；其中有記錄「當時匯率」的項目必須固定使用該匯率，不可改用頁面上方的即時匯率。沒有歷史匯率的項目應標示未記錄匯率。
 
 ## 測試準則
 

@@ -1,5 +1,25 @@
 [
   {
+    "id": "b2baafc5-5454-4f86-91fc-cd7fe8712c85",
+    "date": "2026-06-02",
+    "type": "expense",
+    "category": "娛樂",
+    "merchant": "其他",
+    "paymentMethod": "美國信用卡",
+    "note": "衣服",
+    "amount": 10
+  },
+  {
+    "id": "1844ba66-befe-4b72-aa0a-c589d477a08d",
+    "date": "2026-06-01",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "校園餐車",
+    "paymentMethod": "學生證",
+    "note": "漢堡",
+    "amount": 8
+  },
+  {
     "id": "ab772627-a29c-4b55-943e-d71f7120411d",
     "date": "2026-05-31",
     "type": "expense",

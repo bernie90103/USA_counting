@@ -1,5 +1,25 @@
 [
   {
+    "id": "62106e99-798c-4640-9166-91ae70cfae11",
+    "date": "2026-06-03",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Mein Bowl",
+    "paymentMethod": "學生證",
+    "note": "炒飯蝦仁",
+    "amount": 13.18
+  },
+  {
+    "id": "3ca8bd83-f4ef-4535-93ae-f0c039f435e3",
+    "date": "2026-06-03",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Starbucks HSC",
+    "paymentMethod": "學生證",
+    "note": "摩卡餅乾星冰樂",
+    "amount": 6.88
+  },
+  {
     "id": "c075dddb-9982-4bb7-8b43-ee62293fb648",
     "date": "2026-06-02",
     "type": "expense",

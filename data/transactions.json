@@ -1,5 +1,35 @@
 [
   {
+    "id": "ddc04c97-75e7-465e-9b7e-f5266e6f132a",
+    "date": "2026-06-07",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Sam's Club",
+    "paymentMethod": "學生證",
+    "note": "生鮮/蔬菜/牛奶",
+    "amount": 30.99
+  },
+  {
+    "id": "739cfa05-258b-4977-9326-2423f57b5dad",
+    "date": "2026-06-07",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Walmart",
+    "paymentMethod": "美國信用卡",
+    "note": "電鍋",
+    "amount": 22.89
+  },
+  {
+    "id": "ea0d7e68-51e0-4e62-b06a-4fcc1bd9de51",
+    "date": "2026-06-03",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "The Commons on the Green",
+    "paymentMethod": "學生證",
+    "note": "吃到飽學餐",
+    "amount": 14.3
+  },
+  {
     "id": "62106e99-798c-4640-9166-91ae70cfae11",
     "date": "2026-06-03",
     "type": "expense",

@@ -4,7 +4,8 @@ const RATE_UPDATED_KEY = "us-ledger-exchange-rate-updated";
 const LIVE_RATE_URL = "https://fxapi.app/api/USD/TWD.json";
 const PRETRIP_FILTER = "pretrip";
 const CAMPUS_CARD_STARTING_BALANCE = 500;
-const CATEGORIES = ["房租", "超市", "學餐", "外食", "交通", "學費", "醫療", "娛樂", "收入", "其他"];
+const EXPENSE_CATEGORIES = ["房租", "超市", "學餐", "外食", "交通", "學費", "醫療", "娛樂", "其他"];
+const INCOME_CATEGORIES = ["rec center"];
 const MERCHANTS = [
   "Publix",
   "Trader Joe's",
@@ -36,6 +37,8 @@ const MERCHANTS = [
   "Canes",
   "珍珠奶茶",
   "一般外食",
+  "operation assisted",
+  "lifegrade",
   "其他",
 ];
 const SCHOOL_MEAL_MERCHANTS = [
@@ -69,10 +72,12 @@ const GROCERY_MERCHANTS = [
   "Walmart",
 ];
 const DINING_MERCHANTS = ["星巴克", "Canes", "珍珠奶茶", "一般外食"];
+const INCOME_MERCHANTS = ["operation assisted", "lifegrade"];
 const CATEGORY_MERCHANTS = {
   超市: GROCERY_MERCHANTS,
   學餐: SCHOOL_MEAL_MERCHANTS,
   外食: DINING_MERCHANTS,
+  "rec center": INCOME_MERCHANTS,
 };
 const PAYMENT_METHODS = ["台灣信用卡", "美國信用卡", "學生證", "現金"];
 const isEditMode = isLocalEditingContext();
@@ -231,6 +236,10 @@ elements.monthFilter.addEventListener("change", (event) => {
 });
 
 if (isEditMode) {
+  elements.type.addEventListener("change", () => {
+    syncCategoryOptionsForType(elements.category.value);
+  });
+
   elements.category.addEventListener("change", () => {
     renderMerchantOptions(elements.category.value);
   });
@@ -440,6 +449,14 @@ function normalizeCategoryAndMerchant(item) {
   const rawCategory = String(item.category || "").trim();
   const rawMerchant = String(item.merchant || "").trim();
   const note = String(item.note || "");
+
+  if (item.type === "income") {
+    return {
+      category: normalizeCategory(rawCategory, item.type),
+      merchant: normalizeIncomeMerchant(rawMerchant, note),
+    };
+  }
+
   const inferredMerchant =
     normalizeMerchant(rawMerchant) || inferMerchant(rawCategory, note) || inferGenericSchoolMeal(item);
   const detectedMerchant =
@@ -459,12 +476,23 @@ function normalizeCategoryAndMerchant(item) {
 function normalizeCategory(value, type) {
   const category = String(value || "").trim();
 
-  if (CATEGORIES.includes(category)) return category;
+  if (type === "income") {
+    return INCOME_CATEGORIES.includes(category) ? category : INCOME_CATEGORIES[0];
+  }
+
+  if (EXPENSE_CATEGORIES.includes(category)) return category;
 
   if (category === "Walmart/大賣場" || category === "Publix超市") return "超市";
   if (category === "早餐" || category === "星巴克") return "外食";
 
   return type === "income" ? "收入" : "其他";
+}
+
+function normalizeIncomeMerchant(value, note) {
+  const merchant = String(value || "").trim();
+  if (INCOME_MERCHANTS.includes(merchant)) return merchant;
+
+  return inferIncomeMerchant(`${merchant} ${note || ""}`);
 }
 
 function normalizeMerchant(value) {
@@ -473,6 +501,15 @@ function normalizeMerchant(value) {
   if (MERCHANTS.includes(merchant)) return merchant;
 
   return inferMerchant(merchant, "");
+}
+
+function inferIncomeMerchant(text) {
+  const normalized = String(text || "").toLowerCase();
+
+  if (normalized.includes("operation assisted")) return "operation assisted";
+  if (normalized.includes("lifegrade")) return "lifegrade";
+
+  return "";
 }
 
 function inferMerchant(category, note) {
@@ -740,9 +777,9 @@ function beginEdit(id) {
   if (!transaction) return;
 
   editingId = id;
-  ensureCategoryOption(transaction.category);
   elements.date.value = transaction.date;
   elements.type.value = transaction.type;
+  syncCategoryOptionsForType(transaction.category);
   elements.category.value = transaction.category;
   renderMerchantOptions(transaction.category, transaction.merchant);
   elements.merchant.value = transaction.merchant || "";
@@ -765,7 +802,7 @@ function resetForm() {
 function setDefaultFormValues() {
   elements.date.value = getLocalDateValue();
   elements.type.value = "expense";
-  elements.category.value = "超市";
+  syncCategoryOptionsForType("超市");
   renderMerchantOptions(elements.category.value);
   elements.paymentMethod.value = "學生證";
 }
@@ -809,9 +846,43 @@ function ensureMerchantOption(merchant) {
   elements.merchant.append(option);
 }
 
+function syncCategoryOptionsForType(selectedCategory = "") {
+  const categories = getCategoriesForType(elements.type.value);
+  const category = categories.includes(selectedCategory) ? selectedCategory : categories[0];
+
+  renderCategoryOptions(categories);
+  elements.category.value = category;
+  renderMerchantOptions(category, elements.merchant.value);
+}
+
+function renderCategoryOptions(categories) {
+  elements.category.innerHTML = "";
+
+  for (const category of categories) {
+    const option = document.createElement("option");
+    option.textContent = category;
+    option.value = category;
+    elements.category.append(option);
+  }
+}
+
+function getCategoriesForType(type) {
+  return type === "income" ? INCOME_CATEGORIES : EXPENSE_CATEGORIES;
+}
+
 function renderMerchantOptions(category, selectedMerchant = "") {
   const merchants = getMerchantsForCategory(category);
   elements.merchant.innerHTML = "";
+
+  if (INCOME_CATEGORIES.includes(category)) {
+    for (const merchant of merchants) {
+      appendMerchantOption(merchant, merchant);
+    }
+
+    elements.merchant.value = merchants.includes(selectedMerchant) ? selectedMerchant : merchants[0] || "";
+    return;
+  }
+
   appendMerchantOption("", "未指定");
 
   for (const merchant of merchants) {

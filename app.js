@@ -13,6 +13,7 @@ const MERCHANTS = [
   "ALDI",
   "Dollar Tree",
   "好市多",
+  "Sam's Club",
   "Walmart",
   "The Commons on the Green",
   "Chick-fil-A",
@@ -64,6 +65,7 @@ const GROCERY_MERCHANTS = [
   "ALDI",
   "Dollar Tree",
   "好市多",
+  "Sam's Club",
   "Walmart",
 ];
 const DINING_MERCHANTS = ["星巴克", "Canes", "珍珠奶茶", "一般外食"];
@@ -497,6 +499,7 @@ function inferMerchant(category, note) {
   if (text.includes("canes")) return "Canes";
   if (text.includes("珍珠奶茶") || text.includes("珍奶")) return "珍珠奶茶";
   if (text.includes("costco") || text.includes("好市多")) return "好市多";
+  if (text.includes("sam's club") || text.includes("sams club")) return "Sam's Club";
   if (text.includes("trader joe")) return "Trader Joe's";
   if (text.includes("dollar tree")) return "Dollar Tree";
   if (text.includes("hometown market")) return "Hometown market";

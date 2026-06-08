@@ -5,7 +5,7 @@
     "type": "expense",
     "category": "超市",
     "merchant": "Sam's Club",
-    "paymentMethod": "學生證",
+    "paymentMethod": "美國信用卡",
     "note": "生鮮/蔬菜/牛奶",
     "amount": 30.99
   },

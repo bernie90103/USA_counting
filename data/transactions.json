@@ -1,5 +1,25 @@
 [
   {
+    "id": "b298ad34-899a-4ef0-b48e-3e56038a4de3",
+    "date": "2026-06-09",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Mein Bowl",
+    "paymentMethod": "學生證",
+    "note": "炒飯",
+    "amount": 10.99
+  },
+  {
+    "id": "5ece296b-db78-4aa9-90ad-d865161a1927",
+    "date": "2026-06-09",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Starbucks HSC",
+    "paymentMethod": "學生證",
+    "note": "butterfly drink",
+    "amount": 7.1
+  },
+  {
     "id": "ddc04c97-75e7-465e-9b7e-f5266e6f132a",
     "date": "2026-06-07",
     "type": "expense",
@@ -263,8 +283,8 @@
     "id": "368d49d5-6fd7-44ca-a0da-1a3b4abf362d",
     "date": "2026-05-17",
     "type": "income",
-    "category": "超市",
-    "merchant": "好市多",
+    "category": "rec center",
+    "merchant": "",
     "paymentMethod": "現金",
     "note": "costco",
     "amount": 10
@@ -383,7 +403,7 @@
     "id": "e6ccfa66-244e-4932-b2e0-67a4c0f00087",
     "date": "2026-05-13",
     "type": "income",
-    "category": "學費",
+    "category": "rec center",
     "merchant": "",
     "paymentMethod": "現金",
     "note": "另一本書給我現金",
@@ -393,7 +413,7 @@
     "id": "aa21024a-b768-446d-9fb1-a2f5bbf6e423",
     "date": "2026-05-12",
     "type": "income",
-    "category": "學費",
+    "category": "rec center",
     "merchant": "",
     "paymentMethod": "美國信用卡",
     "note": "1本書",

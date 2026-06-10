@@ -1,5 +1,25 @@
 [
   {
+    "id": "a34aa632-5c76-410c-af77-a5e4ecfbc81b",
+    "date": "2026-06-10",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "The Commons on the Green",
+    "paymentMethod": "學生證",
+    "note": "吃到飽學餐",
+    "amount": 14.3
+  },
+  {
+    "id": "f061d9f1-dcea-4ed0-b6da-97fca4cdecc9",
+    "date": "2026-06-10",
+    "type": "expense",
+    "category": "醫療",
+    "merchant": "其他",
+    "paymentMethod": "美國信用卡",
+    "note": "TB TEST",
+    "amount": 10
+  },
+  {
     "id": "b298ad34-899a-4ef0-b48e-3e56038a4de3",
     "date": "2026-06-09",
     "type": "expense",

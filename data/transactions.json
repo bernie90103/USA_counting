@@ -1,5 +1,15 @@
 [
   {
+    "id": "07dd9d3f-449f-4c96-8871-a384008312b7",
+    "date": "2026-06-11",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Starbucks HSC",
+    "paymentMethod": "學生證",
+    "note": "mocha sugar-free protein",
+    "amount": 7.65
+  },
+  {
     "id": "a34aa632-5c76-410c-af77-a5e4ecfbc81b",
     "date": "2026-06-10",
     "type": "expense",

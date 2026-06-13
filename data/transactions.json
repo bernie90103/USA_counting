@@ -1,5 +1,15 @@
 [
   {
+    "id": "b9893608-f644-44ed-bd6c-73944ac58066",
+    "date": "2026-06-13",
+    "type": "expense",
+    "category": "學費",
+    "merchant": "其他",
+    "paymentMethod": "學生證",
+    "note": "codex",
+    "amount": 22
+  },
+  {
     "id": "422f0a57-9d75-43f4-9abd-771a0b203d4c",
     "date": "2026-06-12",
     "type": "expense",

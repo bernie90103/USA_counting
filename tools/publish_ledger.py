@@ -68,11 +68,18 @@ def load_transactions(json_path=None, debug=False):
     if json_path:
         return load_exported_json(json_path), str(json_path)
 
-    browser_transactions = find_latest_transactions(debug=debug)
-    if browser_transactions:
-        return browser_transactions, "browser localStorage"
-
+    browser_candidate = find_latest_transaction_candidate(debug=debug)
     export = find_latest_export()
+
+    if browser_candidate and export:
+        if export.stat().st_mtime > browser_candidate["mtime"]:
+            return load_exported_json(export), str(export)
+
+        return browser_candidate["transactions"], "browser localStorage"
+
+    if browser_candidate:
+        return browser_candidate["transactions"], "browser localStorage"
+
     if export:
         return load_exported_json(export), str(export)
 
@@ -105,7 +112,7 @@ def find_latest_export():
     return max(exports, key=lambda path: path.stat().st_mtime)
 
 
-def find_latest_transactions(debug=False):
+def find_latest_transaction_candidate(debug=False):
     candidates = []
 
     with tempfile.TemporaryDirectory(prefix="us-ledger-leveldb-") as temp_dir:
@@ -141,10 +148,10 @@ def find_latest_transactions(debug=False):
             )
 
     if not candidates:
-        return []
+        return None
 
     candidates.sort(key=lambda item: (item["origin_score"], item["mtime"], item["offset"]))
-    return candidates[-1]["transactions"]
+    return candidates[-1]
 
 
 def find_leveldb_dirs():

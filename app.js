@@ -7,6 +7,7 @@ const CAMPUS_CARD_STARTING_BALANCE = 500;
 const EXPENSE_CATEGORIES = ["房租", "超市", "學餐", "外食", "交通", "學費", "醫療", "娛樂", "其他"];
 const INCOME_CATEGORIES = ["rec center"];
 const MERCHANTS = [
+  "Marshall",
   "Publix",
   "Trader Joe's",
   "Target",
@@ -41,6 +42,7 @@ const MERCHANTS = [
   "lifegrade",
   "其他",
 ];
+const RENT_MERCHANTS = ["Marshall"];
 const SCHOOL_MEAL_MERCHANTS = [
   "The Commons on the Green",
   "Chick-fil-A",
@@ -74,6 +76,7 @@ const GROCERY_MERCHANTS = [
 const DINING_MERCHANTS = ["星巴克", "Canes", "珍珠奶茶", "一般外食"];
 const INCOME_MERCHANTS = ["operation assisted", "lifegrade"];
 const CATEGORY_MERCHANTS = {
+  房租: RENT_MERCHANTS,
   超市: GROCERY_MERCHANTS,
   學餐: SCHOOL_MEAL_MERCHANTS,
   外食: DINING_MERCHANTS,
@@ -535,6 +538,7 @@ function inferMerchant(category, note) {
   if (text.includes("starbucks") || text.includes("星巴克")) return "星巴克";
   if (text.includes("canes")) return "Canes";
   if (text.includes("珍珠奶茶") || text.includes("珍奶")) return "珍珠奶茶";
+  if (text.includes("marshall")) return "Marshall";
   if (text.includes("costco") || text.includes("好市多")) return "好市多";
   if (text.includes("sam's club") || text.includes("sams club")) return "Sam's Club";
   if (text.includes("trader joe")) return "Trader Joe's";

@@ -11,6 +11,7 @@ const MERCHANTS = [
   "Publix",
   "Trader Joe's",
   "Target",
+  "Oriental Market",
   "Hometown market",
   "ALDI",
   "Dollar Tree",
@@ -66,6 +67,7 @@ const GROCERY_MERCHANTS = [
   "Publix",
   "Trader Joe's",
   "Target",
+  "Oriental Market",
   "Hometown market",
   "ALDI",
   "Dollar Tree",
@@ -542,6 +544,7 @@ function inferMerchant(category, note) {
   if (text.includes("costco") || text.includes("好市多")) return "好市多";
   if (text.includes("sam's club") || text.includes("sams club")) return "Sam's Club";
   if (text.includes("trader joe")) return "Trader Joe's";
+  if (text.includes("oriental market")) return "Oriental Market";
   if (text.includes("dollar tree")) return "Dollar Tree";
   if (text.includes("hometown market")) return "Hometown market";
   if (text.includes("publix")) return "Publix";

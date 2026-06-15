@@ -1,5 +1,15 @@
 [
   {
+    "id": "f67ea07e-07ef-44e6-9945-ba5ba040a4ec",
+    "date": "2026-06-15",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Starbucks HSC",
+    "paymentMethod": "學生證",
+    "note": "星冰樂",
+    "amount": 6.88
+  },
+  {
     "id": "3179c17a-76af-42b1-94cb-b3ac94a97838",
     "date": "2026-06-13",
     "type": "expense",

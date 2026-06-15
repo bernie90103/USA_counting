@@ -14,7 +14,7 @@
     "date": "2026-06-13",
     "type": "expense",
     "category": "房租",
-    "merchant": "其他",
+    "merchant": "Marshall",
     "paymentMethod": "美國信用卡",
     "note": "申請費",
     "amount": 26.95
@@ -44,7 +44,7 @@
     "date": "2026-06-13",
     "type": "expense",
     "category": "超市",
-    "merchant": "其他",
+    "merchant": "Oriental Market",
     "paymentMethod": "美國信用卡",
     "note": "Oriental Market",
     "amount": 41.73

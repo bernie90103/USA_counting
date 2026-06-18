@@ -1,5 +1,65 @@
 [
   {
+    "id": "c36519e9-67fa-488e-86dd-58c69ce8899d",
+    "date": "2026-06-18",
+    "type": "income",
+    "category": "rec center",
+    "merchant": "operation assisted",
+    "paymentMethod": "美國信用卡",
+    "note": "5/31-6/13",
+    "amount": 242.43
+  },
+  {
+    "id": "f94b7c22-9f61-4eef-9716-274d7c23d440",
+    "date": "2026-06-18",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Mein Bowl",
+    "paymentMethod": "學生證",
+    "note": "壽司",
+    "amount": 8.79
+  },
+  {
+    "id": "a665c632-f7b4-444c-b59a-66fe4b6a3cb3",
+    "date": "2026-06-18",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Chick-fil-A",
+    "paymentMethod": "學生證",
+    "note": "",
+    "amount": 6.88
+  },
+  {
+    "id": "6fb15593-1e4b-46c6-ad40-541ba9a51a02",
+    "date": "2026-06-18",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Starbucks HSC",
+    "paymentMethod": "學生證",
+    "note": "",
+    "amount": 15.35
+  },
+  {
+    "id": "8ce78213-3719-4013-be0c-afc7e2a4d6a2",
+    "date": "2026-06-17",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Chick-fil-A",
+    "paymentMethod": "學生證",
+    "note": "",
+    "amount": 14.94
+  },
+  {
+    "id": "a01a12db-99c6-4b4f-bd33-80f32dd30315",
+    "date": "2026-06-16",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Chick-fil-A",
+    "paymentMethod": "學生證",
+    "note": "",
+    "amount": 8.97
+  },
+  {
     "id": "f67ea07e-07ef-44e6-9945-ba5ba040a4ec",
     "date": "2026-06-15",
     "type": "expense",

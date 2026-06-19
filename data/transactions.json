@@ -1,5 +1,25 @@
 [
   {
+    "id": "e7074ba0-e0b5-414f-9eb5-dcedc9cace0a",
+    "date": "2026-06-18",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Walmart",
+    "paymentMethod": "美國信用卡",
+    "note": "牛肉/烤雞",
+    "amount": 26.86
+  },
+  {
+    "id": "526ec116-859a-41a6-96fb-541018b8ee63",
+    "date": "2026-06-18",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Trader Joe's",
+    "paymentMethod": "美國信用卡",
+    "note": "經典包/餅乾",
+    "amount": 31.56
+  },
+  {
     "id": "c36519e9-67fa-488e-86dd-58c69ce8899d",
     "date": "2026-06-18",
     "type": "income",

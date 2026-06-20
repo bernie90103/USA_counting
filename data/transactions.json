@@ -1,5 +1,15 @@
 [
   {
+    "id": "0f8adaba-2e37-4f8d-8fc0-66444a3446c8",
+    "date": "2026-06-20",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Walmart",
+    "paymentMethod": "美國信用卡",
+    "note": "牛肉/蘋果汁",
+    "amount": 32.8
+  },
+  {
     "id": "e7074ba0-e0b5-414f-9eb5-dcedc9cace0a",
     "date": "2026-06-18",
     "type": "expense",

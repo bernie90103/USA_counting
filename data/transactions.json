@@ -1,5 +1,25 @@
 [
   {
+    "id": "b84d4358-8e55-47c8-b1c4-3d8199d87d0e",
+    "date": "2026-06-22",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Chick-fil-A",
+    "paymentMethod": "學生證",
+    "note": "雞肉漢堡套餐",
+    "amount": 10.22
+  },
+  {
+    "id": "ad12a025-e215-4301-81e3-7ce546b8bd4e",
+    "date": "2026-06-21",
+    "type": "expense",
+    "category": "外食",
+    "merchant": "",
+    "paymentMethod": "美國信用卡",
+    "note": "火鍋",
+    "amount": 19.28
+  },
+  {
     "id": "0f8adaba-2e37-4f8d-8fc0-66444a3446c8",
     "date": "2026-06-20",
     "type": "expense",

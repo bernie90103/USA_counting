@@ -1,5 +1,25 @@
 [
   {
+    "id": "373e2f32-f758-4a8f-ac6d-7ea023fee930",
+    "date": "2026-06-24",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Chick-fil-A",
+    "paymentMethod": "學生證",
+    "note": "漢堡加雞肉",
+    "amount": 12.54
+  },
+  {
+    "id": "0ec49398-268d-4f87-a31e-7f0d42387da4",
+    "date": "2026-06-24",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Starbucks HSC",
+    "paymentMethod": "學生證",
+    "note": "cold brew",
+    "amount": 5.45
+  },
+  {
     "id": "8c599384-c716-459b-8c12-09cbf71a5085",
     "date": "2026-06-23",
     "type": "expense",

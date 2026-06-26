@@ -1,5 +1,15 @@
 [
   {
+    "id": "5306c48b-7b7f-4d4a-b54f-78ce0cde5781",
+    "date": "2026-06-25",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "好市多",
+    "paymentMethod": "美國信用卡",
+    "note": "牛肉 蔬菜",
+    "amount": 67.46
+  },
+  {
     "id": "29d2c348-965d-461d-ab0f-190222949979",
     "date": "2026-06-25",
     "type": "expense",

@@ -1,5 +1,15 @@
 [
   {
+    "id": "67fd88f9-09ef-474e-ac6b-5abedd5deea2",
+    "date": "2026-06-25",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Trader Joe's",
+    "paymentMethod": "美國信用卡",
+    "note": "吃的 喝的",
+    "amount": 38.45
+  },
+  {
     "id": "373e2f32-f758-4a8f-ac6d-7ea023fee930",
     "date": "2026-06-24",
     "type": "expense",

@@ -1,5 +1,55 @@
 [
   {
+    "id": "f8b4066f-29d3-44a2-9999-4ff509de7d32",
+    "date": "2026-06-30",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Chick-fil-A",
+    "paymentMethod": "學生證",
+    "note": "",
+    "amount": 10.22
+  },
+  {
+    "id": "330af1ab-ccf2-4831-8a7c-02d77956564c",
+    "date": "2026-06-30",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Starbucks HSC",
+    "paymentMethod": "學生證",
+    "note": "VT cold brew",
+    "amount": 5.45
+  },
+  {
+    "id": "12ece5a6-d2b2-47f4-a1e9-fb127fc7ec36",
+    "date": "2026-06-29",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Chick-fil-A",
+    "paymentMethod": "學生證",
+    "note": "",
+    "amount": 10.22
+  },
+  {
+    "id": "6c2ecdb0-97bf-4ebd-a004-6282d4d080cb",
+    "date": "2026-06-29",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Starbucks HSC",
+    "paymentMethod": "學生證",
+    "note": "咖啡",
+    "amount": 5.45
+  },
+  {
+    "id": "705f8d61-a5dd-47f9-a5a4-c8bd10f527a0",
+    "date": "2026-06-26",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Chick-fil-A",
+    "paymentMethod": "學生證",
+    "note": "",
+    "amount": 14.69
+  },
+  {
     "id": "5306c48b-7b7f-4d4a-b54f-78ce0cde5781",
     "date": "2026-06-25",
     "type": "expense",

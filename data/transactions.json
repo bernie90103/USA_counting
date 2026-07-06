@@ -1,5 +1,15 @@
 [
   {
+    "id": "da67011f-e682-4d85-8921-3525f4c7d18a",
+    "date": "2026-07-06",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Starbucks HSC",
+    "paymentMethod": "學生證",
+    "note": "",
+    "amount": 11.99
+  },
+  {
     "id": "8b719b2e-a1ea-4da8-b7dc-54f17729255e",
     "date": "2026-07-05",
     "type": "expense",
@@ -55,7 +65,7 @@
     "type": "expense",
     "category": "超市",
     "merchant": "Sam's Club",
-    "paymentMethod": "學生證",
+    "paymentMethod": "美國信用卡",
     "note": "牛肉/豬肉/蔬菜",
     "amount": 86.4
   },

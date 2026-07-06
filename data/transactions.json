@@ -1,5 +1,55 @@
 [
   {
+    "id": "8b719b2e-a1ea-4da8-b7dc-54f17729255e",
+    "date": "2026-07-05",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "好市多",
+    "paymentMethod": "美國信用卡",
+    "note": "蔥/牛奶",
+    "amount": 13.78
+  },
+  {
+    "id": "f1946ab8-d8a8-4606-879c-122e1ec4d34d",
+    "date": "2026-07-05",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Walmart",
+    "paymentMethod": "美國信用卡",
+    "note": "巧克力",
+    "amount": 1.53
+  },
+  {
+    "id": "38f2d304-6a9a-419b-8ed3-d7a268360da7",
+    "date": "2026-07-05",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Trader Joe's",
+    "paymentMethod": "美國信用卡",
+    "note": "吃的",
+    "amount": 25.57
+  },
+  {
+    "id": "1eb2e004-e227-4e4a-867d-7764b484e95b",
+    "date": "2026-07-05",
+    "type": "expense",
+    "category": "外食",
+    "merchant": "一般外食",
+    "paymentMethod": "美國信用卡",
+    "note": "味噌拉麵",
+    "amount": 15.35
+  },
+  {
+    "id": "7fd096bb-a025-4a3a-8726-a981c9bde8a9",
+    "date": "2026-07-04",
+    "type": "expense",
+    "category": "外食",
+    "merchant": "珍珠奶茶",
+    "paymentMethod": "美國信用卡",
+    "note": "珍奶",
+    "amount": 6.87
+  },
+  {
     "id": "9583281b-5533-48ff-98f5-e648007b3fe5",
     "date": "2026-07-03",
     "type": "expense",

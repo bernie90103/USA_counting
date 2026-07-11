@@ -1,5 +1,15 @@
 [
   {
+    "id": "9c648921-cb74-4c8e-b5a2-9100f84f3045",
+    "date": "2026-07-10",
+    "type": "income",
+    "category": "rec center",
+    "merchant": "lifeguard",
+    "paymentMethod": "美國信用卡",
+    "note": "",
+    "amount": 123
+  },
+  {
     "id": "91a792ec-5363-4049-b197-ad8de4c87c7d",
     "date": "2026-07-10",
     "type": "expense",

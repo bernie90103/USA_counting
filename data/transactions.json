@@ -1,5 +1,65 @@
 [
   {
+    "id": "91a792ec-5363-4049-b197-ad8de4c87c7d",
+    "date": "2026-07-10",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Sam's Club",
+    "paymentMethod": "美國信用卡",
+    "note": "鋁箔紙/牙膏",
+    "amount": 20
+  },
+  {
+    "id": "45d8f648-a588-4aa8-b56a-061d892b9208",
+    "date": "2026-07-10",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Walmart",
+    "paymentMethod": "美國信用卡",
+    "note": "牛奶雞蛋飲料",
+    "amount": 22.9
+  },
+  {
+    "id": "f6225e30-e8b0-4bde-abe4-c6fdba02e4c3",
+    "date": "2026-07-08",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "好市多",
+    "paymentMethod": "美國信用卡",
+    "note": "麵包",
+    "amount": 5.1
+  },
+  {
+    "id": "59abcb7d-d77b-4d35-ad82-8492cb290857",
+    "date": "2026-07-10",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "The Commons on the Green",
+    "paymentMethod": "學生證",
+    "note": "吃到飽",
+    "amount": 28.6
+  },
+  {
+    "id": "87b52d1a-8848-4619-8a73-3d6128c4d444",
+    "date": "2026-07-09",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Chick-fil-A",
+    "paymentMethod": "學生證",
+    "note": "漢堡",
+    "amount": 11.12
+  },
+  {
+    "id": "cc074759-fb81-4264-9818-d33f65acf76b",
+    "date": "2026-07-07",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "The Commons on the Green",
+    "paymentMethod": "學生證",
+    "note": "",
+    "amount": 14.3
+  },
+  {
     "id": "da67011f-e682-4d85-8921-3525f4c7d18a",
     "date": "2026-07-06",
     "type": "expense",

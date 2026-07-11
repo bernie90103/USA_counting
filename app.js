@@ -5,7 +5,7 @@ const LIVE_RATE_URL = "https://fxapi.app/api/USD/TWD.json";
 const PRETRIP_FILTER = "pretrip";
 const CAMPUS_CARD_STARTING_BALANCE = 500;
 const EXPENSE_CATEGORIES = ["房租", "超市", "學餐", "外食", "交通", "學費", "醫療", "娛樂", "其他"];
-const INCOME_CATEGORIES = ["rec center"];
+const INCOME_CATEGORIES = ["rec center", "學校"];
 const MERCHANTS = [
   "Marshall",
   "Publix",
@@ -40,7 +40,8 @@ const MERCHANTS = [
   "珍珠奶茶",
   "一般外食",
   "operation assisted",
-  "lifegrade",
+  "lifeguard",
+  "UAB INTO",
   "其他",
 ];
 const RENT_MERCHANTS = ["Marshall"];
@@ -76,13 +77,16 @@ const GROCERY_MERCHANTS = [
   "Walmart",
 ];
 const DINING_MERCHANTS = ["星巴克", "Canes", "珍珠奶茶", "一般外食"];
-const INCOME_MERCHANTS = ["operation assisted", "lifegrade"];
+const REC_CENTER_INCOME_MERCHANTS = ["operation assisted", "lifeguard"];
+const SCHOOL_INCOME_MERCHANTS = ["UAB INTO"];
+const INCOME_MERCHANTS = [...REC_CENTER_INCOME_MERCHANTS, ...SCHOOL_INCOME_MERCHANTS];
 const CATEGORY_MERCHANTS = {
   房租: RENT_MERCHANTS,
   超市: GROCERY_MERCHANTS,
   學餐: SCHOOL_MEAL_MERCHANTS,
   外食: DINING_MERCHANTS,
-  "rec center": INCOME_MERCHANTS,
+  "rec center": REC_CENTER_INCOME_MERCHANTS,
+  學校: SCHOOL_INCOME_MERCHANTS,
 };
 const PAYMENT_METHODS = ["台灣信用卡", "美國信用卡", "學生證", "現金"];
 const isEditMode = isLocalEditingContext();
@@ -456,9 +460,11 @@ function normalizeCategoryAndMerchant(item) {
   const note = String(item.note || "");
 
   if (item.type === "income") {
+    const merchant = normalizeIncomeMerchant(rawMerchant, note);
+
     return {
-      category: normalizeCategory(rawCategory, item.type),
-      merchant: normalizeIncomeMerchant(rawMerchant, note),
+      category: normalizeCategory(rawCategory, item.type, merchant),
+      merchant,
     };
   }
 
@@ -478,11 +484,13 @@ function normalizeCategoryAndMerchant(item) {
   };
 }
 
-function normalizeCategory(value, type) {
+function normalizeCategory(value, type, merchant = "") {
   const category = String(value || "").trim();
 
   if (type === "income") {
-    return INCOME_CATEGORIES.includes(category) ? category : INCOME_CATEGORIES[0];
+    return INCOME_CATEGORIES.includes(category)
+      ? category
+      : inferIncomeCategory(merchant) || INCOME_CATEGORIES[0];
   }
 
   if (EXPENSE_CATEGORIES.includes(category)) return category;
@@ -512,8 +520,21 @@ function inferIncomeMerchant(text) {
   const normalized = String(text || "").toLowerCase();
 
   if (normalized.includes("operation assisted")) return "operation assisted";
-  if (normalized.includes("lifegrade")) return "lifegrade";
+  if (
+    normalized.includes("lifeguard") ||
+    normalized.includes("life guard") ||
+    normalized.includes("lifegrade")
+  ) {
+    return "lifeguard";
+  }
+  if (normalized.includes("uab into")) return "UAB INTO";
 
+  return "";
+}
+
+function inferIncomeCategory(merchant) {
+  if (SCHOOL_INCOME_MERCHANTS.includes(merchant)) return "學校";
+  if (REC_CENTER_INCOME_MERCHANTS.includes(merchant)) return "rec center";
   return "";
 }
 

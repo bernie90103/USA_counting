@@ -418,12 +418,19 @@ async function loadTransactions() {
 async function loadPublicTransactions() {
   try {
     const response = await fetch("./data/transactions.json", { cache: "no-store" });
-    if (!response.ok) return sampleTransactions;
+    if (!response.ok) return loadBundledPublicTransactions();
     const publicTransactions = normalizeTransactions(await response.json());
-    return publicTransactions.length ? publicTransactions : sampleTransactions;
+    return publicTransactions.length ? publicTransactions : loadBundledPublicTransactions();
   } catch {
-    return sampleTransactions;
+    return loadBundledPublicTransactions();
   }
+}
+
+function loadBundledPublicTransactions() {
+  if (!Array.isArray(window.PUBLIC_TRANSACTIONS)) return sampleTransactions;
+
+  const bundledTransactions = normalizeTransactions(window.PUBLIC_TRANSACTIONS);
+  return bundledTransactions.length ? bundledTransactions : sampleTransactions;
 }
 
 function saveTransactions() {

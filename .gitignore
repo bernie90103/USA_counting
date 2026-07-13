@@ -1,4 +1,5 @@
 *.xlsx
+exports/
 ~$*
 .DS_Store
 Thumbs.db

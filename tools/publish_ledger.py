@@ -11,6 +11,9 @@ from pathlib import Path
 STORAGE_KEY = "us-ledger-transactions"
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DATA_FILE = REPO_ROOT / "data" / "transactions.json"
+DATA_SCRIPT_FILE = REPO_ROOT / "data" / "transactions.js"
+BACKUP_DIR = REPO_ROOT / "exports"
+BACKUP_FILE = BACKUP_DIR / "latest-us-ledger.json"
 PAYMENT_METHODS = {"台灣信用卡", "美國信用卡", "學生證", "現金"}
 
 
@@ -49,6 +52,7 @@ def main():
     write_transactions(transactions)
     print(f"Source: {source}")
     print(f"Updated {DATA_FILE.relative_to(REPO_ROOT)} with {len(transactions)} records.")
+    print(f"Backed up the latest export to {BACKUP_FILE.relative_to(REPO_ROOT)}.")
 
     if args.no_git:
         return
@@ -57,7 +61,7 @@ def main():
         print("No data changes to publish.")
         return
 
-    run(["git", "add", "data/transactions.json"])
+    run(["git", "add", "data/transactions.json", "data/transactions.js"])
     run(["git", "commit", "-m", args.message])
     run(["git", "push"])
     sync_gh_pages()
@@ -359,14 +363,21 @@ def is_known_campus_card_transaction(item):
 
 def write_transactions(transactions):
     DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
-    DATA_FILE.write_text(
-        json.dumps(transactions, ensure_ascii=False, indent=2) + "\n",
+    content = json.dumps(transactions, ensure_ascii=False, indent=2) + "\n"
+    DATA_FILE.write_text(content, encoding="utf-8")
+    DATA_SCRIPT_FILE.write_text(
+        f"window.PUBLIC_TRANSACTIONS = {content};\n",
         encoding="utf-8",
     )
+    BACKUP_DIR.mkdir(parents=True, exist_ok=True)
+    BACKUP_FILE.write_text(content, encoding="utf-8")
 
 
 def has_data_changes():
-    result = run(["git", "status", "--short", "data/transactions.json"], capture=True)
+    result = run(
+        ["git", "status", "--short", "data/transactions.json", "data/transactions.js"],
+        capture=True,
+    )
     return bool(result.stdout.strip())
 
 

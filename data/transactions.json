@@ -1,5 +1,45 @@
 [
   {
+    "id": "84b0b89e-6a43-4ea0-b90c-901dd1cb8f04",
+    "date": "2026-07-13",
+    "type": "income",
+    "category": "學校",
+    "merchant": "UAB INTO",
+    "paymentMethod": "美國信用卡",
+    "note": "2026fall住宿退費",
+    "amount": 6120
+  },
+  {
+    "id": "82940893-f42b-4f26-8a89-28f90063dc89",
+    "date": "2026-07-13",
+    "type": "expense",
+    "category": "學費",
+    "merchant": "其他",
+    "paymentMethod": "美國信用卡",
+    "note": "chatgpt plus",
+    "amount": 22
+  },
+  {
+    "id": "bd6c6a7d-201f-4b37-ad9f-1686957f91d3",
+    "date": "2026-07-13",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "其他",
+    "paymentMethod": "美國信用卡",
+    "note": "雨傘",
+    "amount": 25.91
+  },
+  {
+    "id": "b26cd081-7e19-45fd-a807-29a56387018a",
+    "date": "2026-07-13",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Starbucks HSC",
+    "paymentMethod": "學生證",
+    "note": "冰美式",
+    "amount": 5.45
+  },
+  {
     "id": "91a792ec-5363-4049-b197-ad8de4c87c7d",
     "date": "2026-07-10",
     "type": "expense",

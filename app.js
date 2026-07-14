@@ -4,7 +4,7 @@ const RATE_UPDATED_KEY = "us-ledger-exchange-rate-updated";
 const LIVE_RATE_URL = "https://fxapi.app/api/USD/TWD.json";
 const PRETRIP_FILTER = "pretrip";
 const CAMPUS_CARD_STARTING_BALANCE = 500;
-const EXPENSE_CATEGORIES = ["房租", "超市", "學餐", "外食", "交通", "學費", "醫療", "娛樂", "其他"];
+const EXPENSE_CATEGORIES = ["房租", "超市", "學餐", "外食", "網購", "交通", "學費", "醫療", "娛樂", "其他"];
 const INCOME_CATEGORIES = ["rec center", "學校"];
 const MERCHANTS = [
   "Marshall",
@@ -18,6 +18,16 @@ const MERCHANTS = [
   "好市多",
   "Sam's Club",
   "Walmart",
+  "Amazon",
+  "Walmart.com",
+  "Target.com",
+  "Costco.com",
+  "Best Buy",
+  "eBay",
+  "Etsy",
+  "Temu",
+  "SHEIN",
+  "AliExpress",
   "The Commons on the Green",
   "Chick-fil-A",
   "Starbucks HSC",
@@ -77,6 +87,18 @@ const GROCERY_MERCHANTS = [
   "Walmart",
 ];
 const DINING_MERCHANTS = ["星巴克", "Canes", "珍珠奶茶", "一般外食"];
+const ONLINE_SHOPPING_MERCHANTS = [
+  "Amazon",
+  "Walmart.com",
+  "Target.com",
+  "Costco.com",
+  "Best Buy",
+  "eBay",
+  "Etsy",
+  "Temu",
+  "SHEIN",
+  "AliExpress",
+];
 const REC_CENTER_INCOME_MERCHANTS = ["operation assisted", "lifeguard"];
 const SCHOOL_INCOME_MERCHANTS = ["UAB INTO"];
 const INCOME_MERCHANTS = [...REC_CENTER_INCOME_MERCHANTS, ...SCHOOL_INCOME_MERCHANTS];
@@ -85,6 +107,7 @@ const CATEGORY_MERCHANTS = {
   超市: GROCERY_MERCHANTS,
   學餐: SCHOOL_MEAL_MERCHANTS,
   外食: DINING_MERCHANTS,
+  網購: ONLINE_SHOPPING_MERCHANTS,
   "rec center": REC_CENTER_INCOME_MERCHANTS,
   學校: SCHOOL_INCOME_MERCHANTS,
 };
@@ -247,10 +270,12 @@ elements.monthFilter.addEventListener("change", (event) => {
 if (isEditMode) {
   elements.type.addEventListener("change", () => {
     syncCategoryOptionsForType(elements.category.value);
+    syncPaymentMethodForCategory(elements.category.value);
   });
 
   elements.category.addEventListener("change", () => {
     renderMerchantOptions(elements.category.value);
+    syncPaymentMethodForCategory(elements.category.value);
   });
 
   elements.form.addEventListener("submit", (event) => {
@@ -839,7 +864,11 @@ function setDefaultFormValues() {
   elements.type.value = "expense";
   syncCategoryOptionsForType("超市");
   renderMerchantOptions(elements.category.value);
-  elements.paymentMethod.value = "學生證";
+  syncPaymentMethodForCategory(elements.category.value);
+}
+
+function syncPaymentMethodForCategory(category) {
+  elements.paymentMethod.value = category === "學餐" ? "學生證" : "美國信用卡";
 }
 
 function getLocalDateValue(date = new Date()) {

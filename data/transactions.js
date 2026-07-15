@@ -15,7 +15,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "income",
     "category": "學校",
     "merchant": "UAB INTO",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "2026fall住宿退費",
     "amount": 6120
   },
@@ -25,7 +25,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "學費",
     "merchant": "其他",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "chatgpt plus",
     "amount": 22
   },
@@ -35,7 +35,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "其他",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "雨傘",
     "amount": 25.91
   },
@@ -55,7 +55,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "Sam's Club",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "鋁箔紙/牙膏",
     "amount": 20
   },
@@ -65,7 +65,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "Walmart",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "牛奶雞蛋飲料",
     "amount": 22.9
   },
@@ -75,7 +75,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "好市多",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "麵包",
     "amount": 5.1
   },
@@ -125,7 +125,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "好市多",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "蔥/牛奶",
     "amount": 13.78
   },
@@ -135,7 +135,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "Walmart",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "巧克力",
     "amount": 1.53
   },
@@ -145,7 +145,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "Trader Joe's",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "吃的",
     "amount": 25.57
   },
@@ -155,7 +155,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "外食",
     "merchant": "一般外食",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "味噌拉麵",
     "amount": 15.35
   },
@@ -165,7 +165,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "外食",
     "merchant": "珍珠奶茶",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "珍奶",
     "amount": 6.87
   },
@@ -175,7 +175,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "Sam's Club",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "牛肉/豬肉/蔬菜",
     "amount": 86.4
   },
@@ -185,7 +185,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "Trader Joe's",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "調理包/冷凍食品/牛肉",
     "amount": 35.97
   },
@@ -195,7 +195,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "其他",
     "merchant": "其他",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "電信網路費一年2026/07/30-2027/07/30",
     "amount": 248.27
   },
@@ -205,7 +205,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "income",
     "category": "rec center",
     "merchant": "operation assisted",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "打工",
     "amount": 208.47
   },
@@ -285,7 +285,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "好市多",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "牛肉 蔬菜",
     "amount": 67.46
   },
@@ -315,7 +315,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "Trader Joe's",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "吃的 喝的",
     "amount": 38.45
   },
@@ -365,7 +365,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "外食",
     "merchant": "",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "火鍋",
     "amount": 19.28
   },
@@ -375,7 +375,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "Walmart",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "牛肉/蘋果汁",
     "amount": 32.8
   },
@@ -385,7 +385,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "Walmart",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "牛肉/烤雞",
     "amount": 26.86
   },
@@ -395,7 +395,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "Trader Joe's",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "經典包/餅乾",
     "amount": 31.56
   },
@@ -405,7 +405,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "income",
     "category": "rec center",
     "merchant": "operation assisted",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "5/31-6/13",
     "amount": 242.43
   },
@@ -475,7 +475,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "房租",
     "merchant": "Marshall",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "申請費",
     "amount": 26.95
   },
@@ -485,7 +485,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "好市多",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "保健食品",
     "amount": 98.06
   },
@@ -495,7 +495,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "Walmart",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "生鮮",
     "amount": 17.66
   },
@@ -505,7 +505,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "Oriental Market",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "Oriental Market",
     "amount": 41.73
   },
@@ -515,7 +515,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "學費",
     "merchant": "其他",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "codex",
     "amount": 22
   },
@@ -525,7 +525,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "娛樂",
     "merchant": "其他",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "剪頭髮",
     "amount": 22
   },
@@ -565,7 +565,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "醫療",
     "merchant": "其他",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "TB TEST",
     "amount": 10
   },
@@ -595,7 +595,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "Sam's Club",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "生鮮/蔬菜/牛奶",
     "amount": 30.99
   },
@@ -605,7 +605,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "Walmart",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "電鍋",
     "amount": 22.89
   },
@@ -655,7 +655,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "娛樂",
     "merchant": "其他",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "衣服",
     "amount": 10
   },
@@ -675,7 +675,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "外食",
     "merchant": "一般外食",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "壽司生魚片",
     "amount": 13.15
   },
@@ -685,7 +685,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "Hometown market",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "杏包菇",
     "amount": 4.19
   },
@@ -695,7 +695,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "Target",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "檯燈/保養品",
     "amount": 46.24
   },
@@ -705,7 +705,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "Trader Joe's",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "日常用品/冷凍食品",
     "amount": 42.49
   },
@@ -715,7 +715,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "Walmart",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "吃的",
     "amount": 28.13
   },
@@ -725,7 +725,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "Hometown market",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "Hometown market",
     "amount": 7.4
   },
@@ -775,7 +775,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "外食",
     "merchant": "Canes",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "Canes漢堡/超好吃",
     "amount": 11.4
   },
@@ -785,7 +785,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "Walmart",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "蛋白粉/雞蛋",
     "amount": 34.32
   },
@@ -815,7 +815,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "交通",
     "merchant": "",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "車費",
     "amount": 3.5
   },
@@ -825,7 +825,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "外食",
     "merchant": "珍珠奶茶",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "珍奶",
     "amount": 7.37
   },
@@ -865,7 +865,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "ALDI",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "ALDI",
     "amount": 2.4
   },
@@ -875,7 +875,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "好市多",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "Costco",
     "amount": 85.01
   },
@@ -885,7 +885,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "Trader Joe's",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "Trader Joe's",
     "amount": 9.52
   },
@@ -895,7 +895,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "Dollar Tree",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "DOLLAR Tree/文具",
     "amount": 10.06
   },
@@ -905,7 +905,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "東方市場",
     "amount": 7.54
   },
@@ -935,7 +935,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "超市",
     "merchant": "Publix",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "豬肉/紅茶/一 堆蛋",
     "amount": 15.49
   },
@@ -945,7 +945,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "expense",
     "category": "外食",
     "merchant": "珍珠奶茶",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "珍珠奶茶",
     "amount": 6.7
   },
@@ -985,7 +985,7 @@ window.PUBLIC_TRANSACTIONS = [
     "type": "income",
     "category": "rec center",
     "merchant": "",
-    "paymentMethod": "美國信用卡",
+    "paymentMethod": "chase debit card",
     "note": "1本書",
     "amount": 28.5
   },

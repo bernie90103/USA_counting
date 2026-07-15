@@ -111,7 +111,7 @@ const CATEGORY_MERCHANTS = {
   "rec center": REC_CENTER_INCOME_MERCHANTS,
   學校: SCHOOL_INCOME_MERCHANTS,
 };
-const PAYMENT_METHODS = ["台灣信用卡", "美國信用卡", "學生證", "現金"];
+const PAYMENT_METHODS = ["台灣信用卡", "chase debit card", "chase credit prime VISA", "學生證", "現金"];
 const isEditMode = isLocalEditingContext();
 
 const pretripExpenses = [
@@ -868,7 +868,7 @@ function setDefaultFormValues() {
 }
 
 function syncPaymentMethodForCategory(category) {
-  elements.paymentMethod.value = category === "學餐" ? "學生證" : "美國信用卡";
+  elements.paymentMethod.value = category === "學餐" ? "學生證" : "chase debit card";
 }
 
 function getLocalDateValue(date = new Date()) {
@@ -980,6 +980,7 @@ function hasMerchantOption(value) {
 
 function normalizePaymentMethod(value) {
   const method = String(value || "").trim();
+  if (method === "美國信用卡") return "chase debit card";
   return PAYMENT_METHODS.includes(method) ? method : "";
 }
 
@@ -999,7 +1000,7 @@ function inferPaymentMethod(item) {
   }
 
   if (text.includes("美國信用卡")) {
-    return "美國信用卡";
+    return "chase debit card";
   }
 
   if (text.includes("cash") || text.includes("現金")) {

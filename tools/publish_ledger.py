@@ -14,7 +14,7 @@ DATA_FILE = REPO_ROOT / "data" / "transactions.json"
 DATA_SCRIPT_FILE = REPO_ROOT / "data" / "transactions.js"
 BACKUP_DIR = REPO_ROOT / "exports"
 BACKUP_FILE = BACKUP_DIR / "latest-us-ledger.json"
-PAYMENT_METHODS = {"台灣信用卡", "美國信用卡", "學生證", "現金"}
+PAYMENT_METHODS = {"台灣信用卡", "chase debit card", "chase credit prime VISA", "學生證", "現金"}
 
 
 def main():
@@ -326,6 +326,8 @@ def normalize_transactions(items):
 
 def normalize_payment_method(item):
     method = str(item.get("paymentMethod") or item.get("payment") or item.get("method") or "").strip()
+    if method == "美國信用卡":
+        return "chase debit card"
     if method in PAYMENT_METHODS:
         return method
 
@@ -338,7 +340,7 @@ def normalize_payment_method(item):
     if "永豐" in text or "台灣信用卡" in text:
         return "台灣信用卡"
     if "美國信用卡" in text:
-        return "美國信用卡"
+        return "chase debit card"
     if "cash" in text or "現金" in text:
         return "現金"
 

@@ -1,5 +1,35 @@
 [
   {
+    "id": "611ea15a-c29b-4431-bb8f-ca2d4680988d",
+    "date": "2026-07-15",
+    "type": "expense",
+    "category": "網購",
+    "merchant": "Amazon",
+    "paymentMethod": "chase debit card",
+    "note": "保濕乳液",
+    "amount": 14.56
+  },
+  {
+    "id": "6c3a01f4-15d2-48ee-a87e-f70099ba99ae",
+    "date": "2026-07-15",
+    "type": "expense",
+    "category": "網購",
+    "merchant": "Amazon",
+    "paymentMethod": "chase debit card",
+    "note": "痘痘藥/痘痘沐浴乳",
+    "amount": 57.25
+  },
+  {
+    "id": "ce9275bd-3a7a-44dd-b848-68438c8be34e",
+    "date": "2026-07-15",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Starbucks HSC",
+    "paymentMethod": "學生證",
+    "note": "咖啡",
+    "amount": 5.45
+  },
+  {
     "id": "b5c4e0af-91a8-40a7-9d60-677fe49b849f",
     "date": "2026-07-14",
     "type": "expense",

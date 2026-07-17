@@ -1,5 +1,25 @@
 [
   {
+    "id": "c46d5e41-67fa-44cc-ad10-67e444bb5cbe",
+    "date": "2026-07-16",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Mein Bowl",
+    "paymentMethod": "學生證",
+    "note": "便當",
+    "amount": 13.19
+  },
+  {
+    "id": "f11158bb-c73b-4450-88c8-f55daa10396b",
+    "date": "2026-07-17",
+    "type": "income",
+    "category": "rec center",
+    "merchant": "operation assisted",
+    "paymentMethod": "chase debit card",
+    "note": "",
+    "amount": 98.01
+  },
+  {
     "id": "611ea15a-c29b-4431-bb8f-ca2d4680988d",
     "date": "2026-07-15",
     "type": "expense",

@@ -1,5 +1,55 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "e39a4ea6-d1d8-4217-9b98-a61fcd2d4eea",
+    "date": "2026-07-18",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Oriental Market",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "餅乾/蒜頭/薑",
+    "amount": 19.73
+  },
+  {
+    "id": "23a72454-c424-44fa-9fe0-bd0f0b7e0760",
+    "date": "2026-07-18",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Sam's Club",
+    "paymentMethod": "chase debit card",
+    "note": "羊肉/牛肉",
+    "amount": 52.83
+  },
+  {
+    "id": "bb8fe74d-58f6-4e37-8f2b-cb935f8ba7ff",
+    "date": "2026-07-18",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Walmart",
+    "paymentMethod": "現金",
+    "note": "雞蛋/無糖茶",
+    "amount": 6.92
+  },
+  {
+    "id": "441409b2-fd92-42e1-82bb-63dada5f9bed",
+    "date": "2026-07-18",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Hometown market",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "料理調味品",
+    "amount": 23.29
+  },
+  {
+    "id": "2758fa55-cee6-46b8-b8bd-f6a6d80d43d8",
+    "date": "2026-07-18",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Walmart",
+    "paymentMethod": "現金",
+    "note": "烤雞/飲料",
+    "amount": 9.18
+  },
+  {
     "id": "c46d5e41-67fa-44cc-ad10-67e444bb5cbe",
     "date": "2026-07-16",
     "type": "expense",

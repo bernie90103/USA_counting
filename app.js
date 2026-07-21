@@ -4,6 +4,8 @@ const RATE_UPDATED_KEY = "us-ledger-exchange-rate-updated";
 const LIVE_RATE_URL = "https://fxapi.app/api/USD/TWD.json";
 const PRETRIP_FILTER = "pretrip";
 const CAMPUS_CARD_STARTING_BALANCE = 500;
+const CAMPUS_CARD_PAYMENT_METHOD = "學生證";
+const CASH_PAYMENT_METHOD = "現金";
 const EXPENSE_CATEGORIES = ["房租", "超市", "學餐", "外食", "網購", "交通", "學費", "醫療", "娛樂", "其他"];
 const INCOME_CATEGORIES = ["rec center", "學校"];
 const MERCHANTS = [
@@ -112,6 +114,8 @@ const CATEGORY_MERCHANTS = {
   學校: SCHOOL_INCOME_MERCHANTS,
 };
 const PAYMENT_METHODS = ["台灣信用卡", "chase debit card", "chase credit prime VISA", "學生證", "現金"];
+const CHASE_DEBIT_PAYMENT_METHOD = "chase debit card";
+const PRIME_VISA_PAYMENT_METHOD = "chase credit prime VISA";
 const isEditMode = isLocalEditingContext();
 
 const pretripExpenses = [
@@ -223,6 +227,14 @@ const elements = {
   dailyAverageNote: document.querySelector("#dailyAverageNote"),
   campusCardBalance: document.querySelector("#campusCardBalance"),
   campusCardNote: document.querySelector("#campusCardNote"),
+  debitCardTotal: document.querySelector("#debitCardTotal"),
+  debitCardTwd: document.querySelector("#debitCardTwd"),
+  primeVisaTotal: document.querySelector("#primeVisaTotal"),
+  primeVisaTwd: document.querySelector("#primeVisaTwd"),
+  campusCardTotal: document.querySelector("#campusCardTotal"),
+  campusCardTwd: document.querySelector("#campusCardTwd"),
+  cashTotal: document.querySelector("#cashTotal"),
+  cashTwd: document.querySelector("#cashTwd"),
   categoryBars: document.querySelector("#categoryBars"),
   merchantBars: document.querySelector("#merchantBars"),
   transactionRows: document.querySelector("#transactionRows"),
@@ -622,7 +634,7 @@ function inferGenericSchoolMeal(item) {
 
 function isCampusCardPayment(item) {
   const paymentMethod = String(item.paymentMethod || item.payment || item.method || "");
-  return paymentMethod === "學生證";
+  return paymentMethod === CAMPUS_CARD_PAYMENT_METHOD;
 }
 
 function makeId() {
@@ -690,6 +702,18 @@ function renderStats(items) {
 
   const income = sumByType(items, "income");
   const expense = sumByType(items, "expense");
+  const debitCardExpense = items
+    .filter((item) => item.type === "expense" && item.paymentMethod === CHASE_DEBIT_PAYMENT_METHOD)
+    .reduce((total, item) => total + item.amount, 0);
+  const primeVisaExpense = items
+    .filter((item) => item.type === "expense" && item.paymentMethod === PRIME_VISA_PAYMENT_METHOD)
+    .reduce((total, item) => total + item.amount, 0);
+  const campusCardExpense = items
+    .filter((item) => item.type === "expense" && item.paymentMethod === CAMPUS_CARD_PAYMENT_METHOD)
+    .reduce((total, item) => total + item.amount, 0);
+  const cashExpense = items
+    .filter((item) => item.type === "expense" && item.paymentMethod === CASH_PAYMENT_METHOD)
+    .reduce((total, item) => total + item.amount, 0);
   const balance = income - expense;
   const average = expense / getElapsedDaysInSelectedMonth();
 
@@ -700,6 +724,14 @@ function renderStats(items) {
   elements.monthlyBalance.textContent = formatUsd(balance);
   elements.monthlyBalanceTwd.textContent = formatTwdLine(balance);
   elements.dailyAverage.textContent = formatUsd(average || 0);
+  elements.debitCardTotal.textContent = formatUsd(debitCardExpense);
+  elements.debitCardTwd.textContent = formatTwdLine(debitCardExpense);
+  elements.primeVisaTotal.textContent = formatUsd(primeVisaExpense);
+  elements.primeVisaTwd.textContent = formatTwdLine(primeVisaExpense);
+  elements.campusCardTotal.textContent = formatUsd(campusCardExpense);
+  elements.campusCardTwd.textContent = formatTwdLine(campusCardExpense);
+  elements.cashTotal.textContent = formatUsd(cashExpense);
+  elements.cashTwd.textContent = formatTwdLine(cashExpense);
 }
 
 function renderPretripStats() {
@@ -723,6 +755,14 @@ function renderPretripStats() {
   elements.dailyAverageLabel.textContent = "最大項目";
   elements.dailyAverage.textContent = formatTwdAmount(largest.twd);
   elements.dailyAverageNote.textContent = `${largest.item}｜匯率 ${formatRate(largest.rate)}`;
+  elements.debitCardTotal.textContent = "-";
+  elements.debitCardTwd.textContent = "行前花費不適用";
+  elements.primeVisaTotal.textContent = "-";
+  elements.primeVisaTwd.textContent = "行前花費不適用";
+  elements.campusCardTotal.textContent = "-";
+  elements.campusCardTwd.textContent = "行前花費不適用";
+  elements.cashTotal.textContent = "-";
+  elements.cashTwd.textContent = "行前花費不適用";
 }
 
 function renderPretripCategoryBars() {
@@ -880,7 +920,7 @@ function getLocalDateValue(date = new Date()) {
 
 function renderCampusCardSummary(items) {
   const spent = items
-    .filter((item) => item.type === "expense" && item.paymentMethod === "學生證")
+    .filter((item) => item.type === "expense" && item.paymentMethod === CAMPUS_CARD_PAYMENT_METHOD)
     .reduce((total, item) => total + item.amount, 0);
   const balance = CAMPUS_CARD_STARTING_BALANCE - spent;
 

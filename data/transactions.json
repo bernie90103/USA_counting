@@ -1,5 +1,25 @@
 [
   {
+    "id": "12c5e588-95d7-4cba-a14f-b2a90e4d7282",
+    "date": "2026-07-20",
+    "type": "expense",
+    "category": "房租",
+    "merchant": "Marshall",
+    "paymentMethod": "chase debit card",
+    "note": "8月",
+    "amount": 1486.95
+  },
+  {
+    "id": "153747b3-4fcd-4aa8-af76-e541e589f199",
+    "date": "2026-07-20",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Starbucks HSC",
+    "paymentMethod": "學生證",
+    "note": "咖啡",
+    "amount": 4.95
+  },
+  {
     "id": "e39a4ea6-d1d8-4217-9b98-a61fcd2d4eea",
     "date": "2026-07-18",
     "type": "expense",

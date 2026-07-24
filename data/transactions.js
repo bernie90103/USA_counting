@@ -1,5 +1,15 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "84c212a2-5c5c-4a0d-a7d5-a28ccf4e86c5",
+    "date": "2026-07-23",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Mein Bowl",
+    "paymentMethod": "學生證",
+    "note": "便當",
+    "amount": 6.23
+  },
+  {
     "id": "ad59fed1-053a-4e43-b70e-53e8699d758c",
     "date": "2026-07-21",
     "type": "expense",

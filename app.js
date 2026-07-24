@@ -34,6 +34,8 @@ const MERCHANTS = [
   "Chick-fil-A",
   "Starbucks HSC",
   "Mein Bowl",
+  "Pepsi Vending API",
+  "WEPA",
   "Panera Bread",
   "Vocelli Pizza",
   "The Den by Denny's",
@@ -76,6 +78,7 @@ const SCHOOL_MEAL_MERCHANTS = [
   "C-Store",
   "UAB 校內餐飲",
 ];
+const OTHER_MERCHANTS = ["Pepsi Vending API", "WEPA"];
 const GROCERY_MERCHANTS = [
   "Publix",
   "Trader Joe's",
@@ -110,6 +113,7 @@ const CATEGORY_MERCHANTS = {
   學餐: SCHOOL_MEAL_MERCHANTS,
   外食: DINING_MERCHANTS,
   網購: ONLINE_SHOPPING_MERCHANTS,
+  其他: OTHER_MERCHANTS,
   "rec center": REC_CENTER_INCOME_MERCHANTS,
   學校: SCHOOL_INCOME_MERCHANTS,
 };

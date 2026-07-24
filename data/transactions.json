@@ -1,5 +1,45 @@
 [
   {
+    "id": "cc-20260723-chickfila",
+    "date": "2026-07-23",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Chick-fil-A",
+    "paymentMethod": "學生證",
+    "note": "",
+    "amount": 6.86
+  },
+  {
+    "id": "cc-20260723-mein-bowl",
+    "date": "2026-07-23",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Mein Bowl",
+    "paymentMethod": "學生證",
+    "note": "",
+    "amount": 6.96
+  },
+  {
+    "id": "cc-20260619-pepsi",
+    "date": "2026-06-19",
+    "type": "expense",
+    "category": "其他",
+    "merchant": "Pepsi Vending API",
+    "paymentMethod": "學生證",
+    "note": "販賣機",
+    "amount": 2.35
+  },
+  {
+    "id": "cc-20260602-wepa",
+    "date": "2026-06-02",
+    "type": "expense",
+    "category": "其他",
+    "merchant": "WEPA",
+    "paymentMethod": "學生證",
+    "note": "影印",
+    "amount": 0.45
+  },
+  {
     "id": "84c212a2-5c5c-4a0d-a7d5-a28ccf4e86c5",
     "date": "2026-07-23",
     "type": "expense",

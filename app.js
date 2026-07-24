@@ -3,7 +3,7 @@ const RATE_KEY = "us-ledger-exchange-rate";
 const RATE_UPDATED_KEY = "us-ledger-exchange-rate-updated";
 const LIVE_RATE_URL = "https://fxapi.app/api/USD/TWD.json";
 const PRETRIP_FILTER = "pretrip";
-const CAMPUS_CARD_STARTING_BALANCE = 500;
+const CAMPUS_CARD_STARTING_BALANCE = 1180;
 const CAMPUS_CARD_PAYMENT_METHOD = "學生證";
 const CASH_PAYMENT_METHOD = "現金";
 const EXPENSE_CATEGORIES = ["房租", "超市", "學餐", "外食", "網購", "交通", "學費", "醫療", "娛樂", "其他"];
@@ -925,7 +925,7 @@ function renderCampusCardSummary(items) {
   const balance = CAMPUS_CARD_STARTING_BALANCE - spent;
 
   elements.campusCardBalance.textContent = formatUsd(balance);
-  elements.campusCardNote.textContent = `5/11 加值 ${formatUsd(CAMPUS_CARD_STARTING_BALANCE)}，已扣 ${formatUsd(spent)}`;
+  elements.campusCardNote.textContent = `已加值 ${formatUsd(CAMPUS_CARD_STARTING_BALANCE)}，已扣 ${formatUsd(spent)}`;
 }
 
 function ensureCategoryOption(category) {

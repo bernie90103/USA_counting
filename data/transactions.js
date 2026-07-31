@@ -1,5 +1,45 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "eba403ad-9ebe-4627-92d5-27c299d853d7",
+    "date": "2026-07-30",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Starbucks HSC",
+    "paymentMethod": "學生證",
+    "note": "咖啡大",
+    "amount": 5.45
+  },
+  {
+    "id": "4c5b1403-9aac-43c1-a4e3-865074e8f3be",
+    "date": "2026-07-30",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Chick-fil-A",
+    "paymentMethod": "學生證",
+    "note": "漢堡套餐",
+    "amount": 11.12
+  },
+  {
+    "id": "992ee0fa-fda8-4f47-abe3-a486b4514f09",
+    "date": "2026-07-29",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Starbucks HSC",
+    "paymentMethod": "學生證",
+    "note": "美式咖啡中",
+    "amount": 5.23
+  },
+  {
+    "id": "84aba338-ac57-4cc5-acda-d167e1cb7ccd",
+    "date": "2026-07-29",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Chick-fil-A",
+    "paymentMethod": "學生證",
+    "note": "漢堡套餐",
+    "amount": 11.39
+  },
+  {
     "id": "d8475736-a6d1-44d4-a208-d6905dee5bc8",
     "date": "2026-07-28",
     "type": "expense",

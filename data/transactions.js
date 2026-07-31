@@ -1,5 +1,25 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "d9ca7c64-e522-4338-9da6-1639d72fb678",
+    "date": "2026-07-31",
+    "type": "income",
+    "category": "rec center",
+    "merchant": "lifeguard",
+    "paymentMethod": "chase debit card",
+    "note": "救生員7/12-7/25",
+    "amount": 237.45
+  },
+  {
+    "id": "6d692b11-79c5-4351-9d51-551760637dbd",
+    "date": "2026-07-31",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Chick-fil-A",
+    "paymentMethod": "學生證",
+    "note": "漢堡套餐午餐",
+    "amount": 11.83
+  },
+  {
     "id": "eba403ad-9ebe-4627-92d5-27c299d853d7",
     "date": "2026-07-30",
     "type": "expense",

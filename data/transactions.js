@@ -1,5 +1,15 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "7b022570-cec0-49c3-a5f9-41310c3a4386",
+    "date": "2026-07-31",
+    "type": "expense",
+    "category": "外食",
+    "merchant": "其他",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "WENDY'S",
+    "amount": 15.6
+  },
+  {
     "id": "d9ca7c64-e522-4338-9da6-1639d72fb678",
     "date": "2026-07-31",
     "type": "income",

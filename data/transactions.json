@@ -1,5 +1,45 @@
 [
   {
+    "id": "0b796305-9ed2-4034-bdd5-3dae292e2661",
+    "date": "2026-08-01",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Walmart",
+    "paymentMethod": "現金",
+    "note": "吃的",
+    "amount": 63.22
+  },
+  {
+    "id": "65f07e96-9867-4a33-9d34-043b567eae94",
+    "date": "2026-08-02",
+    "type": "expense",
+    "category": "外食",
+    "merchant": "其他",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "披薩",
+    "amount": 10.44
+  },
+  {
+    "id": "77410130-7e16-44cb-b4a2-8e5d951c071c",
+    "date": "2026-08-03",
+    "type": "expense",
+    "category": "外食",
+    "merchant": "其他",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "麥當勞",
+    "amount": 16.12
+  },
+  {
+    "id": "1454dd43-3a93-43f4-be5f-428bc9904c62",
+    "date": "2026-08-03",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Starbucks HSC",
+    "paymentMethod": "學生證",
+    "note": "冰美式",
+    "amount": 5.45
+  },
+  {
     "id": "7b022570-cec0-49c3-a5f9-41310c3a4386",
     "date": "2026-07-31",
     "type": "expense",

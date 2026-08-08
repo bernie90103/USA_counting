@@ -1,5 +1,35 @@
 [
   {
+    "id": "574e91ff-42b5-456c-a4b7-0b0b5fb262d1",
+    "date": "2026-08-07",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "好市多",
+    "paymentMethod": "chase debit card",
+    "note": "蘋果汁/蔥",
+    "amount": 18.04
+  },
+  {
+    "id": "7f29a9fa-5313-4840-a8b8-05507d905ff1",
+    "date": "2026-08-07",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Trader Joe's",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "牛奶/餅乾/袋子",
+    "amount": 20.37
+  },
+  {
+    "id": "606bc850-c345-4d95-83cd-4cb8f8ce2b78",
+    "date": "2026-08-07",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Sam's Club",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "牛肉/羊肉",
+    "amount": 47.59
+  },
+  {
     "id": "aef81a5a-ae87-485c-8e5a-68e69205af66",
     "date": "2026-08-07",
     "type": "expense",

@@ -1,5 +1,15 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "4188bce9-42fa-4029-8959-45ca4d355536",
+    "date": "2026-08-08",
+    "type": "expense",
+    "category": "外食",
+    "merchant": "其他",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "Karmas",
+    "amount": 8.01
+  },
+  {
     "id": "574e91ff-42b5-456c-a4b7-0b0b5fb262d1",
     "date": "2026-08-07",
     "type": "expense",

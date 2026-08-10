@@ -1,5 +1,25 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "34e326a7-8384-486f-9776-8350dcdb3a99",
+    "date": "2026-08-07",
+    "type": "expense",
+    "category": "外食",
+    "merchant": "其他",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "麥當勞",
+    "amount": 9.23
+  },
+  {
+    "id": "e509a4be-b190-487d-b9b5-204d289c5784",
+    "date": "2026-08-09",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "好市多",
+    "paymentMethod": "chase debit card",
+    "note": "熟食",
+    "amount": 14.91
+  },
+  {
     "id": "4188bce9-42fa-4029-8959-45ca4d355536",
     "date": "2026-08-08",
     "type": "expense",

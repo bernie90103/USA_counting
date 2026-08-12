@@ -1,5 +1,35 @@
 [
   {
+    "id": "bc7d38d1-2f77-49dc-bebb-ddcc4ceaf3be",
+    "date": "2026-08-11",
+    "type": "expense",
+    "category": "外食",
+    "merchant": "一般外食",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "CIRCLEK DRINK",
+    "amount": 1.09
+  },
+  {
+    "id": "4ad246d3-021a-4227-a515-0966df013e5e",
+    "date": "2026-08-11",
+    "type": "expense",
+    "category": "外食",
+    "merchant": "其他",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "YUMMY BOWL",
+    "amount": 17.59
+  },
+  {
+    "id": "118d9967-2d0f-4736-ad50-b26c1bb9a4c9",
+    "date": "2026-08-11",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Chick-fil-A",
+    "paymentMethod": "學生證",
+    "note": "",
+    "amount": 11.12
+  },
+  {
     "id": "34e326a7-8384-486f-9776-8350dcdb3a99",
     "date": "2026-08-07",
     "type": "expense",

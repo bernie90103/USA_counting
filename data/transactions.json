@@ -1,5 +1,35 @@
 [
   {
+    "id": "957aae52-8893-4b40-8bb0-e81eaa9b8873",
+    "date": "2026-08-13",
+    "type": "expense",
+    "category": "學費",
+    "merchant": "其他",
+    "paymentMethod": "chase debit card",
+    "note": "chatgpt",
+    "amount": 21.6
+  },
+  {
+    "id": "1eed41fc-bf08-4289-8df1-610b11bec07f",
+    "date": "2026-08-13",
+    "type": "expense",
+    "category": "網購",
+    "merchant": "Amazon",
+    "paymentMethod": "chase debit card",
+    "note": "床單/保潔墊",
+    "amount": 27.18
+  },
+  {
+    "id": "50fe39c0-2ea8-4c89-b2e6-6321e7d527f9",
+    "date": "2026-08-12",
+    "type": "expense",
+    "category": "娛樂",
+    "merchant": "其他",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "剪頭髮",
+    "amount": 29
+  },
+  {
     "id": "bc7d38d1-2f77-49dc-bebb-ddcc4ceaf3be",
     "date": "2026-08-11",
     "type": "expense",

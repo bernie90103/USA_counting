@@ -1,5 +1,55 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "10c99144-2195-4bae-8422-dee67bec631b",
+    "date": "2026-08-14",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Chick-fil-A",
+    "paymentMethod": "學生證",
+    "note": "午餐",
+    "amount": 10.22
+  },
+  {
+    "id": "82c22ce8-b1b5-4fb5-8335-de54a6f18f4a",
+    "date": "2026-08-15",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Sam's Club",
+    "paymentMethod": "chase debit card",
+    "note": "蝦排熟食",
+    "amount": 15.82
+  },
+  {
+    "id": "d71983fc-b0a1-4105-8bbf-0b876b4e235b",
+    "date": "2026-08-14",
+    "type": "expense",
+    "category": "外食",
+    "merchant": "一般外食",
+    "paymentMethod": "chase debit card",
+    "note": "中式餐廳",
+    "amount": 26.96
+  },
+  {
+    "id": "f2addc5c-22dc-4149-ad89-0bde5f44b3bc",
+    "date": "2026-08-15",
+    "type": "expense",
+    "category": "外食",
+    "merchant": "其他",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "toca bell",
+    "amount": 18.57
+  },
+  {
+    "id": "394d39ea-0c92-4446-930f-6569fd430244",
+    "date": "2026-08-14",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Oriental Market",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "餅乾",
+    "amount": 2.16
+  },
+  {
     "id": "957aae52-8893-4b40-8bb0-e81eaa9b8873",
     "date": "2026-08-13",
     "type": "expense",

@@ -1,5 +1,35 @@
 [
   {
+    "id": "72a843aa-00c6-43ba-a716-443ffedf452a",
+    "date": "2026-08-18",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Walmart",
+    "paymentMethod": "現金",
+    "note": "地毯/抹布/浴室用品",
+    "amount": 45.73
+  },
+  {
+    "id": "54a52da2-50b2-47d7-b32f-e5b0550823bd",
+    "date": "2026-08-18",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "好市多",
+    "paymentMethod": "chase debit card",
+    "note": "牛肉/衣架/冷凍食品/牛奶",
+    "amount": 86.1
+  },
+  {
+    "id": "d83b369f-7900-4b66-a422-281230c7a947",
+    "date": "2026-08-18",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "好市多",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "熱狗",
+    "amount": 1.64
+  },
+  {
     "id": "19ea5192-07b4-4f5a-85b8-9cd5f226fe6b",
     "date": "2026-08-14",
     "type": "income",

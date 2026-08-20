@@ -1,5 +1,25 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "cf14ef5c-66f7-4025-b359-5d665d3d8b4b",
+    "date": "2026-08-20",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Chick-fil-A",
+    "paymentMethod": "學生證",
+    "note": "",
+    "amount": 10.73
+  },
+  {
+    "id": "aba68aa2-cf82-434b-b17f-dd9bb05eb8c1",
+    "date": "2026-08-20",
+    "type": "expense",
+    "category": "網購",
+    "merchant": "Amazon",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "家具/廚具",
+    "amount": 58.16
+  },
+  {
     "id": "72a843aa-00c6-43ba-a716-443ffedf452a",
     "date": "2026-08-18",
     "type": "expense",

@@ -1,5 +1,35 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "efeec78d-a49e-4ce9-9287-30a123b7a43b",
+    "date": "2026-08-21",
+    "type": "expense",
+    "category": "外食",
+    "merchant": "一般外食",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "吃飯",
+    "amount": 17.59
+  },
+  {
+    "id": "62f31ae0-b95b-4b0b-b25c-75dbfe7d16c1",
+    "date": "2026-08-21",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Hometown market",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "米酒醬油鹽調味料",
+    "amount": 39.9
+  },
+  {
+    "id": "2f2093f2-837c-4c5b-8c21-d29e08e4f56b",
+    "date": "2026-08-21",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "其他",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "氣炸鍋/地墊/烤盤",
+    "amount": 76.96
+  },
+  {
     "id": "cf14ef5c-66f7-4025-b359-5d665d3d8b4b",
     "date": "2026-08-20",
     "type": "expense",

@@ -1,5 +1,45 @@
 [
   {
+    "id": "cd907169-fa81-4e38-bc7c-981041d9c92c",
+    "date": "2026-08-24",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "好市多",
+    "paymentMethod": "chase debit card",
+    "note": "豬雞牛/日常用品/雞塊/飲料",
+    "amount": 171.2
+  },
+  {
+    "id": "51c5dd64-855f-4372-8efc-dc231aa219c6",
+    "date": "2026-08-24",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "好市多",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "熱狗",
+    "amount": 1.64
+  },
+  {
+    "id": "05deb86d-6cfd-4f23-a23f-39f9c163271d",
+    "date": "2026-08-24",
+    "type": "expense",
+    "category": "網購",
+    "merchant": "Amazon",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "玻璃保鮮盒",
+    "amount": 32.9
+  },
+  {
+    "id": "880ce19f-9378-43d9-9290-c016749aef23",
+    "date": "2026-08-24",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Chick-fil-A",
+    "paymentMethod": "學生證",
+    "note": "早餐",
+    "amount": 9.47
+  },
+  {
     "id": "efeec78d-a49e-4ce9-9287-30a123b7a43b",
     "date": "2026-08-21",
     "type": "expense",

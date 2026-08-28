@@ -1,5 +1,15 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "335a7395-4cce-4664-85e1-a95e336052f4",
+    "date": "2026-08-27",
+    "type": "expense",
+    "category": "網購",
+    "merchant": "Amazon",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "洗衣精/Rinse",
+    "amount": 17.25
+  },
+  {
     "id": "8e1f997c-1d2c-4d54-bdeb-716fbae3d505",
     "date": "2026-08-27",
     "type": "expense",

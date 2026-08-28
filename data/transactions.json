@@ -1,5 +1,85 @@
 [
   {
+    "id": "8e1f997c-1d2c-4d54-bdeb-716fbae3d505",
+    "date": "2026-08-27",
+    "type": "expense",
+    "category": "網購",
+    "merchant": "Amazon",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "ZeroWater濾水器",
+    "amount": 28.34
+  },
+  {
+    "id": "326ee15d-e551-4e22-83f5-f3114c4eb177",
+    "date": "2026-08-27",
+    "type": "expense",
+    "category": "網購",
+    "merchant": "Amazon",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "身體保濕乳液",
+    "amount": 20.92
+  },
+  {
+    "id": "843a86d0-56b5-4f7c-94fb-bf1061dc13fe",
+    "date": "2026-08-27",
+    "type": "expense",
+    "category": "網購",
+    "merchant": "Amazon",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "痘痘藥膏",
+    "amount": 10.45
+  },
+  {
+    "id": "ff249a2f-2ddf-4dbb-9444-0db9422fb9c9",
+    "date": "2026-08-27",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Walmart",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "茶",
+    "amount": 8.58
+  },
+  {
+    "id": "0004e4ae-5823-4ab9-88d2-4bc3bdfa1a00",
+    "date": "2026-08-27",
+    "type": "expense",
+    "category": "外食",
+    "merchant": "一般外食",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "PANDA EXPRESS/晚餐",
+    "amount": 11.55
+  },
+  {
+    "id": "22c2e3d1-1fe0-49f5-899c-77158df782c5",
+    "date": "2026-08-27",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "The Commons on the Green",
+    "paymentMethod": "學生證",
+    "note": "吃到飽午餐",
+    "amount": 14.85
+  },
+  {
+    "id": "ab862dcb-1b4b-4179-85c5-fc071f49c105",
+    "date": "2026-08-26",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "The Commons on the Green",
+    "paymentMethod": "學生證",
+    "note": "吃到飽午餐",
+    "amount": 14.85
+  },
+  {
+    "id": "c58b9774-1a2a-4130-82b8-cba287247574",
+    "date": "2026-08-25",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "The Commons on the Green",
+    "paymentMethod": "學生證",
+    "note": "吃到飽午餐",
+    "amount": 14.85
+  },
+  {
     "id": "cd907169-fa81-4e38-bc7c-981041d9c92c",
     "date": "2026-08-24",
     "type": "expense",

@@ -1,5 +1,15 @@
 [
   {
+    "id": "ba201224-6e11-4b48-b0e8-5aab08f88199",
+    "date": "2026-08-28",
+    "type": "income",
+    "category": "rec center",
+    "merchant": "lifeguard",
+    "paymentMethod": "chase debit card",
+    "note": "8/9-8/22",
+    "amount": 678.68
+  },
+  {
     "id": "335a7395-4cce-4664-85e1-a95e336052f4",
     "date": "2026-08-27",
     "type": "expense",

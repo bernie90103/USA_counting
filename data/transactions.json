@@ -1,5 +1,25 @@
 [
   {
+    "id": "8988947f-1bcf-48bd-adae-4780be41c4e4",
+    "date": "2026-08-30",
+    "type": "expense",
+    "category": "交通",
+    "merchant": "",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "LIFT",
+    "amount": 2.96
+  },
+  {
+    "id": "434b6fba-226a-4e84-852a-221f9ca6891d",
+    "date": "2026-08-29",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Publix",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "吃的",
+    "amount": 10.46
+  },
+  {
     "id": "ba201224-6e11-4b48-b0e8-5aab08f88199",
     "date": "2026-08-28",
     "type": "income",

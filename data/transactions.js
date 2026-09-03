@@ -1,5 +1,15 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "e8543529-1613-4dad-b664-d27fd11c3b2d",
+    "date": "2026-09-01",
+    "type": "expense",
+    "category": "房租",
+    "merchant": "Marshall",
+    "paymentMethod": "chase debit card",
+    "note": "",
+    "amount": 1424.74
+  },
+  {
     "id": "8988947f-1bcf-48bd-adae-4780be41c4e4",
     "date": "2026-08-30",
     "type": "expense",

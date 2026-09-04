@@ -1,5 +1,15 @@
 [
   {
+    "id": "11eec009-f3c1-434d-bf98-89cf45df61ba",
+    "date": "2026-09-04",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Starbucks HSC",
+    "paymentMethod": "學生證",
+    "note": "coffee lata",
+    "amount": 5.78
+  },
+  {
     "id": "94bd48f1-fdbc-4b44-94ab-e1e038e4444f",
     "date": "2026-09-03",
     "type": "expense",

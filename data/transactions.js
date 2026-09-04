@@ -1,5 +1,25 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "99337ddc-d49f-49f5-96e5-5eb4147496cb",
+    "date": "2026-08-31",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Chick-fil-A",
+    "paymentMethod": "學生證",
+    "note": "晚餐",
+    "amount": 10.73
+  },
+  {
+    "id": "b6fc81d9-53ae-4dc7-adb2-d087f2fdef7c",
+    "date": "2026-08-31",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Mein Bowl",
+    "paymentMethod": "學生證",
+    "note": "午餐",
+    "amount": 10.99
+  },
+  {
     "id": "11eec009-f3c1-434d-bf98-89cf45df61ba",
     "date": "2026-09-04",
     "type": "expense",

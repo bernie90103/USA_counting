@@ -3,9 +3,15 @@ const RATE_KEY = "us-ledger-exchange-rate";
 const RATE_UPDATED_KEY = "us-ledger-exchange-rate-updated";
 const LIVE_RATE_URL = "https://fxapi.app/api/USD/TWD.json";
 const PRETRIP_FILTER = "pretrip";
-const CAMPUS_CARD_STARTING_BALANCE = 1180;
+const ALL_MONTHS_FILTER = "all";
+const CAMPUS_CARD_DEPOSITS = [
+  { date: "2026-05-01", amount: 680, note: "初始開卡加值" },
+  { date: "2026-05-11", amount: 500, note: "加值 $500.00" },
+];
+const CAMPUS_CARD_STARTING_BALANCE = CAMPUS_CARD_DEPOSITS.reduce((sum, item) => sum + item.amount, 0);
 const CAMPUS_CARD_PAYMENT_METHOD = "學生證";
 const CASH_PAYMENT_METHOD = "現金";
+const TAIWAN_CARD_PAYMENT_METHOD = "台灣信用卡";
 const EXPENSE_CATEGORIES = ["房租", "超市", "學餐", "外食", "網購", "交通", "學費", "醫療", "娛樂", "其他"];
 const INCOME_CATEGORIES = ["rec center", "學校"];
 const MERCHANTS = [
@@ -239,8 +245,19 @@ const elements = {
   campusCardTwd: document.querySelector("#campusCardTwd"),
   cashTotal: document.querySelector("#cashTotal"),
   cashTwd: document.querySelector("#cashTwd"),
+  taiwanCardTotal: document.querySelector("#taiwanCardTotal"),
+  taiwanCardTwd: document.querySelector("#taiwanCardTwd"),
   categoryBars: document.querySelector("#categoryBars"),
   merchantBars: document.querySelector("#merchantBars"),
+  monthlyTrendChart: document.querySelector("#monthlyTrendChart"),
+  trendSection: document.querySelector("#trendSection"),
+  searchFilter: document.querySelector("#searchFilter"),
+  categoryPills: document.querySelector("#categoryPills"),
+  filterCount: document.querySelector("#filterCount"),
+  clearFilters: document.querySelector("#clearFilters"),
+  sortIconDate: document.querySelector("#sortIconDate"),
+  sortIconUsd: document.querySelector("#sortIconUsd"),
+  sortIconTwd: document.querySelector("#sortIconTwd"),
   transactionRows: document.querySelector("#transactionRows"),
   emptyState: document.querySelector("#emptyState"),
   exportJson: document.querySelector("#exportJson"),
@@ -255,6 +272,10 @@ const elements = {
 let transactions = [];
 let selectedMonth = "";
 let editingId = "";
+let searchQuery = "";
+let filterCategory = "";
+let sortField = "date";
+let sortOrder = "desc";
 
 document.body.classList.toggle("edit-mode", isEditMode);
 document.body.classList.toggle("view-mode", !isEditMode);
@@ -373,6 +394,12 @@ if (isEditMode) {
 elements.transactionRows.addEventListener("click", (event) => {
   if (!isEditMode) return;
 
+  const duplicateButton = event.target.closest("[data-duplicate-id]");
+  if (duplicateButton) {
+    duplicateTransaction(duplicateButton.dataset.duplicateId);
+    return;
+  }
+
   const editButton = event.target.closest("[data-edit-id]");
   if (editButton) {
     beginEdit(editButton.dataset.editId);
@@ -405,6 +432,7 @@ window.addEventListener("storage", (event) => {
 init();
 
 async function init() {
+  setupTableControls();
   transactions = await loadTransactions();
   render();
   refreshLiveRate({ quiet: true });
@@ -412,7 +440,9 @@ async function init() {
 
 async function refreshLiveRate(options = {}) {
   const { quiet = false } = options;
+  const icon = elements.refreshRate?.querySelector(".refresh-icon");
   elements.refreshRate.disabled = true;
+  if (icon) icon.classList.add("spinning");
   if (!quiet) setRateStatus("正在更新 USD → TWD 匯率...");
 
   try {
@@ -436,6 +466,7 @@ async function refreshLiveRate(options = {}) {
     render();
   } finally {
     elements.refreshRate.disabled = false;
+    if (icon) icon.classList.remove("spinning");
   }
 }
 
@@ -648,18 +679,34 @@ function makeId() {
 
 function render() {
   const months = getAvailableMonths();
-  if (!selectedMonth || (selectedMonth !== PRETRIP_FILTER && !months.includes(selectedMonth))) {
+  if (
+    !selectedMonth ||
+    (selectedMonth !== PRETRIP_FILTER && selectedMonth !== ALL_MONTHS_FILTER && !months.includes(selectedMonth))
+  ) {
     selectedMonth = months[0] || new Date().toISOString().slice(0, 7);
   }
 
   renderMonthOptions(months);
 
   if (selectedMonth === PRETRIP_FILTER) {
+    if (elements.trendSection) elements.trendSection.hidden = true;
     renderPretripStats();
     renderCampusCardSummary(transactions);
     renderPretripCategoryBars();
     renderEmptyMerchantBars("行前花費沒有店家資料。");
     renderPretripRows();
+    return;
+  }
+
+  if (elements.trendSection) elements.trendSection.hidden = false;
+  renderMonthlyTrendChart(transactions);
+
+  if (selectedMonth === ALL_MONTHS_FILTER) {
+    renderAllTimeStats(transactions);
+    renderCampusCardSummary(transactions);
+    renderCategoryBars(transactions);
+    renderMerchantBars(transactions);
+    renderCurrentFilteredRows();
     return;
   }
 
@@ -671,7 +718,7 @@ function render() {
   renderCampusCardSummary(transactions);
   renderCategoryBars(filtered);
   renderMerchantBars(filtered);
-  renderRows(filtered);
+  renderCurrentFilteredRows();
 }
 
 function getAvailableMonths() {
@@ -680,6 +727,12 @@ function getAvailableMonths() {
 
 function renderMonthOptions(months) {
   elements.monthFilter.innerHTML = "";
+
+  const allOption = document.createElement("option");
+  allOption.value = ALL_MONTHS_FILTER;
+  allOption.textContent = "全部歷史 (累計)";
+  allOption.selected = selectedMonth === ALL_MONTHS_FILTER;
+  elements.monthFilter.append(allOption);
 
   const list = months.length ? months : [new Date().toISOString().slice(0, 7)];
   for (const month of list) {
@@ -718,6 +771,9 @@ function renderStats(items) {
   const cashExpense = items
     .filter((item) => item.type === "expense" && item.paymentMethod === CASH_PAYMENT_METHOD)
     .reduce((total, item) => total + item.amount, 0);
+  const taiwanCardExpense = items
+    .filter((item) => item.type === "expense" && item.paymentMethod === TAIWAN_CARD_PAYMENT_METHOD)
+    .reduce((total, item) => total + item.amount, 0);
   const balance = income - expense;
   const average = expense / getElapsedDaysInSelectedMonth();
 
@@ -736,6 +792,57 @@ function renderStats(items) {
   elements.campusCardTwd.textContent = formatTwdLine(campusCardExpense);
   elements.cashTotal.textContent = formatUsd(cashExpense);
   elements.cashTwd.textContent = formatTwdLine(cashExpense);
+  elements.taiwanCardTotal.textContent = formatUsd(taiwanCardExpense);
+  elements.taiwanCardTwd.textContent = formatTwdLine(taiwanCardExpense);
+}
+
+function renderAllTimeStats(items) {
+  elements.monthlyIncomeLabel.textContent = "歷史總收入";
+  elements.monthlyExpenseLabel.textContent = "歷史總支出";
+  elements.monthlyBalanceLabel.textContent = "歷史總結餘";
+  elements.dailyAverageLabel.textContent = "平均每月支出";
+
+  const months = getAvailableMonths();
+  const monthCount = Math.max(months.length, 1);
+  elements.dailyAverageNote.textContent = `累計共 ${monthCount} 個月份`;
+
+  const income = sumByType(items, "income");
+  const expense = sumByType(items, "expense");
+  const debitCardExpense = items
+    .filter((item) => item.type === "expense" && item.paymentMethod === CHASE_DEBIT_PAYMENT_METHOD)
+    .reduce((total, item) => total + item.amount, 0);
+  const primeVisaExpense = items
+    .filter((item) => item.type === "expense" && item.paymentMethod === PRIME_VISA_PAYMENT_METHOD)
+    .reduce((total, item) => total + item.amount, 0);
+  const campusCardExpense = items
+    .filter((item) => item.type === "expense" && item.paymentMethod === CAMPUS_CARD_PAYMENT_METHOD)
+    .reduce((total, item) => total + item.amount, 0);
+  const cashExpense = items
+    .filter((item) => item.type === "expense" && item.paymentMethod === CASH_PAYMENT_METHOD)
+    .reduce((total, item) => total + item.amount, 0);
+  const taiwanCardExpense = items
+    .filter((item) => item.type === "expense" && item.paymentMethod === TAIWAN_CARD_PAYMENT_METHOD)
+    .reduce((total, item) => total + item.amount, 0);
+  const balance = income - expense;
+  const averageMonthly = expense / monthCount;
+
+  elements.monthlyIncome.textContent = formatUsd(income);
+  elements.monthlyIncomeTwd.textContent = formatTwdLine(income);
+  elements.monthlyExpense.textContent = formatUsd(expense);
+  elements.monthlyExpenseTwd.textContent = formatTwdLine(expense);
+  elements.monthlyBalance.textContent = formatUsd(balance);
+  elements.monthlyBalanceTwd.textContent = formatTwdLine(balance);
+  elements.dailyAverage.textContent = formatUsd(averageMonthly || 0);
+  elements.debitCardTotal.textContent = formatUsd(debitCardExpense);
+  elements.debitCardTwd.textContent = formatTwdLine(debitCardExpense);
+  elements.primeVisaTotal.textContent = formatUsd(primeVisaExpense);
+  elements.primeVisaTwd.textContent = formatTwdLine(primeVisaExpense);
+  elements.campusCardTotal.textContent = formatUsd(campusCardExpense);
+  elements.campusCardTwd.textContent = formatTwdLine(campusCardExpense);
+  elements.cashTotal.textContent = formatUsd(cashExpense);
+  elements.cashTwd.textContent = formatTwdLine(cashExpense);
+  elements.taiwanCardTotal.textContent = formatUsd(taiwanCardExpense);
+  elements.taiwanCardTwd.textContent = formatTwdLine(taiwanCardExpense);
 }
 
 function renderPretripStats() {
@@ -767,6 +874,8 @@ function renderPretripStats() {
   elements.campusCardTwd.textContent = "行前花費不適用";
   elements.cashTotal.textContent = "-";
   elements.cashTwd.textContent = "行前花費不適用";
+  elements.taiwanCardTotal.textContent = "-";
+  elements.taiwanCardTwd.textContent = "行前花費不適用";
 }
 
 function renderPretripCategoryBars() {
@@ -775,12 +884,14 @@ function renderPretripCategoryBars() {
     ["非必要花費", sumPretripByGroup("非必要花費")],
   ];
   const max = Math.max(...groups.map((group) => group[1]));
+  const total = groups.reduce((sum, g) => sum + g[1], 0);
 
   elements.categoryBars.innerHTML = "";
   for (const [category, amount] of groups) {
+    const pct = total > 0 ? ((amount / total) * 100).toFixed(1) : "0.0";
     const node = elements.barTemplate.content.cloneNode(true);
     node.querySelector(".category-name").textContent = category;
-    node.querySelector(".category-amount").textContent = formatTwdAmount(amount);
+    node.querySelector(".category-amount").innerHTML = `${escapeHtml(formatTwdAmount(amount))} <span class="category-pct">(${pct}%)</span>`;
     node.querySelector(".bar-fill").style.width = `${Math.max((amount / max) * 100, 4)}%`;
     elements.categoryBars.append(node);
   }
@@ -832,6 +943,7 @@ function getExpenseTotals(items, field) {
 function renderBars(container, totals, emptyMessage) {
   const entries = Object.entries(totals).sort((a, b) => b[1] - a[1]);
   const max = Math.max(...entries.map((entry) => entry[1]), 0);
+  const total = entries.reduce((sum, entry) => sum + entry[1], 0);
 
   container.innerHTML = "";
 
@@ -841,9 +953,10 @@ function renderBars(container, totals, emptyMessage) {
   }
 
   for (const [label, amount] of entries) {
+    const pct = total > 0 ? ((amount / total) * 100).toFixed(1) : "0.0";
     const node = elements.barTemplate.content.cloneNode(true);
     node.querySelector(".category-name").textContent = label;
-    node.querySelector(".category-amount").textContent = formatUsd(amount);
+    node.querySelector(".category-amount").innerHTML = `${escapeHtml(formatUsd(amount))} <span class="category-pct">(${pct}%)</span>`;
     node.querySelector(".bar-fill").style.width = `${Math.max((amount / max) * 100, 4)}%`;
     container.append(node);
   }
@@ -867,6 +980,7 @@ function renderRows(items) {
       <td class="amount">${formatUsd(signedAmount)}</td>
       <td class="amount">${formatTwd(signedAmount)}</td>
       <td class="edit-only row-actions">
+        <button class="copy-button" type="button" data-duplicate-id="${escapeHtml(item.id)}">複製</button>
         <button class="secondary-button" type="button" data-edit-id="${escapeHtml(item.id)}">修改</button>
         <button class="delete-button" type="button" data-delete-id="${escapeHtml(item.id)}">刪除</button>
       </td>
@@ -922,14 +1036,221 @@ function getLocalDateValue(date = new Date()) {
   return `${year}-${month}-${day}`;
 }
 
+function duplicateTransaction(id) {
+  const transaction = transactions.find((item) => item.id === id);
+  if (!transaction) return;
+
+  resetForm();
+  elements.date.value = getLocalDateValue();
+  elements.type.value = transaction.type;
+  syncCategoryOptionsForType(transaction.category);
+  elements.category.value = transaction.category;
+  renderMerchantOptions(transaction.category, transaction.merchant);
+  elements.merchant.value = transaction.merchant || "";
+  elements.paymentMethod.value = transaction.paymentMethod || inferPaymentMethod(transaction);
+  elements.amount.value = transaction.amount;
+  elements.note.value = transaction.note || "";
+  elements.saveTransaction.textContent = "加入記帳 (已複製)";
+  elements.cancelEdit.hidden = false;
+  elements.form.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
 function renderCampusCardSummary(items) {
   const spent = items
     .filter((item) => item.type === "expense" && item.paymentMethod === CAMPUS_CARD_PAYMENT_METHOD)
     .reduce((total, item) => total + item.amount, 0);
-  const balance = CAMPUS_CARD_STARTING_BALANCE - spent;
+  const totalDeposited = CAMPUS_CARD_STARTING_BALANCE;
+  const balance = totalDeposited - spent;
 
   elements.campusCardBalance.textContent = formatUsd(balance);
-  elements.campusCardNote.textContent = `已加值 ${formatUsd(CAMPUS_CARD_STARTING_BALANCE)}，已扣 ${formatUsd(spent)}`;
+  const depositCount = CAMPUS_CARD_DEPOSITS.length;
+  const lastDeposit = CAMPUS_CARD_DEPOSITS[depositCount - 1];
+  const lastDepositNote = lastDeposit ? ` (最近 ${lastDeposit.date.slice(5)} 加值 $${lastDeposit.amount})` : "";
+  elements.campusCardNote.textContent = `已加值 ${formatUsd(totalDeposited)}${lastDepositNote}，已扣 ${formatUsd(spent)}`;
+}
+
+function getCurrentBaseItems() {
+  if (selectedMonth === ALL_MONTHS_FILTER) {
+    return [...transactions];
+  }
+  return transactions.filter((item) => item.date.startsWith(selectedMonth));
+}
+
+function renderCurrentFilteredRows() {
+  if (selectedMonth === PRETRIP_FILTER) {
+    return;
+  }
+
+  const baseItems = getCurrentBaseItems();
+  let filtered = [...baseItems];
+
+  if (searchQuery) {
+    filtered = filtered.filter((item) => {
+      const matchDate = String(item.date || "").toLowerCase().includes(searchQuery);
+      const matchCategory = String(item.category || "").toLowerCase().includes(searchQuery);
+      const matchMerchant = String(item.merchant || "").toLowerCase().includes(searchQuery);
+      const matchMethod = String(item.paymentMethod || "").toLowerCase().includes(searchQuery);
+      const matchNote = String(item.note || "").toLowerCase().includes(searchQuery);
+      const matchAmount = String(item.amount || "").includes(searchQuery);
+      return matchDate || matchCategory || matchMerchant || matchMethod || matchNote || matchAmount;
+    });
+  }
+
+  if (filterCategory) {
+    filtered = filtered.filter((item) => item.category === filterCategory);
+  }
+
+  filtered.sort((a, b) => {
+    if (sortField === "date") {
+      return sortOrder === "asc" ? a.date.localeCompare(b.date) : b.date.localeCompare(a.date);
+    }
+    if (sortField === "usd" || sortField === "twd") {
+      return sortOrder === "asc" ? a.amount - b.amount : b.amount - a.amount;
+    }
+    return 0;
+  });
+
+  if (elements.filterCount) {
+    if (searchQuery || filterCategory) {
+      elements.filterCount.textContent = `顯示 ${filtered.length} / ${baseItems.length} 筆資料`;
+    } else {
+      elements.filterCount.textContent = `共 ${baseItems.length} 筆資料`;
+    }
+  }
+
+  if (elements.clearFilters) {
+    elements.clearFilters.hidden = !(searchQuery || filterCategory);
+  }
+
+  renderRows(filtered);
+}
+
+function setupTableControls() {
+  if (elements.searchFilter) {
+    elements.searchFilter.addEventListener("input", (e) => {
+      searchQuery = e.target.value.trim().toLowerCase();
+      renderCurrentFilteredRows();
+    });
+  }
+
+  if (elements.categoryPills) {
+    elements.categoryPills.addEventListener("click", (e) => {
+      const btn = e.target.closest(".pill-btn");
+      if (!btn) return;
+      filterCategory = btn.dataset.category || "";
+      elements.categoryPills.querySelectorAll(".pill-btn").forEach((p) => {
+        p.classList.toggle("active", (p.dataset.category || "") === filterCategory);
+      });
+      renderCurrentFilteredRows();
+    });
+  }
+
+  if (elements.clearFilters) {
+    elements.clearFilters.addEventListener("click", () => {
+      searchQuery = "";
+      filterCategory = "";
+      if (elements.searchFilter) elements.searchFilter.value = "";
+      if (elements.categoryPills) {
+        elements.categoryPills.querySelectorAll(".pill-btn").forEach((p) => {
+          p.classList.toggle("active", (p.dataset.category || "") === "");
+        });
+      }
+      renderCurrentFilteredRows();
+    });
+  }
+
+  document.querySelectorAll("th.sortable").forEach((th) => {
+    th.addEventListener("click", () => {
+      const field = th.dataset.sort;
+      if (sortField === field) {
+        sortOrder = sortOrder === "asc" ? "desc" : "asc";
+      } else {
+        sortField = field;
+        sortOrder = "desc";
+      }
+      updateSortIndicators();
+      renderCurrentFilteredRows();
+    });
+  });
+}
+
+function updateSortIndicators() {
+  document.querySelectorAll("th.sortable").forEach((th) => {
+    const field = th.dataset.sort;
+    const icon = th.querySelector(".sort-icon");
+    if (!icon) return;
+    if (sortField === field) {
+      th.classList.add("active");
+      icon.textContent = sortOrder === "asc" ? "▲" : "▼";
+    } else {
+      th.classList.remove("active");
+      icon.textContent = "";
+    }
+  });
+}
+
+function renderMonthlyTrendChart(items) {
+  if (!elements.monthlyTrendChart) return;
+  const months = [...new Set(items.map((t) => t.date.slice(0, 7)))].sort();
+  if (months.length === 0) {
+    elements.monthlyTrendChart.innerHTML = '<p class="empty-state">尚無足夠月份繪製走勢圖。</p>';
+    return;
+  }
+
+  const recentMonths = months.slice(-6);
+  const monthData = recentMonths.map((m) => {
+    const monthItems = items.filter((t) => t.date.startsWith(m));
+    const income = sumByType(monthItems, "income");
+    const expense = sumByType(monthItems, "expense");
+    return { month: m, income, expense };
+  });
+
+  const maxVal = Math.max(...monthData.map((d) => Math.max(d.income, d.expense)), 100);
+  const width = 560;
+  const height = 126;
+  const padding = { top: 18, bottom: 24, left: 10, right: 10 };
+  const chartHeight = height - padding.top - padding.bottom;
+  const slotWidth = (width - padding.left - padding.right) / monthData.length;
+  const barWidth = Math.min(slotWidth * 0.32, 22);
+  const baseY = height - padding.bottom;
+
+  let svg = `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet" role="img">`;
+  svg += `<line x1="${padding.left}" y1="${baseY}" x2="${width - padding.right}" y2="${baseY}" stroke="rgba(125, 91, 45, 0.18)" stroke-width="1"/>`;
+
+  monthData.forEach((d, i) => {
+    const slotX = padding.left + i * slotWidth;
+    const groupCenterX = slotX + slotWidth / 2;
+    const incomeHeight = Math.max((d.income / maxVal) * chartHeight, d.income > 0 ? 3 : 0);
+    const expenseHeight = Math.max((d.expense / maxVal) * chartHeight, d.expense > 0 ? 3 : 0);
+
+    const incomeX = groupCenterX - barWidth - 2;
+    const expenseX = groupCenterX + 2;
+    const incomeY = baseY - incomeHeight;
+    const expenseY = baseY - expenseHeight;
+
+    const isCurrentSelected = selectedMonth === d.month;
+    const label = d.month.slice(5) + "月";
+
+    svg += `
+      <g class="trend-bar-group ${isCurrentSelected ? "active" : ""}" data-trend-month="${d.month}" tabindex="0" role="button" aria-label="${d.month}收支">
+        <rect class="bar-bg" x="${slotX + 2}" y="${padding.top - 6}" width="${slotWidth - 4}" height="${chartHeight + 10}" rx="8" fill="${isCurrentSelected ? "rgba(183, 121, 31, 0.12)" : "transparent"}"/>
+        <title>${d.month}｜收入: $${d.income.toFixed(2)}｜支出: $${d.expense.toFixed(2)}</title>
+        <rect x="${incomeX}" y="${incomeY}" width="${barWidth}" height="${incomeHeight}" rx="4" fill="#876214"/>
+        <rect x="${expenseX}" y="${expenseY}" width="${barWidth}" height="${expenseHeight}" rx="4" fill="#a15c13"/>
+        <text x="${groupCenterX}" y="${height - 7}" text-anchor="middle" font-size="11" font-weight="${isCurrentSelected ? "700" : "500"}" fill="${isCurrentSelected ? "#b7791f" : "#7b6a52"}">${label}</text>
+      </g>
+    `;
+  });
+
+  svg += "</svg>";
+  elements.monthlyTrendChart.innerHTML = svg;
+
+  elements.monthlyTrendChart.querySelectorAll("[data-trend-month]").forEach((el) => {
+    el.addEventListener("click", () => {
+      selectedMonth = el.dataset.trendMonth;
+      render();
+    });
+  });
 }
 
 function ensureCategoryOption(category) {

@@ -10,34 +10,41 @@
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260905-3" />
+    <link rel="stylesheet" href="./styles.css?v=20260905-4" />
   </head>
   <body>
     <div class="page-shell">
-      <header class="hero">
-        <div class="hero-content">
-          <p class="eyebrow">US LEDGER</p>
-          <h1>追蹤每一筆美元訊號。</h1>
-          <p class="hero-copy">
-            用美元記錄日常收支，自動換算台幣，讓台灣家人快速了解每月花費、收入與餘額。
-          </p>
-          <div class="hero-actions">
-            <a class="cta-button" href="#summary">查看摘要</a>
-            <a class="text-link" href="#transactions">瀏覽明細</a>
+      <header class="site-header">
+        <div class="header-brand">
+          <div class="brand-badge">
+            <span class="pulse-dot"></span>
+            <span>US LEDGER · 雙幣對照</span>
+          </div>
+          <h1>美國生活記帳</h1>
+          <p class="header-desc">美元即時記錄，台灣家人零時差掌握每月花費與結餘。</p>
+        </div>
+
+        <div class="rate-chip" aria-label="即時匯率設定">
+          <div class="rate-chip-top">
+            <span class="rate-tag">USD / TWD</span>
+            <button id="refreshRate" class="rate-refresh-btn" type="button" title="重新抓取即時匯率">
+              <svg class="refresh-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+              </svg>
+              <span>更新匯率</span>
+            </button>
+          </div>
+          <div class="rate-chip-body">
+            <span class="currency-label">$1 USD ＝</span>
+            <div class="rate-input-wrap">
+              <span class="twd-prefix">NT$</span>
+              <input id="exchangeRate" type="number" min="1" step="0.01" aria-label="匯率數值" />
+            </div>
+          </div>
+          <div class="rate-chip-footer">
+            <small id="rateStatus">自動同步 fxapi.app</small>
           </div>
         </div>
-        <section class="rate-card" aria-label="匯率設定">
-          <label for="exchangeRate">匯率 USD → TWD</label>
-          <div class="rate-input">
-            <span>1 USD =</span>
-            <input id="exchangeRate" type="number" min="1" step="0.01" />
-            <span>TWD</span>
-          </div>
-          <div class="rate-actions">
-            <button id="refreshRate" class="secondary-button" type="button">更新匯率</button>
-          </div>
-          <small id="rateStatus">載入後會自動抓取即時匯率，也可手動調整。</small>
-        </section>
       </header>
 
       <main>
@@ -289,6 +296,6 @@
     </template>
 
     <script src="./data/transactions.js"></script>
-    <script src="./app.js?v=20260905-3"></script>
+    <script src="./app.js?v=20260905-4"></script>
   </body>
 </html>

@@ -1,6 +1,8 @@
 import argparse
+import datetime
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -10,6 +12,7 @@ from pathlib import Path
 
 STORAGE_KEY = "us-ledger-transactions"
 REPO_ROOT = Path(__file__).resolve().parents[1]
+INDEX_FILE = REPO_ROOT / "index.html"
 DATA_FILE = REPO_ROOT / "data" / "transactions.json"
 DATA_SCRIPT_FILE = REPO_ROOT / "data" / "transactions.js"
 BACKUP_DIR = REPO_ROOT / "exports"
@@ -57,11 +60,17 @@ def main():
     if args.no_git:
         return
 
+    update_asset_versions()
+
     if not has_data_changes():
         print("No data changes to publish.")
         return
 
-    run(["git", "add", "data/transactions.json", "data/transactions.js"])
+    files_to_commit = ["data/transactions.json", "data/transactions.js"]
+    if has_file_changes("index.html"):
+        files_to_commit.append("index.html")
+
+    run(["git", "add", *files_to_commit])
     run(["git", "commit", "-m", args.message])
     run(["git", "push"])
     sync_gh_pages()
@@ -375,9 +384,37 @@ def write_transactions(transactions):
     BACKUP_FILE.write_text(content, encoding="utf-8")
 
 
+def update_asset_versions():
+    if not INDEX_FILE.exists():
+        return False
+
+    content = INDEX_FILE.read_text(encoding="utf-8")
+    today_prefix = datetime.date.today().strftime("%Y%m%d")
+
+    css_match = re.search(r"styles\.css\?v=(\d{8})-(\d+)", content)
+    seq = 1
+    if css_match and css_match.group(1) == today_prefix:
+        seq = int(css_match.group(2)) + 1
+    new_version = f"{today_prefix}-{seq}"
+
+    new_content = re.sub(r'styles\.css\?v=[^"\'\s>]+', f"styles.css?v={new_version}", content)
+    new_content = re.sub(r'app\.js\?v=[^"\'\s>]+', f"app.js?v={new_version}", new_content)
+
+    if new_content != content:
+        INDEX_FILE.write_text(new_content, encoding="utf-8")
+        print(f"Updated index.html assets cache version to ?v={new_version}")
+        return True
+    return False
+
+
+def has_file_changes(path):
+    result = run(["git", "status", "--short", str(path)], capture=True)
+    return bool(result.stdout.strip())
+
+
 def has_data_changes():
     result = run(
-        ["git", "status", "--short", "data/transactions.json", "data/transactions.js"],
+        ["git", "status", "--short", "data/transactions.json", "data/transactions.js", "index.html"],
         capture=True,
     )
     return bool(result.stdout.strip())

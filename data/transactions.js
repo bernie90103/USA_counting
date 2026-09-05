@@ -1,5 +1,15 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "53c23431-26ca-4f5b-a13c-732084f73eab",
+    "date": "2026-09-05",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Walmart",
+    "paymentMethod": "現金",
+    "note": "日常用品",
+    "amount": 54.12
+  },
+  {
     "id": "99337ddc-d49f-49f5-96e5-5eb4147496cb",
     "date": "2026-08-31",
     "type": "expense",

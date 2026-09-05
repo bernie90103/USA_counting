@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260720-1" />
+    <link rel="stylesheet" href="./styles.css?v=20260905-3" />
   </head>
   <body>
     <div class="page-shell">
@@ -89,6 +89,11 @@
             <span>現金</span>
             <strong id="cashTotal">$0</strong>
             <small id="cashTwd">約 NT$0</small>
+          </div>
+          <div class="payment-summary-item taiwan-card">
+            <span>台灣信用卡</span>
+            <strong id="taiwanCardTotal">$0</strong>
+            <small id="taiwanCardTwd">約 NT$0</small>
           </div>
         </section>
 
@@ -174,6 +179,16 @@
               </div>
               <select id="monthFilter" aria-label="月份篩選"></select>
             </div>
+            <div class="trend-section" id="trendSection">
+              <div class="trend-header">
+                <h3>收支走勢對比</h3>
+                <div class="trend-legend">
+                  <span class="legend-item"><span class="legend-dot income"></span>收入</span>
+                  <span class="legend-item"><span class="legend-dot expense"></span>支出</span>
+                </div>
+              </div>
+              <div id="monthlyTrendChart" class="trend-chart" aria-label="收支走勢圖"></div>
+            </div>
             <div class="analysis-grid">
               <section>
                 <h3>大分類支出</h3>
@@ -207,18 +222,49 @@
             </div>
           </div>
 
+          <div class="table-filter-toolbar">
+            <div class="search-box">
+              <input
+                id="searchFilter"
+                type="search"
+                placeholder="搜尋日期、店家、分類、付款方式或說明..."
+                aria-label="搜尋交易"
+              />
+            </div>
+            <div class="filter-pills" id="categoryPills" aria-label="分類快捷篩選">
+              <button class="pill-btn active" type="button" data-category="">全部</button>
+              <button class="pill-btn" type="button" data-category="超市">超市</button>
+              <button class="pill-btn" type="button" data-category="學餐">學餐</button>
+              <button class="pill-btn" type="button" data-category="外食">外食</button>
+              <button class="pill-btn" type="button" data-category="網購">網購</button>
+              <button class="pill-btn" type="button" data-category="交通">交通</button>
+              <button class="pill-btn" type="button" data-category="房租">房租</button>
+              <button class="pill-btn" type="button" data-category="其他">其他</button>
+            </div>
+            <div class="filter-status">
+              <span id="filterCount">顯示全部資料</span>
+              <button id="clearFilters" class="clear-btn" type="button" hidden>清除篩選</button>
+            </div>
+          </div>
+
           <div class="table-wrap">
             <table>
               <thead>
                 <tr>
-                  <th>日期</th>
+                  <th class="sortable" data-sort="date" title="點擊切換排序">
+                    日期 <span class="sort-icon" id="sortIconDate">▼</span>
+                  </th>
                   <th>類型</th>
                   <th>分類</th>
                   <th>店家</th>
                   <th>付款方式</th>
                   <th>說明</th>
-                  <th>USD</th>
-                  <th>TWD</th>
+                  <th class="sortable" data-sort="usd" title="點擊切換排序">
+                    USD <span class="sort-icon" id="sortIconUsd"></span>
+                  </th>
+                  <th class="sortable" data-sort="twd" title="點擊切換排序">
+                    TWD <span class="sort-icon" id="sortIconTwd"></span>
+                  </th>
                   <th class="edit-only" hidden>操作</th>
                 </tr>
               </thead>
@@ -243,6 +289,6 @@
     </template>
 
     <script src="./data/transactions.js"></script>
-    <script src="./app.js?v=20260723-2"></script>
+    <script src="./app.js?v=20260905-3"></script>
   </body>
 </html>

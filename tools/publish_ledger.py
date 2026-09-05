@@ -67,8 +67,9 @@ def main():
         return
 
     files_to_commit = ["data/transactions.json", "data/transactions.js"]
-    if has_file_changes("index.html"):
-        files_to_commit.append("index.html")
+    for path in ["index.html", "styles.css", "app.js"]:
+        if has_file_changes(path):
+            files_to_commit.append(path)
 
     run(["git", "add", *files_to_commit])
     run(["git", "commit", "-m", args.message])
@@ -414,7 +415,16 @@ def has_file_changes(path):
 
 def has_data_changes():
     result = run(
-        ["git", "status", "--short", "data/transactions.json", "data/transactions.js", "index.html"],
+        [
+            "git",
+            "status",
+            "--short",
+            "data/transactions.json",
+            "data/transactions.js",
+            "index.html",
+            "styles.css",
+            "app.js",
+        ],
         capture=True,
     )
     return bool(result.stdout.strip())

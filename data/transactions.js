@@ -1,5 +1,15 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "de478bd6-5418-40d5-8dcb-ab338574a1e7",
+    "date": "2026-09-07",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Publix",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "冰淇淋",
+    "amount": 6.47
+  },
+  {
     "id": "78531445-a619-4fd3-8352-f648b71923d4",
     "date": "2026-09-06",
     "type": "expense",

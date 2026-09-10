@@ -1,5 +1,35 @@
 [
   {
+    "id": "c977432d-f036-4d26-a154-96a881c10ca7",
+    "date": "2026-09-08",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Sam's Club",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "微波冷凍食品/日常用品/蛋白",
+    "amount": 125.58
+  },
+  {
+    "id": "692e2dd3-8c85-426f-94d8-07a681c1e5ef",
+    "date": "2026-09-09",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Chick-fil-A",
+    "paymentMethod": "學生證",
+    "note": "午餐",
+    "amount": 10.73
+  },
+  {
+    "id": "f173d469-6e8f-42ff-9515-643074988bb4",
+    "date": "2026-09-08",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Mein Bowl",
+    "paymentMethod": "學生證",
+    "note": "",
+    "amount": 13.19
+  },
+  {
     "id": "de478bd6-5418-40d5-8dcb-ab338574a1e7",
     "date": "2026-09-07",
     "type": "expense",

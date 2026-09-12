@@ -962,6 +962,10 @@ function renderBars(container, totals, emptyMessage) {
   for (const [label, amount] of entries) {
     const pct = total > 0 ? ((amount / total) * 100).toFixed(1) : "0.0";
     const node = elements.barTemplate.content.cloneNode(true);
+    const rowEl = node.querySelector(".bar-row");
+    if (rowEl) {
+      rowEl.title = `${label}: ${formatUsd(amount)} (${pct}%)`;
+    }
     node.querySelector(".category-name").textContent = label;
     node.querySelector(".category-amount").innerHTML = `${escapeHtml(formatUsd(amount))} <span class="category-pct">${pct}%</span>`;
     node.querySelector(".bar-fill").style.width = `${Math.max((amount / max) * 100, 4)}%`;

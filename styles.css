@@ -594,7 +594,7 @@ small {
 .channel-dot.debit { background: #2563eb; }
 .channel-dot.prime-visa { background: var(--amber); }
 .channel-dot.campus-card { background: #7c3aed; }
-.channel-dot.cash { background: #15803d; }
+.channel-dot.cash { background: #64748b; }
 .channel-dot.taiwan-card { background: var(--pink); }
 
 .payment-summary-item strong {
@@ -607,7 +607,7 @@ small {
 
 .payment-summary-item.prime-visa strong { color: var(--amber); }
 .payment-summary-item.campus-card strong { color: var(--violet); }
-.payment-summary-item.cash strong { color: var(--green); }
+.payment-summary-item.cash strong { color: #57534e; }
 .payment-summary-item.taiwan-card strong { color: var(--pink); }
 
 .payment-summary-item small {

@@ -434,18 +434,27 @@ small {
   gap: 8px;
 }
 
-.stat-glyph {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.stat-glyph,
+.stat-card span.stat-glyph {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   width: 26px;
   height: 26px;
   border-radius: 8px;
-  font-size: 0.82rem;
-  font-weight: 700;
   border: 1px solid rgba(255, 255, 255, 0.7);
   box-shadow: 0 2px 6px rgba(125, 91, 45, 0.05);
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  flex-shrink: 0;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+}
+
+.stat-glyph svg {
+  display: block;
+  margin: auto;
 }
 
 .stat-glyph.income {
@@ -478,12 +487,12 @@ small {
   border-color: rgba(154, 107, 27, 0.26);
 }
 
-.stat-card span,
+.stat-card span:not(.stat-glyph),
 .stat-card small {
   display: block;
 }
 
-.stat-card span {
+.stat-card span:not(.stat-glyph) {
   color: var(--muted);
   font-size: 0.76rem;
   font-weight: 700;

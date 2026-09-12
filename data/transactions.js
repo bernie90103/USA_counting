@@ -1,5 +1,55 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "ea72eadc-403e-4add-9594-216ad2954ba8",
+    "date": "2026-09-12",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Walmart",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "熱水壺/日用品/保養品",
+    "amount": 53.1
+  },
+  {
+    "id": "eccfb914-126a-4836-9b7d-2d0f155113ec",
+    "date": "2026-09-11",
+    "type": "income",
+    "category": "rec center",
+    "merchant": "lifeguard",
+    "paymentMethod": "chase debit card",
+    "note": "8/30-9/05",
+    "amount": 498.99
+  },
+  {
+    "id": "ae5ef699-f97d-4cbf-934d-9c318cb39dbe",
+    "date": "2026-09-11",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Mein Bowl",
+    "paymentMethod": "學生證",
+    "note": "午餐",
+    "amount": 10.99
+  },
+  {
+    "id": "b832a21e-3936-4ff5-8ca3-6dddff68d220",
+    "date": "2026-09-10",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "The Den by Denny's",
+    "paymentMethod": "學生證",
+    "note": "漢堡套餐 午餐",
+    "amount": 17.91
+  },
+  {
+    "id": "6a4949bd-4a89-435d-89a2-ab89b5535ad7",
+    "date": "2026-09-10",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "The Den by Denny's",
+    "paymentMethod": "學生證",
+    "note": "飲料",
+    "amount": 3.4
+  },
+  {
     "id": "c977432d-f036-4d26-a154-96a881c10ca7",
     "date": "2026-09-08",
     "type": "expense",

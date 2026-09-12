@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260912-2" />
+    <link rel="stylesheet" href="./styles.css?v=20260912-3" />
   </head>
   <body>
     <div class="page-shell">
@@ -50,27 +50,42 @@
       <main>
         <section class="dashboard" id="summary" aria-label="本月摘要">
           <article class="stat-card income">
-            <span id="monthlyIncomeLabel">本月收入</span>
+            <div class="stat-card-header">
+              <span id="monthlyIncomeLabel">本月收入</span>
+              <span class="stat-glyph income" aria-hidden="true">↗</span>
+            </div>
             <strong id="monthlyIncome">$0</strong>
             <small id="monthlyIncomeTwd">約 NT$0</small>
           </article>
           <article class="stat-card expense">
-            <span id="monthlyExpenseLabel">本月支出</span>
+            <div class="stat-card-header">
+              <span id="monthlyExpenseLabel">本月支出</span>
+              <span class="stat-glyph expense" aria-hidden="true">↘</span>
+            </div>
             <strong id="monthlyExpense">$0</strong>
             <small id="monthlyExpenseTwd">約 NT$0</small>
           </article>
           <article class="stat-card balance">
-            <span id="monthlyBalanceLabel">本月結餘</span>
+            <div class="stat-card-header">
+              <span id="monthlyBalanceLabel">本月結餘</span>
+              <span class="stat-glyph balance" aria-hidden="true">⚖</span>
+            </div>
             <strong id="monthlyBalance">$0</strong>
             <small id="monthlyBalanceTwd">約 NT$0</small>
           </article>
           <article class="stat-card average">
-            <span id="dailyAverageLabel">每日平均支出</span>
+            <div class="stat-card-header">
+              <span id="dailyAverageLabel">每日平均支出</span>
+              <span class="stat-glyph average" aria-hidden="true">⚡</span>
+            </div>
             <strong id="dailyAverage">$0</strong>
             <small id="dailyAverageNote">用本月已過天數估算</small>
           </article>
           <article class="stat-card campus-card">
-            <span>學生證餘額</span>
+            <div class="stat-card-header">
+              <span>學生證餘額</span>
+              <span class="stat-glyph campus-card" aria-hidden="true">💳</span>
+            </div>
             <strong id="campusCardBalance">$0</strong>
             <small id="campusCardNote">5/11 加值 $500.00</small>
           </article>
@@ -78,27 +93,27 @@
         <section class="payment-summary" aria-label="本月付款方式支出">
           <p class="payment-summary-title">本月付款方式支出</p>
           <div class="payment-summary-item debit">
-            <span>Chase 金融卡</span>
+            <span class="payment-name"><span class="channel-dot debit"></span>Chase 金融卡</span>
             <strong id="debitCardTotal">$0</strong>
             <small id="debitCardTwd">約 NT$0</small>
           </div>
           <div class="payment-summary-item prime-visa">
-            <span>Prime Visa 信用卡</span>
+            <span class="payment-name"><span class="channel-dot prime-visa"></span>Prime Visa 信用卡</span>
             <strong id="primeVisaTotal">$0</strong>
             <small id="primeVisaTwd">約 NT$0</small>
           </div>
           <div class="payment-summary-item campus-card">
-            <span>學生證</span>
+            <span class="payment-name"><span class="channel-dot campus-card"></span>學生證</span>
             <strong id="campusCardTotal">$0</strong>
             <small id="campusCardTwd">約 NT$0</small>
           </div>
           <div class="payment-summary-item cash">
-            <span>現金</span>
+            <span class="payment-name"><span class="channel-dot cash"></span>現金</span>
             <strong id="cashTotal">$0</strong>
             <small id="cashTwd">約 NT$0</small>
           </div>
           <div class="payment-summary-item taiwan-card">
-            <span>台灣信用卡</span>
+            <span class="payment-name"><span class="channel-dot taiwan-card"></span>台灣信用卡</span>
             <strong id="taiwanCardTotal">$0</strong>
             <small id="taiwanCardTwd">約 NT$0</small>
           </div>
@@ -231,6 +246,10 @@
 
           <div class="table-filter-toolbar">
             <div class="search-box">
+              <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
               <input
                 id="searchFilter"
                 type="search"
@@ -296,6 +315,6 @@
     </template>
 
     <script src="./data/transactions.js"></script>
-    <script src="./app.js?v=20260912-2"></script>
+    <script src="./app.js?v=20260912-3"></script>
   </body>
 </html>

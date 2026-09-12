@@ -963,7 +963,7 @@ function renderBars(container, totals, emptyMessage) {
     const pct = total > 0 ? ((amount / total) * 100).toFixed(1) : "0.0";
     const node = elements.barTemplate.content.cloneNode(true);
     node.querySelector(".category-name").textContent = label;
-    node.querySelector(".category-amount").innerHTML = `${escapeHtml(formatUsd(amount))} <span class="category-pct">(${pct}%)</span>`;
+    node.querySelector(".category-amount").innerHTML = `${escapeHtml(formatUsd(amount))} <span class="category-pct">${pct}%</span>`;
     node.querySelector(".bar-fill").style.width = `${Math.max((amount / max) * 100, 4)}%`;
     container.append(node);
   }
@@ -1229,14 +1229,24 @@ function renderMonthlyTrendChart(items) {
   const barWidth = Math.min(slotWidth * 0.32, 22);
   const baseY = height - padding.bottom;
 
-  let svg = `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet" role="img">`;
-  svg += `<line x1="${padding.left}" y1="${baseY}" x2="${width - padding.right}" y2="${baseY}" stroke="rgba(125, 91, 45, 0.18)" stroke-width="1"/>`;
+  let svg = `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet" role="img">
+    <defs>
+      <linearGradient id="trendIncomeGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#22c55e"/>
+        <stop offset="100%" stop-color="#15803d"/>
+      </linearGradient>
+      <linearGradient id="trendExpenseGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#e07a24"/>
+        <stop offset="100%" stop-color="#a15c13"/>
+      </linearGradient>
+    </defs>`;
+  svg += `<line x1="${padding.left}" y1="${baseY}" x2="${width - padding.right}" y2="${baseY}" stroke="rgba(183, 121, 31, 0.2)" stroke-dasharray="4 3" stroke-width="1"/>`;
 
   monthData.forEach((d, i) => {
     const slotX = padding.left + i * slotWidth;
     const groupCenterX = slotX + slotWidth / 2;
-    const incomeHeight = Math.max((d.income / maxVal) * chartHeight, d.income > 0 ? 3 : 0);
-    const expenseHeight = Math.max((d.expense / maxVal) * chartHeight, d.expense > 0 ? 3 : 0);
+    const incomeHeight = Math.max((d.income / maxVal) * chartHeight, d.income > 0 ? 4 : 0);
+    const expenseHeight = Math.max((d.expense / maxVal) * chartHeight, d.expense > 0 ? 4 : 0);
 
     const incomeX = groupCenterX - barWidth - 2;
     const expenseX = groupCenterX + 2;
@@ -1250,8 +1260,8 @@ function renderMonthlyTrendChart(items) {
       <g class="trend-bar-group ${isCurrentSelected ? "active" : ""}" data-trend-month="${d.month}" tabindex="0" role="button" aria-label="${d.month}收支">
         <rect class="bar-bg" x="${slotX + 2}" y="${padding.top - 6}" width="${slotWidth - 4}" height="${chartHeight + 10}" rx="8" fill="${isCurrentSelected ? "rgba(183, 121, 31, 0.12)" : "transparent"}"/>
         <title>${d.month}｜收入: $${d.income.toFixed(2)}｜支出: $${d.expense.toFixed(2)}</title>
-        <rect x="${incomeX}" y="${incomeY}" width="${barWidth}" height="${incomeHeight}" rx="4" fill="#15803d"/>
-        <rect x="${expenseX}" y="${expenseY}" width="${barWidth}" height="${expenseHeight}" rx="4" fill="#a15c13"/>
+        <rect x="${incomeX}" y="${incomeY}" width="${barWidth}" height="${incomeHeight}" rx="5" fill="url(#trendIncomeGrad)"/>
+        <rect x="${expenseX}" y="${expenseY}" width="${barWidth}" height="${expenseHeight}" rx="5" fill="url(#trendExpenseGrad)"/>
         <text x="${groupCenterX}" y="${height - 7}" text-anchor="middle" font-size="11" font-weight="${isCurrentSelected ? "700" : "500"}" fill="${isCurrentSelected ? "#b7791f" : "#7b6a52"}">${label}</text>
       </g>
     `;

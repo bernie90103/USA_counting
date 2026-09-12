@@ -276,6 +276,7 @@ let searchQuery = "";
 let filterCategory = "";
 let sortField = "date";
 let sortOrder = "desc";
+let justAddedId = "";
 
 document.body.classList.toggle("edit-mode", isEditMode);
 document.body.classList.toggle("view-mode", !isEditMode);
@@ -306,6 +307,11 @@ elements.monthFilter.addEventListener("change", (event) => {
 
 if (isEditMode) {
   elements.type.addEventListener("change", () => {
+    const isIncome = elements.type.value === "income";
+    elements.form.classList.toggle("is-income", isIncome);
+    if (!editingId) {
+      elements.saveTransaction.textContent = isIncome ? "加入收入" : "加入記帳";
+    }
     syncCategoryOptionsForType(elements.category.value);
     syncPaymentMethodForCategory(elements.category.value);
   });
@@ -333,6 +339,7 @@ if (isEditMode) {
       transactions = transactions.map((item) => (item.id === editingId ? transaction : item));
     } else {
       transactions = [transaction, ...transactions];
+      justAddedId = transaction.id;
     }
 
     saveTransactions();
@@ -968,6 +975,10 @@ function renderRows(items) {
 
   for (const item of items) {
     const tr = document.createElement("tr");
+    tr.className = `transaction-row ${item.type === "income" ? "row-income" : "row-expense"}`;
+    if (justAddedId && item.id === justAddedId) {
+      tr.classList.add("just-added");
+    }
     const signedAmount = item.type === "income" ? item.amount : -item.amount;
 
     tr.innerHTML = `
@@ -988,6 +999,7 @@ function renderRows(items) {
 
     elements.transactionRows.append(tr);
   }
+  justAddedId = "";
 }
 
 function beginEdit(id) {
@@ -997,6 +1009,7 @@ function beginEdit(id) {
   editingId = id;
   elements.date.value = transaction.date;
   elements.type.value = transaction.type;
+  elements.form?.classList.toggle("is-income", transaction.type === "income");
   syncCategoryOptionsForType(transaction.category);
   elements.category.value = transaction.category;
   renderMerchantOptions(transaction.category, transaction.merchant);
@@ -1004,7 +1017,7 @@ function beginEdit(id) {
   elements.paymentMethod.value = transaction.paymentMethod || inferPaymentMethod(transaction);
   elements.amount.value = transaction.amount;
   elements.note.value = transaction.note;
-  elements.saveTransaction.textContent = "儲存修改";
+  elements.saveTransaction.textContent = transaction.type === "income" ? "儲存收入修改" : "儲存修改";
   elements.cancelEdit.hidden = false;
   elements.form.scrollIntoView({ behavior: "smooth", block: "start" });
 }
@@ -1012,6 +1025,7 @@ function beginEdit(id) {
 function resetForm() {
   editingId = "";
   elements.form.reset();
+  elements.form?.classList.remove("is-income");
   setDefaultFormValues();
   elements.saveTransaction.textContent = "加入記帳";
   elements.cancelEdit.hidden = true;
@@ -1020,6 +1034,7 @@ function resetForm() {
 function setDefaultFormValues() {
   elements.date.value = getLocalDateValue();
   elements.type.value = "expense";
+  elements.form?.classList.remove("is-income");
   syncCategoryOptionsForType("超市");
   renderMerchantOptions(elements.category.value);
   syncPaymentMethodForCategory(elements.category.value);
@@ -1235,7 +1250,7 @@ function renderMonthlyTrendChart(items) {
       <g class="trend-bar-group ${isCurrentSelected ? "active" : ""}" data-trend-month="${d.month}" tabindex="0" role="button" aria-label="${d.month}收支">
         <rect class="bar-bg" x="${slotX + 2}" y="${padding.top - 6}" width="${slotWidth - 4}" height="${chartHeight + 10}" rx="8" fill="${isCurrentSelected ? "rgba(183, 121, 31, 0.12)" : "transparent"}"/>
         <title>${d.month}｜收入: $${d.income.toFixed(2)}｜支出: $${d.expense.toFixed(2)}</title>
-        <rect x="${incomeX}" y="${incomeY}" width="${barWidth}" height="${incomeHeight}" rx="4" fill="#876214"/>
+        <rect x="${incomeX}" y="${incomeY}" width="${barWidth}" height="${incomeHeight}" rx="4" fill="#15803d"/>
         <rect x="${expenseX}" y="${expenseY}" width="${barWidth}" height="${expenseHeight}" rx="4" fill="#a15c13"/>
         <text x="${groupCenterX}" y="${height - 7}" text-anchor="middle" font-size="11" font-weight="${isCurrentSelected ? "700" : "500"}" fill="${isCurrentSelected ? "#b7791f" : "#7b6a52"}">${label}</text>
       </g>

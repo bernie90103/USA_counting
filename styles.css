@@ -13,8 +13,8 @@
   --cyan: #a16207;
   --pink: #a15c13;
   --pink-soft: rgba(193, 126, 38, 0.14);
-  --green: #876214;
-  --green-soft: rgba(196, 149, 43, 0.14);
+  --green: #15803d;
+  --green-soft: rgba(34, 197, 94, 0.14);
   --amber: #d08a16;
   --violet: #9a6b1b;
   --danger: #b45309;
@@ -547,6 +547,25 @@ small {
 .entry-panel {
   display: grid;
   gap: 16px;
+  transition: border-color 280ms ease, box-shadow 280ms ease;
+}
+
+.entry-panel.is-income {
+  border-color: rgba(34, 197, 94, 0.4);
+  box-shadow: 0 14px 38px rgba(22, 163, 74, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+.entry-panel.is-income .eyebrow {
+  color: #15803d;
+}
+
+.entry-panel.is-income .primary-button {
+  background: linear-gradient(135deg, #15803d, #16a34a);
+  box-shadow: 0 8px 24px rgba(22, 163, 74, 0.28);
+}
+
+.entry-panel.is-income .primary-button:hover {
+  background: linear-gradient(135deg, #166534, #15803d);
 }
 
 form label {
@@ -976,6 +995,43 @@ tbody tr:last-child td {
   border-bottom: 0;
 }
 
+/* 收入列淡綠色美學樣式 (淡綠底色、精緻底框與左側微光指示) */
+tbody tr.row-income {
+  background: linear-gradient(90deg, rgba(34, 197, 94, 0.08) 0%, rgba(240, 253, 244, 0.65) 28%, rgba(34, 197, 94, 0.035) 100%);
+}
+
+tbody tr.row-income td {
+  border-bottom: 1px solid rgba(34, 197, 94, 0.22);
+}
+
+tbody tr.row-income td:first-child {
+  box-shadow: inset 4px 0 0 #16a34a;
+}
+
+tbody tr.row-income:hover {
+  background: rgba(34, 197, 94, 0.14) !important;
+}
+
+tbody tr.row-income td.amount {
+  color: #15803d;
+}
+
+/* 新增收入瞬間高光動畫 */
+@keyframes rowHighlightIncome {
+  0% {
+    background: rgba(34, 197, 94, 0.32);
+    box-shadow: 0 0 18px rgba(34, 197, 94, 0.38);
+  }
+  100% {
+    background: linear-gradient(90deg, rgba(34, 197, 94, 0.08) 0%, rgba(240, 253, 244, 0.65) 28%, rgba(34, 197, 94, 0.035) 100%);
+    box-shadow: none;
+  }
+}
+
+tbody tr.row-income.just-added {
+  animation: rowHighlightIncome 1.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
 th {
   color: var(--blue);
   font-size: 0.72rem;
@@ -1015,9 +1071,10 @@ td.amount {
 }
 
 .type-pill.income {
-  border: 1px solid rgba(196, 149, 43, 0.26);
+  border: 1px solid rgba(22, 163, 74, 0.32);
   color: var(--green);
   background: var(--green-soft);
+  box-shadow: 0 2px 6px rgba(22, 163, 74, 0.08);
 }
 
 .type-pill.expense {

@@ -880,7 +880,7 @@ form label {
 
 .category-bars {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(154px, 1fr));
   gap: 10px;
   max-height: 380px;
   overflow-y: auto;
@@ -969,11 +969,14 @@ form label {
   box-shadow: 0 0 10px rgba(225, 29, 72, 0.32);
 }
 
+.bar-header,
 .bar-label {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   gap: 6px;
-  margin-bottom: 8px;
+  min-width: 0;
+  margin-bottom: 3px;
 }
 
 .category-name {
@@ -984,21 +987,12 @@ form label {
   text-overflow: ellipsis;
   white-space: nowrap;
   letter-spacing: 0.02em;
-}
-
-.category-amount {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 6px;
-  color: #b7791f;
-  font-size: 1.02rem;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
 }
 
 .category-pct {
+  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   padding: 1px 6px;
@@ -1011,6 +1005,21 @@ form label {
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.01em;
+}
+
+.bar-amount-wrap {
+  margin-bottom: 8px;
+}
+
+.category-amount {
+  display: block;
+  width: 100%;
+  color: #b7791f;
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
 }
 
 .bar-track {

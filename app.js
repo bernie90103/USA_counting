@@ -995,7 +995,11 @@ function renderBars(container, totals, emptyMessage) {
       rowEl.title = `${label}: ${formatUsd(amount)} (${pct}%)`;
     }
     node.querySelector(".category-name").textContent = label;
-    node.querySelector(".category-amount").innerHTML = `${escapeHtml(formatUsd(amount))} <span class="category-pct">${pct}%</span>`;
+    node.querySelector(".category-amount").textContent = formatUsd(amount);
+    const pctEl = node.querySelector(".category-pct");
+    if (pctEl) {
+      pctEl.textContent = `${pct}%`;
+    }
     node.querySelector(".bar-fill").style.width = `${Math.max((amount / max) * 100, 4)}%`;
     container.append(node);
   }

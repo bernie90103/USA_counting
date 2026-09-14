@@ -1,5 +1,35 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "2f1a490d-0255-46e6-b422-40adcb587ed1",
+    "date": "2026-09-13",
+    "type": "expense",
+    "category": "學費",
+    "merchant": "",
+    "paymentMethod": "chase debit card",
+    "note": "CHATGPT",
+    "amount": 21.6
+  },
+  {
+    "id": "54e289ad-3d84-4626-b79a-5e91102504ca",
+    "date": "2026-09-11",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "好市多",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "菜瓜布/飲料",
+    "amount": 6.94
+  },
+  {
+    "id": "889bd9a4-eb07-4a6f-bf72-6acf6a22953d",
+    "date": "2026-09-13",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Oriental Market",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "廚具/泡麵/零食",
+    "amount": 28.37
+  },
+  {
     "id": "ea72eadc-403e-4add-9594-216ad2954ba8",
     "date": "2026-09-12",
     "type": "expense",

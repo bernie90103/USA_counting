@@ -308,17 +308,22 @@ elements.monthFilter.addEventListener("change", (event) => {
 if (isEditMode) {
   elements.type.addEventListener("change", () => {
     const isIncome = elements.type.value === "income";
-    elements.form.classList.toggle("is-income", isIncome);
     if (!editingId) {
       elements.saveTransaction.textContent = isIncome ? "加入收入" : "加入記帳";
     }
     syncCategoryOptionsForType(elements.category.value);
     syncPaymentMethodForCategory(elements.category.value);
+    updateFormTone();
   });
 
   elements.category.addEventListener("change", () => {
     renderMerchantOptions(elements.category.value);
     syncPaymentMethodForCategory(elements.category.value);
+    updateFormTone();
+  });
+
+  elements.merchant.addEventListener("change", () => {
+    updateFormTone();
   });
 
   elements.form.addEventListener("submit", (event) => {
@@ -947,6 +952,25 @@ function getExpenseTotals(items, field) {
     }, {});
 }
 
+function updateFormTone() {
+  if (!elements.form) return;
+  const isIncome = elements.type?.value === "income";
+  const category = elements.category?.value;
+  const merchant = elements.merchant?.value;
+  const isMarshall = !isIncome && (category === "房租" || (merchant && merchant.toLowerCase().includes("marshall")));
+
+  elements.form.classList.toggle("is-income", isIncome);
+  elements.form.classList.toggle("is-marshall", isMarshall);
+}
+
+function isMarshallExpense(item) {
+  if (!item || item.type !== "expense") return false;
+  const merchant = (item.merchant || "").toLowerCase();
+  const note = (item.note || "").toLowerCase();
+  const category = (item.category || "");
+  return merchant.includes("marshall") || category === "房租" || note.includes("marshall");
+}
+
 function renderBars(container, totals, emptyMessage) {
   const entries = Object.entries(totals).sort((a, b) => b[1] - a[1]);
   const max = Math.max(...entries.map((entry) => entry[1]), 0);
@@ -963,6 +987,10 @@ function renderBars(container, totals, emptyMessage) {
     const pct = total > 0 ? ((amount / total) * 100).toFixed(1) : "0.0";
     const node = elements.barTemplate.content.cloneNode(true);
     const rowEl = node.querySelector(".bar-row");
+    const isMarshall = label === "房租" || label.toLowerCase().includes("marshall");
+    if (isMarshall && rowEl) {
+      rowEl.classList.add("row-marshall");
+    }
     if (rowEl) {
       rowEl.title = `${label}: ${formatUsd(amount)} (${pct}%)`;
     }
@@ -979,7 +1007,10 @@ function renderRows(items) {
 
   for (const item of items) {
     const tr = document.createElement("tr");
-    tr.className = `transaction-row ${item.type === "income" ? "row-income" : "row-expense"}`;
+    const isMarshall = isMarshallExpense(item);
+    const typeClass = item.type === "income" ? "row-income" : "row-expense";
+    const marshallClass = isMarshall ? " row-marshall" : "";
+    tr.className = `transaction-row ${typeClass}${marshallClass}`;
     if (justAddedId && item.id === justAddedId) {
       tr.classList.add("just-added");
     }
@@ -1013,7 +1044,6 @@ function beginEdit(id) {
   editingId = id;
   elements.date.value = transaction.date;
   elements.type.value = transaction.type;
-  elements.form?.classList.toggle("is-income", transaction.type === "income");
   syncCategoryOptionsForType(transaction.category);
   elements.category.value = transaction.category;
   renderMerchantOptions(transaction.category, transaction.merchant);
@@ -1021,6 +1051,7 @@ function beginEdit(id) {
   elements.paymentMethod.value = transaction.paymentMethod || inferPaymentMethod(transaction);
   elements.amount.value = transaction.amount;
   elements.note.value = transaction.note;
+  updateFormTone();
   elements.saveTransaction.textContent = transaction.type === "income" ? "儲存收入修改" : "儲存修改";
   elements.cancelEdit.hidden = false;
   elements.form.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -1029,7 +1060,6 @@ function beginEdit(id) {
 function resetForm() {
   editingId = "";
   elements.form.reset();
-  elements.form?.classList.remove("is-income");
   setDefaultFormValues();
   elements.saveTransaction.textContent = "加入記帳";
   elements.cancelEdit.hidden = true;
@@ -1038,10 +1068,10 @@ function resetForm() {
 function setDefaultFormValues() {
   elements.date.value = getLocalDateValue();
   elements.type.value = "expense";
-  elements.form?.classList.remove("is-income");
   syncCategoryOptionsForType("超市");
   renderMerchantOptions(elements.category.value);
   syncPaymentMethodForCategory(elements.category.value);
+  updateFormTone();
 }
 
 function syncPaymentMethodForCategory(category) {
@@ -1069,6 +1099,7 @@ function duplicateTransaction(id) {
   elements.paymentMethod.value = transaction.paymentMethod || inferPaymentMethod(transaction);
   elements.amount.value = transaction.amount;
   elements.note.value = transaction.note || "";
+  updateFormTone();
   elements.saveTransaction.textContent = "加入記帳 (已複製)";
   elements.cancelEdit.hidden = false;
   elements.form.scrollIntoView({ behavior: "smooth", block: "start" });

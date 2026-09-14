@@ -683,6 +683,24 @@ small {
   background: linear-gradient(135deg, #166534, #15803d);
 }
 
+.entry-panel.is-marshall {
+  border-color: rgba(239, 68, 68, 0.4);
+  box-shadow: 0 14px 38px rgba(225, 29, 72, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+.entry-panel.is-marshall .eyebrow {
+  color: #e11d48;
+}
+
+.entry-panel.is-marshall .primary-button {
+  background: linear-gradient(135deg, #e11d48, #f43f5e);
+  box-shadow: 0 8px 24px rgba(225, 29, 72, 0.26);
+}
+
+.entry-panel.is-marshall .primary-button:hover {
+  background: linear-gradient(135deg, #be123c, #e11d48);
+}
+
 form label {
   display: grid;
   gap: 8px;
@@ -917,6 +935,38 @@ form label {
   border-color: rgba(183, 121, 31, 0.36);
   background: linear-gradient(145deg, rgba(255, 255, 250, 0.96) 0%, rgba(254, 246, 230, 0.82) 100%);
   box-shadow: 0 10px 22px rgba(183, 121, 31, 0.12), inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+/* Marshall 住宿費分析指標小卡美學紅底 */
+.bar-row.row-marshall {
+  border-color: rgba(225, 29, 72, 0.32);
+  background: linear-gradient(145deg, rgba(255, 245, 245, 0.88) 0%, rgba(254, 238, 238, 0.65) 100%);
+  box-shadow: 0 4px 14px rgba(225, 29, 72, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.bar-row.row-marshall:hover {
+  border-color: rgba(225, 29, 72, 0.5);
+  background: linear-gradient(145deg, rgba(255, 250, 250, 0.98) 0%, rgba(254, 232, 232, 0.85) 100%);
+  box-shadow: 0 10px 22px rgba(225, 29, 72, 0.16), inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+.bar-row.row-marshall .category-name {
+  color: #9f1239;
+}
+
+.bar-row.row-marshall .category-amount {
+  color: #e11d48;
+}
+
+.bar-row.row-marshall .category-pct {
+  color: #9f1239;
+  background: rgba(225, 29, 72, 0.09);
+  border-color: rgba(225, 29, 72, 0.22);
+}
+
+.bar-row.row-marshall .bar-fill {
+  background: linear-gradient(90deg, #e11d48 0%, #f43f5e 55%, #fda4af 100%);
+  box-shadow: 0 0 10px rgba(225, 29, 72, 0.32);
 }
 
 .bar-label {
@@ -1229,6 +1279,50 @@ tbody tr.row-income td.amount {
 
 tbody tr.row-income.just-added {
   animation: rowHighlightIncome 1.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* MARSHALL 住宿費用美學紅底樣式 (淡珊瑚紅/玫瑰微光底色、底框與左側精緻紅指示，呼應收入美學) */
+tbody tr.row-marshall {
+  background: linear-gradient(90deg, rgba(239, 68, 68, 0.08) 0%, rgba(254, 242, 242, 0.72) 28%, rgba(239, 68, 68, 0.035) 100%);
+}
+
+tbody tr.row-marshall td {
+  border-bottom: 1px solid rgba(239, 68, 68, 0.22);
+}
+
+tbody tr.row-marshall td:first-child {
+  box-shadow: inset 4px 0 0 #e11d48;
+}
+
+tbody tr.row-marshall:hover {
+  background: rgba(239, 68, 68, 0.14) !important;
+}
+
+tbody tr.row-marshall td.amount {
+  color: #dc2626;
+}
+
+tbody tr.row-marshall .type-pill.expense {
+  border: 1px solid rgba(225, 29, 72, 0.32);
+  color: #be123c;
+  background: rgba(225, 29, 72, 0.1);
+  box-shadow: 0 2px 6px rgba(225, 29, 72, 0.08);
+}
+
+/* 新增或修改 Marshall 住宿費用瞬間高光動畫 */
+@keyframes rowHighlightMarshall {
+  0% {
+    background: rgba(239, 68, 68, 0.32);
+    box-shadow: 0 0 18px rgba(239, 68, 68, 0.38);
+  }
+  100% {
+    background: linear-gradient(90deg, rgba(239, 68, 68, 0.08) 0%, rgba(254, 242, 242, 0.72) 28%, rgba(239, 68, 68, 0.035) 100%);
+    box-shadow: none;
+  }
+}
+
+tbody tr.row-marshall.just-added {
+  animation: rowHighlightMarshall 1.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
 th {

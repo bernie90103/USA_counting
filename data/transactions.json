@@ -1,5 +1,75 @@
 [
   {
+    "id": "e0ee57dc-5460-414f-b378-ee38c7b392d4",
+    "date": "2026-09-18",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Publix",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "冰淇淋/炸雞/洗衣精",
+    "amount": 42.81
+  },
+  {
+    "id": "cb349647-0505-4c4d-8cd3-86a858a20893",
+    "date": "2026-09-15",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Publix",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "ice cream",
+    "amount": 20.89
+  },
+  {
+    "id": "7c484353-f696-4880-9325-fa27f6f294ad",
+    "date": "2026-09-18",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Mein Bowl",
+    "paymentMethod": "學生證",
+    "note": "午餐",
+    "amount": 10.99
+  },
+  {
+    "id": "6aa0360e-5eaf-4d8d-b70f-6c6713bb4389",
+    "date": "2026-09-17",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Chick-fil-A",
+    "paymentMethod": "學生證",
+    "note": "午餐",
+    "amount": 11.12
+  },
+  {
+    "id": "868fa5d1-1c2e-4b5e-b611-8c956c583b6d",
+    "date": "2026-09-16",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "WOW Bao",
+    "paymentMethod": "學生證",
+    "note": "消夜/炸雞柳",
+    "amount": 14.29
+  },
+  {
+    "id": "4c12646b-b1e9-4a6a-948f-da937de9f285",
+    "date": "2026-09-16",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "WOW Bao",
+    "paymentMethod": "學生證",
+    "note": "消夜漢堡",
+    "amount": 17.48
+  },
+  {
+    "id": "c2e8e1c1-09c5-4b85-9971-0357a9095a92",
+    "date": "2026-09-16",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Mein Bowl",
+    "paymentMethod": "學生證",
+    "note": "午餐",
+    "amount": 10.99
+  },
+  {
     "id": "fccda4c3-01ef-4ae6-a3cf-84d349fc41d0",
     "date": "2026-09-14",
     "type": "expense",

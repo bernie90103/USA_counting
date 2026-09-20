@@ -1,5 +1,15 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "946b73a1-aaf6-43c3-8fb9-484408c44ef0",
+    "date": "2026-09-19",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Walmart",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "烤雞/保養品/生鮮/冷凍食品",
+    "amount": 54.82
+  },
+  {
     "id": "e0ee57dc-5460-414f-b378-ee38c7b392d4",
     "date": "2026-09-18",
     "type": "expense",

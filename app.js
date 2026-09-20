@@ -1005,6 +1005,26 @@ function renderBars(container, totals, emptyMessage) {
   }
 }
 
+function getDayOfWeekInfo(dateStr) {
+  if (!dateStr || typeof dateStr !== "string") return null;
+  const match = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (!match) return null;
+  const year = Number(match[1]);
+  const month = Number(match[2]) - 1;
+  const day = Number(match[3]);
+  const date = new Date(year, month, day);
+  if (Number.isNaN(date.getTime())) return null;
+
+  const dayOfWeek = date.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+  const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+  const dayNames = ["週日", "週一", "週二", "週三", "週四", "週五", "週六"];
+  return {
+    dayOfWeek,
+    name: dayNames[dayOfWeek],
+    isWeekend,
+  };
+}
+
 function renderRows(items) {
   elements.transactionRows.innerHTML = "";
   elements.emptyState.hidden = items.length > 0;
@@ -1019,9 +1039,18 @@ function renderRows(items) {
       tr.classList.add("just-added");
     }
     const signedAmount = item.type === "income" ? item.amount : -item.amount;
+    const dayInfo = getDayOfWeekInfo(item.date);
+    const dayBadgeHtml = dayInfo
+      ? `<span class="day-badge ${dayInfo.isWeekend ? "weekend" : "weekday"}" title="${dayInfo.isWeekend ? "假日" : "平日"}">${escapeHtml(dayInfo.name)}</span>`
+      : "";
 
     tr.innerHTML = `
-      <td>${escapeHtml(item.date)}</td>
+      <td>
+        <div class="date-cell">
+          <span class="date-text">${escapeHtml(item.date)}</span>
+          ${dayBadgeHtml}
+        </div>
+      </td>
       <td><span class="type-pill ${item.type}">${item.type === "income" ? "收入" : "支出"}</span></td>
       <td>${escapeHtml(item.category)}</td>
       <td>${escapeHtml(item.merchant || "-")}</td>
@@ -1140,7 +1169,13 @@ function renderCurrentFilteredRows() {
 
   if (searchQuery) {
     filtered = filtered.filter((item) => {
-      const matchDate = String(item.date || "").toLowerCase().includes(searchQuery);
+      const dayInfo = getDayOfWeekInfo(item.date);
+      const dayName = dayInfo ? dayInfo.name.toLowerCase() : "";
+      const dayType = dayInfo ? (dayInfo.isWeekend ? "假日 週末" : "平日") : "";
+      const matchDate =
+        String(item.date || "").toLowerCase().includes(searchQuery) ||
+        dayName.includes(searchQuery) ||
+        dayType.includes(searchQuery);
       const matchCategory = String(item.category || "").toLowerCase().includes(searchQuery);
       const matchMerchant = String(item.merchant || "").toLowerCase().includes(searchQuery);
       const matchMethod = String(item.paymentMethod || "").toLowerCase().includes(searchQuery);

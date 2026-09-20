@@ -1359,6 +1359,68 @@ td.amount {
   white-space: nowrap;
 }
 
+.date-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.date-text {
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: 0.01em;
+}
+
+.day-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 7px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0.03em;
+  border-radius: 7px;
+  user-select: none;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.day-badge:hover {
+  transform: translateY(-1px);
+}
+
+/* 平日美學樣式：溫潤琥珀咖 (Warm Amber Latte) */
+.day-badge.weekday {
+  color: #7c4f13;
+  background: linear-gradient(135deg, rgba(183, 121, 31, 0.1) 0%, rgba(217, 119, 6, 0.05) 100%);
+  border: 1px solid rgba(183, 121, 31, 0.24);
+  box-shadow: 0 1px 3px rgba(125, 91, 45, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+.day-badge.weekday:hover {
+  border-color: rgba(183, 121, 31, 0.45);
+  background: linear-gradient(135deg, rgba(183, 121, 31, 0.16) 0%, rgba(217, 119, 6, 0.09) 100%);
+  box-shadow: 0 2px 6px rgba(183, 121, 31, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+/* 假日美學樣式：舒心紫藤晶 (Dreamy Amethyst Violet) */
+.day-badge.weekend {
+  color: #6d28d9;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.14) 0%, rgba(192, 132, 252, 0.09) 100%);
+  border: 1px solid rgba(139, 92, 246, 0.32);
+  box-shadow: 0 2px 6px rgba(109, 40, 217, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+.day-badge.weekend:hover {
+  border-color: rgba(139, 92, 246, 0.55);
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(192, 132, 252, 0.15) 100%);
+  box-shadow: 0 3px 8px rgba(109, 40, 217, 0.18), inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
 .type-pill {
   display: inline-flex;
   align-items: center;

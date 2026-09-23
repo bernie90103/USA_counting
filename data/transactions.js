@@ -1,5 +1,15 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "683e2c24-efc0-4f49-828e-380a01eb6618",
+    "date": "2026-09-22",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Starbucks HSC",
+    "paymentMethod": "學生證",
+    "note": "咖啡",
+    "amount": 5.45
+  },
+  {
     "id": "946b73a1-aaf6-43c3-8fb9-484408c44ef0",
     "date": "2026-09-19",
     "type": "expense",

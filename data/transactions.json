@@ -1,5 +1,15 @@
 [
   {
+    "id": "a7a1fdbb-82ac-4217-8c00-b11a929fb1e8",
+    "date": "2026-09-25",
+    "type": "expense",
+    "category": "3C",
+    "merchant": "Apple Store",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "Mac air",
+    "amount": 1538.9
+  },
+  {
     "id": "71af5163-a660-4bb6-8a23-9be1854633dc",
     "date": "2026-09-22",
     "type": "expense",

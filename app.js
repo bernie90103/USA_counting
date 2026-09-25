@@ -975,8 +975,13 @@ function updateFormTone() {
   if (!elements.form) return;
   const isIncome = elements.type?.value === "income";
   const category = elements.category?.value;
-  const merchant = elements.merchant?.value;
-  const isMarshall = !isIncome && (category === "房租" || (merchant && merchant.toLowerCase().includes("marshall")));
+  const merchant = (elements.merchant?.value || "").toLowerCase();
+  const isMarshall =
+    !isIncome &&
+    (category === "房租" ||
+      category === "3C" ||
+      merchant.includes("marshall") ||
+      merchant.includes("apple store"));
 
   elements.form.classList.toggle("is-income", isIncome);
   elements.form.classList.toggle("is-marshall", isMarshall);
@@ -986,8 +991,16 @@ function isMarshallExpense(item) {
   if (!item || item.type !== "expense") return false;
   const merchant = (item.merchant || "").toLowerCase();
   const note = (item.note || "").toLowerCase();
-  const category = (item.category || "");
-  return merchant.includes("marshall") || category === "房租" || note.includes("marshall");
+  const category = item.category || "";
+  return (
+    merchant.includes("marshall") ||
+    category === "房租" ||
+    note.includes("marshall") ||
+    merchant.includes("apple store") ||
+    category === "3C" ||
+    note.includes("mac air") ||
+    note.includes("macbook")
+  );
 }
 
 function renderBars(container, totals, emptyMessage) {
@@ -1006,7 +1019,12 @@ function renderBars(container, totals, emptyMessage) {
     const pct = total > 0 ? ((amount / total) * 100).toFixed(1) : "0.0";
     const node = elements.barTemplate.content.cloneNode(true);
     const rowEl = node.querySelector(".bar-row");
-    const isMarshall = label === "房租" || label.toLowerCase().includes("marshall");
+    const labelLower = label.toLowerCase();
+    const isMarshall =
+      label === "房租" ||
+      labelLower.includes("marshall") ||
+      label === "3C" ||
+      labelLower.includes("apple store");
     if (isMarshall && rowEl) {
       rowEl.classList.add("row-marshall");
     }

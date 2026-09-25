@@ -12,9 +12,10 @@ const CAMPUS_CARD_STARTING_BALANCE = CAMPUS_CARD_DEPOSITS.reduce((sum, item) => 
 const CAMPUS_CARD_PAYMENT_METHOD = "學生證";
 const CASH_PAYMENT_METHOD = "現金";
 const TAIWAN_CARD_PAYMENT_METHOD = "台灣信用卡";
-const EXPENSE_CATEGORIES = ["房租", "超市", "學餐", "外食", "網購", "交通", "學費", "醫療", "娛樂", "其他"];
+const EXPENSE_CATEGORIES = ["房租", "超市", "學餐", "外食", "網購", "3C", "交通", "學費", "醫療", "娛樂", "其他"];
 const INCOME_CATEGORIES = ["rec center", "學校"];
 const MERCHANTS = [
+  "Apple Store",
   "Marshall",
   "Publix",
   "Trader Joe's",
@@ -31,6 +32,7 @@ const MERCHANTS = [
   "Target.com",
   "Costco.com",
   "Best Buy",
+  "Micro Center",
   "eBay",
   "Etsy",
   "Temu",
@@ -110,6 +112,12 @@ const ONLINE_SHOPPING_MERCHANTS = [
   "SHEIN",
   "AliExpress",
 ];
+const TECH_MERCHANTS = [
+  "Apple Store",
+  "Best Buy",
+  "Amazon",
+  "Micro Center",
+];
 const REC_CENTER_INCOME_MERCHANTS = ["operation assisted", "lifeguard"];
 const SCHOOL_INCOME_MERCHANTS = ["UAB INTO"];
 const INCOME_MERCHANTS = [...REC_CENTER_INCOME_MERCHANTS, ...SCHOOL_INCOME_MERCHANTS];
@@ -119,6 +127,7 @@ const CATEGORY_MERCHANTS = {
   學餐: SCHOOL_MEAL_MERCHANTS,
   外食: DINING_MERCHANTS,
   網購: ONLINE_SHOPPING_MERCHANTS,
+  "3C": TECH_MERCHANTS,
   其他: OTHER_MERCHANTS,
   "rec center": REC_CENTER_INCOME_MERCHANTS,
   學校: SCHOOL_INCOME_MERCHANTS,
@@ -565,8 +574,9 @@ function normalizeCategoryAndMerchant(item) {
     inferredMerchant === "星巴克" && isCampusCardPayment(item) ? "Starbucks HSC" : inferredMerchant;
   const schoolMealCategory = SCHOOL_MEAL_MERCHANTS.includes(detectedMerchant) ? "學餐" : "";
   const storeCategory = GROCERY_MERCHANTS.includes(detectedMerchant) ? "超市" : "";
+  const techCategory = detectedMerchant === "Apple Store" ? "3C" : "";
   const categoryFromMerchant =
-    schoolMealCategory || (detectedMerchant === "星巴克" ? "外食" : storeCategory);
+    schoolMealCategory || (detectedMerchant === "星巴克" ? "外食" : storeCategory) || techCategory;
   const category = categoryFromMerchant || normalizeCategory(rawCategory, item.type);
 
   return {
@@ -632,6 +642,15 @@ function inferIncomeCategory(merchant) {
 function inferMerchant(category, note) {
   const text = `${category || ""} ${note || ""}`.toLowerCase();
 
+  if (
+    text.includes("apple store") ||
+    text.includes("apple直營店") ||
+    text.includes("apple 門市") ||
+    text.includes("apple專賣店") ||
+    text.includes("蘋果直營店")
+  ) {
+    return "Apple Store";
+  }
   if (text.includes("commons") || text.includes("the commons")) return "The Commons on the Green";
   if (text.includes("chick-fil-a") || text.includes("chick fil a")) return "Chick-fil-A";
   if (text.includes("starbucks hsc") || text.includes("星巴克 hsc")) return "Starbucks HSC";

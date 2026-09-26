@@ -1,7 +1,27 @@
 [
   {
-    "id": "a7a1fdbb-82ac-4217-8c00-b11a929fb1e8",
+    "id": "ccb811d2-7ff9-4294-8da8-20905789fe25",
     "date": "2026-09-25",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "WOW Bao",
+    "paymentMethod": "學生證",
+    "note": "午晚餐",
+    "amount": 14.84
+  },
+  {
+    "id": "4b05323b-f5c3-4474-97ea-df8f3309a883",
+    "date": "2026-09-25",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Publix",
+    "paymentMethod": "chase debit card",
+    "note": "冰淇淋/炸雞",
+    "amount": 26.94
+  },
+  {
+    "id": "a7a1fdbb-82ac-4217-8c00-b11a929fb1e8",
+    "date": "2026-09-24",
     "type": "expense",
     "category": "3C",
     "merchant": "Apple Store",

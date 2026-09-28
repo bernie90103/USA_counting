@@ -1,5 +1,15 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "03773ed1-08ff-4228-b066-39a8d0d9d207",
+    "date": "2026-09-27",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Sam's Club",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "冷凍食品/牛排/牛奶",
+    "amount": 46.79
+  },
+  {
     "id": "ccb811d2-7ff9-4294-8da8-20905789fe25",
     "date": "2026-09-25",
     "type": "expense",

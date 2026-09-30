@@ -1,5 +1,35 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "ecb7ea23-b54e-4c3e-b91f-7219585b3352",
+    "date": "2026-09-30",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Starbucks HSC",
+    "paymentMethod": "學生證",
+    "note": "cold brew",
+    "amount": 5.23
+  },
+  {
+    "id": "c34bcec8-562c-44b2-9b57-351ed865460f",
+    "date": "2026-09-30",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Mein Bowl",
+    "paymentMethod": "學生證",
+    "note": "午餐",
+    "amount": 10.99
+  },
+  {
+    "id": "dd7626b3-cec7-49e9-bddb-f1f8980fce64",
+    "date": "2026-09-29",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Publix",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "冷凍餛飩",
+    "amount": 4.79
+  },
+  {
     "id": "4db86faa-9630-4e33-9783-cc6627a21b91",
     "date": "2026-09-25",
     "type": "income",

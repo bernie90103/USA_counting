@@ -13,7 +13,7 @@ const CAMPUS_CARD_PAYMENT_METHOD = "學生證";
 const CASH_PAYMENT_METHOD = "現金";
 const TAIWAN_CARD_PAYMENT_METHOD = "台灣信用卡";
 const EXPENSE_CATEGORIES = ["房租", "超市", "學餐", "外食", "網購", "3C", "交通", "學費", "醫療", "娛樂", "其他"];
-const INCOME_CATEGORIES = ["rec center", "學校"];
+const INCOME_CATEGORIES = ["rec center", "學校", "代收代付", "其他收入"];
 const MERCHANTS = [
   "Apple Store",
   "Marshall",
@@ -64,6 +64,11 @@ const MERCHANTS = [
   "operation assisted",
   "lifeguard",
   "UAB INTO",
+  "同學/朋友",
+  "個人",
+  "轉帳",
+  "利息",
+  "獎學金",
   "其他",
 ];
 const RENT_MERCHANTS = ["Marshall"];
@@ -120,7 +125,14 @@ const TECH_MERCHANTS = [
 ];
 const REC_CENTER_INCOME_MERCHANTS = ["operation assisted", "lifeguard"];
 const SCHOOL_INCOME_MERCHANTS = ["UAB INTO"];
-const INCOME_MERCHANTS = [...REC_CENTER_INCOME_MERCHANTS, ...SCHOOL_INCOME_MERCHANTS];
+const REIMBURSEMENT_INCOME_MERCHANTS = ["同學/朋友", "個人", "轉帳", "其他"];
+const OTHER_INCOME_MERCHANTS = ["轉帳", "利息", "獎學金", "其他"];
+const INCOME_MERCHANTS = [
+  ...REC_CENTER_INCOME_MERCHANTS,
+  ...SCHOOL_INCOME_MERCHANTS,
+  ...REIMBURSEMENT_INCOME_MERCHANTS,
+  ...OTHER_INCOME_MERCHANTS,
+];
 const CATEGORY_MERCHANTS = {
   房租: RENT_MERCHANTS,
   超市: GROCERY_MERCHANTS,
@@ -131,6 +143,8 @@ const CATEGORY_MERCHANTS = {
   其他: OTHER_MERCHANTS,
   "rec center": REC_CENTER_INCOME_MERCHANTS,
   學校: SCHOOL_INCOME_MERCHANTS,
+  代收代付: REIMBURSEMENT_INCOME_MERCHANTS,
+  其他收入: OTHER_INCOME_MERCHANTS,
 };
 const PAYMENT_METHODS = ["台灣信用卡", "chase debit card", "chase credit prime VISA", "學生證", "現金"];
 const CHASE_DEBIT_PAYMENT_METHOD = "chase debit card";
@@ -560,10 +574,34 @@ function normalizeCategoryAndMerchant(item) {
   const note = String(item.note || "");
 
   if (item.type === "income") {
-    const merchant = normalizeIncomeMerchant(rawMerchant, note);
+    const rawNote = note.toLowerCase();
+    const isReimbursement =
+      rawNote.includes("同學") ||
+      rawNote.includes("朋友") ||
+      rawNote.includes("代付") ||
+      rawNote.includes("代買") ||
+      rawNote.includes("還款") ||
+      rawNote.includes("分帳") ||
+      rawNote.includes("aa");
+
+    let merchant = normalizeIncomeMerchant(rawMerchant, note);
+    let category = rawCategory;
+
+    if (
+      isReimbursement &&
+      (rawMerchant === "lifeguard" ||
+        rawMerchant === "operation assisted" ||
+        !rawCategory ||
+        rawCategory === "rec center")
+    ) {
+      merchant = "同學/朋友";
+      category = "代收代付";
+    } else {
+      category = normalizeCategory(rawCategory, item.type, merchant);
+    }
 
     return {
-      category: normalizeCategory(rawCategory, item.type, merchant),
+      category,
       merchant,
     };
   }
@@ -629,6 +667,20 @@ function inferIncomeMerchant(text) {
     return "lifeguard";
   }
   if (normalized.includes("uab into")) return "UAB INTO";
+  if (
+    normalized.includes("同學") ||
+    normalized.includes("朋友") ||
+    normalized.includes("代付") ||
+    normalized.includes("代買") ||
+    normalized.includes("還款") ||
+    normalized.includes("分帳") ||
+    normalized.includes("aa")
+  ) {
+    return "同學/朋友";
+  }
+  if (normalized.includes("利息")) return "利息";
+  if (normalized.includes("獎學金")) return "獎學金";
+  if (normalized.includes("轉帳")) return "轉帳";
 
   return "";
 }
@@ -636,6 +688,8 @@ function inferIncomeMerchant(text) {
 function inferIncomeCategory(merchant) {
   if (SCHOOL_INCOME_MERCHANTS.includes(merchant)) return "學校";
   if (REC_CENTER_INCOME_MERCHANTS.includes(merchant)) return "rec center";
+  if (REIMBURSEMENT_INCOME_MERCHANTS.includes(merchant)) return "代收代付";
+  if (OTHER_INCOME_MERCHANTS.includes(merchant)) return "其他收入";
   return "";
 }
 
@@ -1209,6 +1263,7 @@ function renderCurrentFilteredRows() {
       const dayInfo = getDayOfWeekInfo(item.date);
       const dayName = dayInfo ? dayInfo.name.toLowerCase() : "";
       const dayType = dayInfo ? (dayInfo.isWeekend ? "假日 週末" : "平日") : "";
+      const matchType = (item.type === "income" ? "收入 income" : "支出 expense").includes(searchQuery);
       const matchDate =
         String(item.date || "").toLowerCase().includes(searchQuery) ||
         dayName.includes(searchQuery) ||
@@ -1218,12 +1273,16 @@ function renderCurrentFilteredRows() {
       const matchMethod = String(item.paymentMethod || "").toLowerCase().includes(searchQuery);
       const matchNote = String(item.note || "").toLowerCase().includes(searchQuery);
       const matchAmount = String(item.amount || "").includes(searchQuery);
-      return matchDate || matchCategory || matchMerchant || matchMethod || matchNote || matchAmount;
+      return matchType || matchDate || matchCategory || matchMerchant || matchMethod || matchNote || matchAmount;
     });
   }
 
   if (filterCategory) {
-    filtered = filtered.filter((item) => item.category === filterCategory);
+    if (filterCategory === "收入") {
+      filtered = filtered.filter((item) => item.type === "income");
+    } else {
+      filtered = filtered.filter((item) => item.category === filterCategory);
+    }
   }
 
   filtered.sort((a, b) => {
@@ -1444,7 +1503,12 @@ function renderMerchantOptions(category, selectedMerchant = "") {
       appendMerchantOption(merchant, merchant);
     }
 
-    elements.merchant.value = merchants.includes(selectedMerchant) ? selectedMerchant : merchants[0] || "";
+    if (selectedMerchant && !merchants.includes(selectedMerchant)) {
+      appendMerchantOption(selectedMerchant, selectedMerchant);
+    }
+
+    elements.merchant.value =
+      selectedMerchant && hasMerchantOption(selectedMerchant) ? selectedMerchant : merchants[0] || "";
     return;
   }
 

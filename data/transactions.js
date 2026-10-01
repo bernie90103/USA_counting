@@ -1,5 +1,35 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "3b440e82-bfc0-40e2-b532-3f857ba83bba",
+    "date": "2026-09-30",
+    "type": "income",
+    "category": "代收代付",
+    "merchant": "同學/朋友",
+    "paymentMethod": "chase debit card",
+    "note": "同學的晚餐",
+    "amount": 8.91
+  },
+  {
+    "id": "78ff329d-2c4a-423f-bb21-01e1f818edc2",
+    "date": "2026-09-30",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Chick-fil-A",
+    "paymentMethod": "學生證",
+    "note": "我的晚餐",
+    "amount": 11.12
+  },
+  {
+    "id": "20e65d84-dd1d-479b-8e57-8c9601f3071a",
+    "date": "2026-09-30",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Chick-fil-A",
+    "paymentMethod": "學生證",
+    "note": "同學的",
+    "amount": 8.91
+  },
+  {
     "id": "ecb7ea23-b54e-4c3e-b91f-7219585b3352",
     "date": "2026-09-30",
     "type": "expense",

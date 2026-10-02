@@ -1,5 +1,25 @@
 [
   {
+    "id": "8da22801-8099-4fd3-88f2-10a136af98d2",
+    "date": "2026-10-02",
+    "type": "expense",
+    "category": "網購",
+    "merchant": "Amazon",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "scooter",
+    "amount": 141.25
+  },
+  {
+    "id": "b3096961-4f9d-4858-a9ad-872dcb0e7d2f",
+    "date": "2026-10-01",
+    "type": "expense",
+    "category": "房租",
+    "merchant": "Marshall",
+    "paymentMethod": "chase debit card",
+    "note": "退145.54",
+    "amount": 1538.49
+  },
+  {
     "id": "3b440e82-bfc0-40e2-b532-3f857ba83bba",
     "date": "2026-09-30",
     "type": "income",

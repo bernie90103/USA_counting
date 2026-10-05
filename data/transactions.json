@@ -1,5 +1,45 @@
 [
   {
+    "id": "8961b3dd-e22e-4bfb-a185-e1e4fefffd02",
+    "date": "2026-10-02",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Mein Bowl",
+    "paymentMethod": "學生證",
+    "note": "午餐",
+    "amount": 10.99
+  },
+  {
+    "id": "31b19534-aab6-410b-aed9-2b84d0df810f",
+    "date": "2026-10-03",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Oriental Market",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "麵",
+    "amount": 5.39
+  },
+  {
+    "id": "35b6fb2f-121d-4f16-ae0f-3d2bb7c36739",
+    "date": "2026-10-03",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Sam's Club",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "牛肉/豬肉/其他",
+    "amount": 58.2
+  },
+  {
+    "id": "0d1b504f-0033-4ff9-973a-17547b488b78",
+    "date": "2026-10-03",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Publix",
+    "paymentMethod": "chase debit card",
+    "note": "",
+    "amount": 6.48
+  },
+  {
     "id": "8da22801-8099-4fd3-88f2-10a136af98d2",
     "date": "2026-10-02",
     "type": "expense",

@@ -1,5 +1,25 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "2ee9d555-5938-42b7-b3fe-8f4c3d3dd098",
+    "date": "2026-10-06",
+    "type": "expense",
+    "category": "網購",
+    "merchant": "Amazon",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "巧克力蛋白飲",
+    "amount": 16.01
+  },
+  {
+    "id": "91a5f865-0e91-4103-8ebe-186d1e629bc5",
+    "date": "2026-10-07",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Mein Bowl",
+    "paymentMethod": "學生證",
+    "note": "晚餐",
+    "amount": 10.99
+  },
+  {
     "id": "8961b3dd-e22e-4bfb-a185-e1e4fefffd02",
     "date": "2026-10-02",
     "type": "expense",

@@ -1,5 +1,65 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "1dd11d45-9393-41c1-908f-1d8cd70c9dce",
+    "date": "2026-10-09",
+    "type": "income",
+    "category": "rec center",
+    "merchant": "lifeguard",
+    "paymentMethod": "chase debit card",
+    "note": "9/20-10/3",
+    "amount": 447.05
+  },
+  {
+    "id": "8f793e9d-7250-4d67-b65e-eb6999b92b49",
+    "date": "2026-10-08",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Publix",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "冰麒麟",
+    "amount": 13.54
+  },
+  {
+    "id": "22a8006d-3a04-4e1a-a87f-93ab040fb687",
+    "date": "2026-10-09",
+    "type": "expense",
+    "category": "網購",
+    "merchant": "Amazon",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "室內拖鞋",
+    "amount": 7.55
+  },
+  {
+    "id": "09d9fa41-1cbf-413b-87fe-46ed4bb9d146",
+    "date": "2026-10-09",
+    "type": "expense",
+    "category": "網購",
+    "merchant": "Amazon",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "CeraVe洗髮精",
+    "amount": 8.18
+  },
+  {
+    "id": "39857763-8fe1-4202-ba38-5e38c850da32",
+    "date": "2026-10-09",
+    "type": "expense",
+    "category": "網購",
+    "merchant": "Amazon",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "遊戲controller",
+    "amount": 17.35
+  },
+  {
+    "id": "bb53f8da-4141-4a86-93cb-91d4802096f9",
+    "date": "2026-10-09",
+    "type": "expense",
+    "category": "網購",
+    "merchant": "Amazon",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "Mac保護殼",
+    "amount": 8.63
+  },
+  {
     "id": "2ee9d555-5938-42b7-b3fe-8f4c3d3dd098",
     "date": "2026-10-06",
     "type": "expense",

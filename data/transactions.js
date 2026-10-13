@@ -1,5 +1,25 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "d618d1a0-fdc4-4463-bbb8-3a30f0ac3824",
+    "date": "2026-10-13",
+    "type": "expense",
+    "category": "學費",
+    "merchant": "其他",
+    "paymentMethod": "chase debit card",
+    "note": "chatgpt",
+    "amount": 21.6
+  },
+  {
+    "id": "9bae07c7-daae-4bd6-b497-432a9cfc29e5",
+    "date": "2026-10-11",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Walmart",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "一堆吃的",
+    "amount": 62.2
+  },
+  {
     "id": "1dd11d45-9393-41c1-908f-1d8cd70c9dce",
     "date": "2026-10-09",
     "type": "income",

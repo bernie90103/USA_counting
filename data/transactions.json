@@ -1,5 +1,25 @@
 [
   {
+    "id": "5bb066b2-abc4-4ac5-bd60-19eed712e204",
+    "date": "2026-10-15",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "The Commons on the Green",
+    "paymentMethod": "學生證",
+    "note": "午餐",
+    "amount": 14.85
+  },
+  {
+    "id": "c116e712-0b97-4bcf-a80d-7cdeb6a35d5c",
+    "date": "2026-10-15",
+    "type": "expense",
+    "category": "學費",
+    "merchant": "其他",
+    "paymentMethod": "學生證",
+    "note": "影印",
+    "amount": 0.18
+  },
+  {
     "id": "d618d1a0-fdc4-4463-bbb8-3a30f0ac3824",
     "date": "2026-10-13",
     "type": "expense",

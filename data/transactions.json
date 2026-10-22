@@ -1,5 +1,15 @@
 [
   {
+    "id": "26755bc3-7701-4af2-b505-85e72c9e3ea9",
+    "date": "2026-10-21",
+    "type": "expense",
+    "category": "外食",
+    "merchant": "一般外食",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "德州牛排",
+    "amount": 23.17
+  },
+  {
     "id": "c9f87084-21cc-41d1-b1b1-15de31c30d66",
     "date": "2026-10-21",
     "type": "expense",

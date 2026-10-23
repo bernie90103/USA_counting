@@ -1,5 +1,45 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "8d9b89dd-6dca-47fe-ad78-0d6e3977e3a6",
+    "date": "2026-10-23",
+    "type": "income",
+    "category": "rec center",
+    "merchant": "lifeguard",
+    "paymentMethod": "chase debit card",
+    "note": "10/4-10/17",
+    "amount": 343.19
+  },
+  {
+    "id": "3b4c0d35-506c-4f5c-8dff-4b22485e95ea",
+    "date": "2026-10-22",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "The Commons on the Green",
+    "paymentMethod": "學生證",
+    "note": "午餐",
+    "amount": 14.85
+  },
+  {
+    "id": "97eb4809-da6e-459f-b415-eb8623db454a",
+    "date": "2026-10-15",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "WOW American Eats",
+    "paymentMethod": "學生證",
+    "note": "晚餐",
+    "amount": 14.29
+  },
+  {
+    "id": "3f96a3cd-c095-4728-811a-229bb836948b",
+    "date": "2026-10-15",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "WOW American Eats",
+    "paymentMethod": "學生證",
+    "note": "晚餐",
+    "amount": 13.74
+  },
+  {
     "id": "26755bc3-7701-4af2-b505-85e72c9e3ea9",
     "date": "2026-10-21",
     "type": "expense",

@@ -1,5 +1,45 @@
 [
   {
+    "id": "856b79f3-f39c-493a-b7c8-37797fb5f6ef",
+    "date": "2026-10-24",
+    "type": "expense",
+    "category": "娛樂",
+    "merchant": "其他",
+    "paymentMethod": "chase debit card",
+    "note": "BBQ烤肉",
+    "amount": 13
+  },
+  {
+    "id": "3f553c4b-b524-4140-929a-31374e9d0a86",
+    "date": "2026-10-24",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Walmart",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "吃的",
+    "amount": 11.61
+  },
+  {
+    "id": "cf8ca27f-18d6-4024-99c4-86908c78eb22",
+    "date": "2026-10-24",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Walmart",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "吃的",
+    "amount": 17.88
+  },
+  {
+    "id": "2d01d233-875e-48b5-a118-a7413d6e2ff1",
+    "date": "2026-10-23",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Publix",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "濱崎琳/調理包",
+    "amount": 15.63
+  },
+  {
     "id": "8d9b89dd-6dca-47fe-ad78-0d6e3977e3a6",
     "date": "2026-10-23",
     "type": "income",

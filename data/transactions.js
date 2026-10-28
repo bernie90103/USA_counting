@@ -1,5 +1,45 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "d509ffc5-3c73-493f-924a-38e2122c1791",
+    "date": "2026-10-26",
+    "type": "expense",
+    "category": "外食",
+    "merchant": "一般外食",
+    "paymentMethod": "chase debit card",
+    "note": "king buffet",
+    "amount": 23
+  },
+  {
+    "id": "ef2dca7f-0f03-4c81-964c-877d8f5f19c4",
+    "date": "2026-10-26",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "其他",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "buc-ee's/吃的/紀念品",
+    "amount": 54.01
+  },
+  {
+    "id": "f9442738-3ab4-4040-91a3-8390ce276216",
+    "date": "2026-10-26",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Chick-fil-A",
+    "paymentMethod": "學生證",
+    "note": "午餐",
+    "amount": 11.1
+  },
+  {
+    "id": "be9c678d-9486-4bea-be26-4c5c9bb660e7",
+    "date": "2026-10-26",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Starbucks HSC",
+    "paymentMethod": "學生證",
+    "note": "Maem",
+    "amount": 6.55
+  },
+  {
     "id": "856b79f3-f39c-493a-b7c8-37797fb5f6ef",
     "date": "2026-10-24",
     "type": "expense",

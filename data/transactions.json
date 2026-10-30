@@ -1,5 +1,15 @@
 [
   {
+    "id": "4c22b31e-3a68-4dad-a26c-937387ee572d",
+    "date": "2026-10-29",
+    "type": "expense",
+    "category": "其他",
+    "merchant": "",
+    "paymentMethod": "chase debit card",
+    "note": "kou留下的東西",
+    "amount": 90
+  },
+  {
     "id": "d509ffc5-3c73-493f-924a-38e2122c1791",
     "date": "2026-10-26",
     "type": "expense",

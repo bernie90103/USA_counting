@@ -1,5 +1,35 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "30221afd-2daa-4c6f-8ed2-4c3554463b43",
+    "date": "2026-10-30",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "其他",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "ollie's/帽子/床墊",
+    "amount": 29.68
+  },
+  {
+    "id": "a12fdb84-245d-4618-a7fd-6e46d5259249",
+    "date": "2026-10-30",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Hometown market",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "零食",
+    "amount": 14.24
+  },
+  {
+    "id": "5cf74d8c-20da-407a-a0bc-b435c799ea8d",
+    "date": "2026-10-30",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "好市多",
+    "paymentMethod": "chase debit card",
+    "note": "一堆牛肉",
+    "amount": 117.67
+  },
+  {
     "id": "4c22b31e-3a68-4dad-a26c-937387ee572d",
     "date": "2026-10-29",
     "type": "expense",

@@ -1,5 +1,25 @@
 [
   {
+    "id": "676cbd92-2129-4be1-9d01-73e1d7249aab",
+    "date": "2026-11-01",
+    "type": "expense",
+    "category": "交通",
+    "merchant": "其他",
+    "paymentMethod": "chase debit card",
+    "note": "fly ticket",
+    "amount": 1884.73
+  },
+  {
+    "id": "5f5f2770-6710-4ac1-9188-97f87772d5ff",
+    "date": "2026-11-01",
+    "type": "expense",
+    "category": "房租",
+    "merchant": "Marshall",
+    "paymentMethod": "chase debit card",
+    "note": "",
+    "amount": 1252.62
+  },
+  {
     "id": "30221afd-2daa-4c6f-8ed2-4c3554463b43",
     "date": "2026-10-30",
     "type": "expense",

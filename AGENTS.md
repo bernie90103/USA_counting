@@ -12,7 +12,9 @@
 - `data/transactions.json`：部署後公開顯示的權威交易資料。
 - `data/transactions.js`：由發布工具從 `transactions.json` 產生的本機載入副本。直接以 `file:` 開啟 `index.html` 時，瀏覽器可能禁止 `fetch()` JSON；此檔案讓頁面仍能載入公開資料。其內容必須與 `transactions.json` 相同，不可手動只更新其中一份。
 - `tools/publish_ledger.py`：從指定匯出的 JSON 更新公開資料、產生 `transactions.js`、備份最新匯出檔，可選擇提交、推送並同步 `gh-pages`。
-- `發布最新記帳資料.bat`：可雙擊的 Windows 發布入口。它會自動選擇 Downloads 中修改時間最新的 `us-ledger*.json` 後執行完整發布，成功後開啟 GitHub Pages 並保留命令視窗。
+- `發布最新記帳資料.command`：可雙擊的 macOS 發布入口。它會自動選擇 Downloads 中修改時間最新的 `us-ledger*.json` 後執行完整發布，成功後開啟 GitHub Pages 並保留終端視窗。
+- `發布最新記帳資料.bat`：可雙擊的 Windows 發布入口。功能與 macOS 入口相同。
+- `開啟記帳網頁.command`：可雙擊的 macOS 入口，快速於預設瀏覽器開啟本地記帳頁面。
 - `exports/latest-us-ledger.json`：發布工具建立的本機最新匯出備份，只供復原與核對，絕不可提交。
 
 `.gitignore` 應持續排除本機試算表、`exports/` 匯出備份、暫存檔、`.env`、Python 快取與其他私人資料。
@@ -27,20 +29,20 @@
 
 此專案不需要 npm install、打包或本機伺服器。
 
-- 直接用瀏覽器開啟 `index.html`：本機執行網站。
-- `node --check app.js`：檢查 JavaScript 語法。
+- 直接用瀏覽器開啟 `index.html`：本機執行網站（macOS 可雙擊 `開啟記帳網頁.command`）。
+- `node --check app.js`：檢查 JavaScript 語法（若環境有安裝 Node.js）。
 - `node --check data/transactions.js`：檢查本機公開資料副本的 JavaScript 語法。
-- `python -m py_compile tools/publish_ledger.py`：檢查 Python 語法。
-- `python tools/publish_ledger.py --json C:\path\to\us-ledger.json --no-git`：用指定 JSON 更新 `data/transactions.json`、`data/transactions.js` 與 `exports/latest-us-ledger.json`，但不提交或推送。
-- `python tools/publish_ledger.py --json C:\path\to\us-ledger.json`：用指定 JSON 更新資料、建立本機備份、提交、推送並同步 `gh-pages`。
-- 雙擊 `發布最新記帳資料.bat`：自動選擇 Downloads 中最新的 `us-ledger*.json` 並執行完整發布；這是日常發布的建議方式。
+- `python3 -m py_compile tools/publish_ledger.py`：檢查 Python 語法。
+- `python3 tools/publish_ledger.py --json ~/Downloads/us-ledger.json --no-git`：用指定 JSON 更新 `data/transactions.json`、`data/transactions.js` 與 `exports/latest-us-ledger.json`，但不提交或推送（Windows 請用 `python` 與 Windows 路徑）。
+- `python3 tools/publish_ledger.py --json ~/Downloads/us-ledger.json`：用指定 JSON 更新資料、建立本機備份、提交、推送並同步 `gh-pages`。
+- 雙擊 `發布最新記帳資料.command`（macOS）或 `發布最新記帳資料.bat`（Windows）：自動選擇 Downloads 中最新的 `us-ledger*.json` 並執行完整發布；這是日常發布的建議方式。
 - `git push origin main`：推送原始碼。
 - `git push origin main:gh-pages`：同步公開網站分支。
 
 ### 發布資料的固定流程
 
-1. 在記帳頁面完成新增、修改或刪除後，按「匯出 JSON」。Chrome 若發現同名檔案存在，可能建立 `us-ledger (1).json`、`us-ledger (2).json` 等檔名；不可假設永遠是 `us-ledger.json`。
-2. 日常情況直接雙擊 `發布最新記帳資料.bat`。它依修改時間選最新檔，避免固定讀到舊的 `us-ledger.json`。
+1. 在記帳頁面完成新增、修改或刪除後，按「匯出 JSON」。瀏覽器若發現同名檔案存在，可能建立 `us-ledger (1).json`、`us-ledger (2).json` 等檔名；不可假設永遠是 `us-ledger.json`。
+2. 日常情況直接雙擊 `發布最新記帳資料.command`（macOS）或 `發布最新記帳資料.bat`（Windows）。它依修改時間選最新檔，避免固定讀到舊的 `us-ledger.json`。
 3. 需要人工核對時，明確指定剛匯出的完整路徑並先執行 `--no-git`。確認 `data/transactions.json` 的筆數、最新日期與預期資料後，再以相同來源執行完整發布。
 4. 發布成功後，確認 `exports/latest-us-ledger.json` 已更新；這是刪除 Downloads 後可保留的本機備份，不會上傳 GitHub。
 5. 命令視窗會開啟 GitHub Pages。若網站尚未立即反映，稍候後重新整理；若仍不符，先比較最新匯出檔與 `data/transactions.json`，不要立刻再發布其他舊檔。
@@ -78,17 +80,18 @@ Python 使用四格縮排、`snake_case`、`pathlib.Path`，讀寫檔案時明�
 - `note`
 - `amount`
 
-支出使用「大分類 + 店家」兩層結構。支出分類包含 `房租`、`超市`、`學餐`、`外食`、`網購`、`交通`、`學費`、`醫療`、`娛樂`、`其他`。`merchant` 放實際店家，例如 `Trader Joe's`、`Walmart`、`Amazon`、`Starbucks HSC`、`校園餐車`。網購店家選單包含 Amazon、Walmart.com、Target.com、Costco.com、Best Buy、eBay、Etsy、Temu、SHEIN 與 AliExpress。店家選單依分類動態篩選；更新匯入、匯出、正規化或發布工具時必須保留 `merchant` 欄位。
+支出使用「大分類 + 店家」兩層結構。支出分類包含 `房租`、`超市`、`學餐`、`外食`、`網購`、`3C`、`交通`、`學費`、`醫療`、`娛樂`、`其他`。`merchant` 放實際店家，例如 `Apple Store`、`Trader Joe's`、`Walmart`、`Amazon`、`Starbucks HSC`、`校園餐車`。3C 店家包含 Apple Store、Best Buy、Amazon 與 Micro Center。網購店家選單包含 Amazon、Walmart.com、Target.com、Costco.com、Best Buy、eBay、Etsy、Temu、SHEIN 與 AliExpress。店家選單依分類動態篩選；更新匯入、匯出、正規化或發布工具時必須保留 `merchant` 欄位。
 
 付款方式應隨表單分類自動帶入：選擇 `學餐` 時使用 `學生證`，其餘分類使用 `美國信用卡`。編輯既有交易時則保留原本記錄的付款方式。
 
-收入類型目前允許 `rec center` 與 `學校` 作為分類。收入來源規則：
+收入類型目前允許 `代收代付`、`rec center`、`學校` 與 `其他收入` 作為分類。收入來源規則：
 
-- `operation assisted`
-- `lifeguard`
-- `UAB INTO`
+- `同學/朋友`、`個人`、`轉帳` 屬於 `代收代付`（朋友聚餐分帳、代付還款）
+- `operation assisted` 與 `lifeguard` 屬於 `rec center`
+- `UAB INTO` 屬於 `學校`
+- `轉帳`、`利息`、`獎學金` 屬於 `其他收入`
 
-`operation assisted` 與 `lifeguard` 屬於 `rec center`；`UAB INTO` 屬於 `學校`。若匯入舊資料出現拼錯的 `lifegrade`，應正規化為 `lifeguard`。
+若匯入舊資料出現拼錯的 `lifegrade`，應正規化為 `lifeguard`。若備註包含「同學」、「代付」、「還款」、「分帳」，應智慧判斷為「代收代付」，來源設為「同學/朋友」。
 
 選擇 `income` 時，表單應只顯示收入分類與收入來源；匯入舊資料時也應正規化到這套收入規則。
 
@@ -102,15 +105,15 @@ Python 使用四格縮排、`snake_case`、`pathlib.Path`，讀寫檔案時明�
 
 目前沒有正式測試框架。修改行為後至少執行：
 
-```powershell
-node --check app.js
-node --check data/transactions.js
-python -m py_compile tools/publish_ledger.py
+```bash
+node --check app.js               # 若環境有安裝 Node.js
+node --check data/transactions.js # 若環境有安裝 Node.js
+python3 -m py_compile tools/publish_ledger.py
 ```
 
 若只改前端 JS，可檢查受影響的 JS 檔案。若改發布工具，必須跑 Python 語法檢查，並以 `--json ... --no-git` 驗證它會同步更新 JSON、JavaScript 資料副本與 `exports` 備份。重要行為仍需在瀏覽器手動驗證：新增、編輯、刪除、JSON/CSV 匯入匯出、月份篩選、收入來源選單、行前總花費與匯率更新，以及直接開啟 `index.html` 時資料不會退回範例交易。
 
-發布資料前先使用 `--no-git`，確認 `data/transactions.json` 與 `data/transactions.js` 的內容一致後再執行完整發布。若使用日常 `.bat` 發布，發布前應確認 Downloads 的最新匯出檔時間確實是剛完成匯出後的時間。
+發布資料前先使用 `--no-git`，確認 `data/transactions.json` 與 `data/transactions.js` 的內容一致後再執行完整發布。若使用日常腳本（macOS 的 `.command` 或 Windows 的 `.bat`）發布，發布前應確認 Downloads 的最新匯出檔時間確實是剛完成匯出後的時間。
 
 ## Commit 與 PR
 

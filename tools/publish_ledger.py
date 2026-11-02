@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import argparse
 import datetime
 import json
@@ -169,11 +170,28 @@ def find_latest_transaction_candidate(debug=False):
 
 
 def find_leveldb_dirs():
-    local_app_data = Path(os.environ.get("LOCALAPPDATA", ""))
-    roots = [
-        local_app_data / "Google" / "Chrome" / "User Data",
-        local_app_data / "Microsoft" / "Edge" / "User Data",
-    ]
+    roots = []
+    if os.name == "nt":
+        local_app_data = Path(os.environ.get("LOCALAPPDATA", ""))
+        roots.extend([
+            local_app_data / "Google" / "Chrome" / "User Data",
+            local_app_data / "Microsoft" / "Edge" / "User Data",
+        ])
+    elif sys.platform == "darwin":
+        home = Path.home()
+        roots.extend([
+            home / "Library" / "Application Support" / "Google" / "Chrome",
+            home / "Library" / "Application Support" / "Microsoft Edge",
+            home / "Library" / "Application Support" / "BraveSoftware" / "Brave-Browser",
+            home / "Library" / "Application Support" / "Arc" / "User Data",
+        ])
+    else:
+        home = Path.home()
+        roots.extend([
+            home / ".config" / "google-chrome",
+            home / ".config" / "microsoft-edge",
+            home / ".config" / "brave-browser",
+        ])
 
     dirs = []
     for root in roots:

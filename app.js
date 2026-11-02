@@ -27,6 +27,11 @@ const MERCHANTS = [
   "好市多",
   "Sam's Club",
   "Walmart",
+  "Ollie's",
+  "Buc-ee's",
+  "delta航空",
+  "Uber",
+  "Lyft",
   "Amazon",
   "Walmart.com",
   "Target.com",
@@ -103,7 +108,10 @@ const GROCERY_MERCHANTS = [
   "好市多",
   "Sam's Club",
   "Walmart",
+  "Ollie's",
+  "Buc-ee's",
 ];
+const TRANSPORT_MERCHANTS = ["delta航空", "Uber", "Lyft"];
 const DINING_MERCHANTS = ["星巴克", "Canes", "珍珠奶茶", "一般外食"];
 const ONLINE_SHOPPING_MERCHANTS = [
   "Amazon",
@@ -140,6 +148,7 @@ const CATEGORY_MERCHANTS = {
   外食: DINING_MERCHANTS,
   網購: ONLINE_SHOPPING_MERCHANTS,
   "3C": TECH_MERCHANTS,
+  交通: TRANSPORT_MERCHANTS,
   其他: OTHER_MERCHANTS,
   "rec center": REC_CENTER_INCOME_MERCHANTS,
   學校: SCHOOL_INCOME_MERCHANTS,
@@ -606,15 +615,34 @@ function normalizeCategoryAndMerchant(item) {
     };
   }
 
+  const rawNoteLower = note.toLowerCase();
+  let effectiveMerchant = rawMerchant;
+  if (!effectiveMerchant || effectiveMerchant === "其他") {
+    if (
+      rawNoteLower.includes("fly ticket") ||
+      rawNoteLower.includes("flight") ||
+      rawNoteLower.includes("機票") ||
+      rawNoteLower.includes("delta")
+    ) {
+      effectiveMerchant = "delta航空";
+    } else if (rawNoteLower.includes("ollie")) {
+      effectiveMerchant = "Ollie's";
+    } else if (rawNoteLower.includes("buc-ee") || rawNoteLower.includes("bucee")) {
+      effectiveMerchant = "Buc-ee's";
+    }
+  }
+
   const inferredMerchant =
-    normalizeMerchant(rawMerchant) || inferMerchant(rawCategory, note) || inferGenericSchoolMeal(item);
+    normalizeMerchant(effectiveMerchant) || inferMerchant(rawCategory, note) || inferGenericSchoolMeal(item);
   const detectedMerchant =
     inferredMerchant === "星巴克" && isCampusCardPayment(item) ? "Starbucks HSC" : inferredMerchant;
   const schoolMealCategory = SCHOOL_MEAL_MERCHANTS.includes(detectedMerchant) ? "學餐" : "";
   const storeCategory = GROCERY_MERCHANTS.includes(detectedMerchant) ? "超市" : "";
   const techCategory = detectedMerchant === "Apple Store" ? "3C" : "";
+  const transportCategory =
+    TRANSPORT_MERCHANTS.includes(detectedMerchant) || detectedMerchant === "delta航空" ? "交通" : "";
   const categoryFromMerchant =
-    schoolMealCategory || (detectedMerchant === "星巴克" ? "外食" : storeCategory) || techCategory;
+    schoolMealCategory || (detectedMerchant === "星巴克" ? "外食" : storeCategory) || techCategory || transportCategory;
   const category = categoryFromMerchant || normalizeCategory(rawCategory, item.type);
 
   return {
@@ -651,6 +679,12 @@ function normalizeMerchant(value) {
   const merchant = String(value || "").trim();
   if (!merchant) return "";
   if (MERCHANTS.includes(merchant)) return merchant;
+  const merchantLower = merchant.toLowerCase();
+  if (merchantLower.includes("delta") || merchantLower.includes("機票")) return "delta航空";
+  if (merchantLower.includes("ollie")) return "Ollie's";
+  if (merchantLower.includes("buc-ee") || merchantLower.includes("bucee")) return "Buc-ee's";
+  if (merchantLower.includes("uber")) return "Uber";
+  if (merchantLower.includes("lyft")) return "Lyft";
 
   return inferMerchant(merchant, "");
 }
@@ -695,6 +729,19 @@ function inferIncomeCategory(merchant) {
 
 function inferMerchant(category, note) {
   const text = `${category || ""} ${note || ""}`.toLowerCase();
+
+  if (
+    text.includes("delta") ||
+    text.includes("機票") ||
+    text.includes("fly ticket") ||
+    text.includes("flight")
+  ) {
+    return "delta航空";
+  }
+  if (text.includes("ollie")) return "Ollie's";
+  if (text.includes("buc-ee") || text.includes("bucee")) return "Buc-ee's";
+  if (text.includes("uber")) return "Uber";
+  if (text.includes("lyft")) return "Lyft";
 
   if (
     text.includes("apple store") ||
@@ -1030,12 +1077,18 @@ function updateFormTone() {
   const isIncome = elements.type?.value === "income";
   const category = elements.category?.value;
   const merchant = (elements.merchant?.value || "").toLowerCase();
+  const note = (elements.note?.value || "").toLowerCase();
   const isMarshall =
     !isIncome &&
     (category === "房租" ||
       category === "3C" ||
       merchant.includes("marshall") ||
-      merchant.includes("apple store"));
+      merchant.includes("apple store") ||
+      merchant.includes("delta") ||
+      merchant.includes("航空") ||
+      note.includes("fly ticket") ||
+      note.includes("機票") ||
+      note.includes("flight"));
 
   elements.form.classList.toggle("is-income", isIncome);
   elements.form.classList.toggle("is-marshall", isMarshall);
@@ -1053,7 +1106,12 @@ function isMarshallExpense(item) {
     merchant.includes("apple store") ||
     category === "3C" ||
     note.includes("mac air") ||
-    note.includes("macbook")
+    note.includes("macbook") ||
+    merchant.includes("delta") ||
+    merchant.includes("航空") ||
+    note.includes("fly ticket") ||
+    note.includes("機票") ||
+    note.includes("flight")
   );
 }
 
@@ -1078,7 +1136,11 @@ function renderBars(container, totals, emptyMessage) {
       label === "房租" ||
       labelLower.includes("marshall") ||
       label === "3C" ||
-      labelLower.includes("apple store");
+      labelLower.includes("apple store") ||
+      labelLower.includes("delta") ||
+      labelLower.includes("航空") ||
+      labelLower.includes("機票") ||
+      labelLower.includes("flight");
     if (isMarshall && rowEl) {
       rowEl.classList.add("row-marshall");
     }

@@ -4,7 +4,7 @@ window.PUBLIC_TRANSACTIONS = [
     "date": "2026-11-01",
     "type": "expense",
     "category": "交通",
-    "merchant": "其他",
+    "merchant": "delta航空",
     "paymentMethod": "chase debit card",
     "note": "fly ticket",
     "amount": 1884.73
@@ -24,7 +24,7 @@ window.PUBLIC_TRANSACTIONS = [
     "date": "2026-10-30",
     "type": "expense",
     "category": "超市",
-    "merchant": "其他",
+    "merchant": "Ollie's",
     "paymentMethod": "chase credit prime VISA",
     "note": "ollie's/帽子/床墊",
     "amount": 29.68
@@ -74,7 +74,7 @@ window.PUBLIC_TRANSACTIONS = [
     "date": "2026-10-26",
     "type": "expense",
     "category": "超市",
-    "merchant": "其他",
+    "merchant": "Buc-ee's",
     "paymentMethod": "chase credit prime VISA",
     "note": "buc-ee's/吃的/紀念品",
     "amount": 54.01

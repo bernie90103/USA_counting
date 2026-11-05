@@ -1,5 +1,15 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "65d9f289-4fe2-41ff-a52a-e0c1d3450689",
+    "date": "2026-11-05",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "The Commons on the Green",
+    "paymentMethod": "學生證",
+    "note": "午餐",
+    "amount": 14.85
+  },
+  {
     "id": "676cbd92-2129-4be1-9d01-73e1d7249aab",
     "date": "2026-11-01",
     "type": "expense",

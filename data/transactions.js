@@ -1,5 +1,15 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "515e45a5-b353-4bcb-9f12-ad641dc1b1c5",
+    "date": "2026-11-06",
+    "type": "income",
+    "category": "rec center",
+    "merchant": "lifeguard",
+    "paymentMethod": "chase debit card",
+    "note": "10/18-10/31",
+    "amount": 297.36
+  },
+  {
     "id": "65d9f289-4fe2-41ff-a52a-e0c1d3450689",
     "date": "2026-11-05",
     "type": "expense",

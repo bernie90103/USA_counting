@@ -1,5 +1,35 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "0dbc66d1-c1f8-4017-b778-b41b5b424881",
+    "date": "2026-11-07",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Publix",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "牜奶/一堆炸雞",
+    "amount": 14.47
+  },
+  {
+    "id": "95816791-616e-48cb-951f-705dc8e9ba56",
+    "date": "2026-11-07",
+    "type": "expense",
+    "category": "外食",
+    "merchant": "星巴克",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "chocalate cold brew",
+    "amount": 6.22
+  },
+  {
+    "id": "7d77a30d-8eb3-4ed9-af97-4ef41604484f",
+    "date": "2026-11-07",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Publix",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "icecream",
+    "amount": 3.2
+  },
+  {
     "id": "515e45a5-b353-4bcb-9f12-ad641dc1b1c5",
     "date": "2026-11-06",
     "type": "income",

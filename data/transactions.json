@@ -1,5 +1,15 @@
 [
   {
+    "id": "db0c9c71-aa6a-489f-ae7c-2e3e6c9da7d1",
+    "date": "2026-11-12",
+    "type": "expense",
+    "category": "網購",
+    "merchant": "Amazon",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "scooter locker",
+    "amount": 9.71
+  },
+  {
     "id": "8c82f351-dc28-4de1-a99a-41aa29abb108",
     "date": "2026-11-12",
     "type": "expense",

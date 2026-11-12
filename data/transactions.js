@@ -1,5 +1,45 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "8c82f351-dc28-4de1-a99a-41aa29abb108",
+    "date": "2026-11-12",
+    "type": "expense",
+    "category": "網購",
+    "merchant": "Amazon",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "咖啡濾網杯子",
+    "amount": 13.83
+  },
+  {
+    "id": "560dcae9-af2f-481b-9d20-b82755fdd46d",
+    "date": "2026-11-11",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "The Den by Denny's",
+    "paymentMethod": "學生證",
+    "note": "一杯飲料",
+    "amount": 3.4
+  },
+  {
+    "id": "41459e09-2da5-4646-b3ff-4fa2421b23a6",
+    "date": "2026-11-10",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Starbucks HSC",
+    "paymentMethod": "學生證",
+    "note": "星巴克聖誕節杯子",
+    "amount": 38.45
+  },
+  {
+    "id": "382d3d03-dfb5-4d77-a1fd-4f32f0b69df5",
+    "date": "2026-11-09",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "Chick-fil-A",
+    "paymentMethod": "學生證",
+    "note": "午餐",
+    "amount": 12.27
+  },
+  {
     "id": "0dbc66d1-c1f8-4017-b778-b41b5b424881",
     "date": "2026-11-07",
     "type": "expense",

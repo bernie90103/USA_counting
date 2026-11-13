@@ -1,5 +1,15 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "02ae6edc-bef0-44be-851c-4232e8d7980d",
+    "date": "2026-11-12",
+    "type": "expense",
+    "category": "學餐",
+    "merchant": "WOW American Eats",
+    "paymentMethod": "學生證",
+    "note": "晚餐",
+    "amount": 14.29
+  },
+  {
     "id": "db0c9c71-aa6a-489f-ae7c-2e3e6c9da7d1",
     "date": "2026-11-12",
     "type": "expense",

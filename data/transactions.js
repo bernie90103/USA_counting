@@ -1,5 +1,45 @@
 window.PUBLIC_TRANSACTIONS = [
   {
+    "id": "3e77bfd2-e352-43f6-9270-48aba29b443c",
+    "date": "2026-11-15",
+    "type": "expense",
+    "category": "學費",
+    "merchant": "其他",
+    "paymentMethod": "chase debit card",
+    "note": "ChatGPT",
+    "amount": 21.6
+  },
+  {
+    "id": "e06aa31a-4217-47c5-bc34-812ea975cdde",
+    "date": "2026-11-14",
+    "type": "expense",
+    "category": "外食",
+    "merchant": "珍珠奶茶",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "",
+    "amount": 7.15
+  },
+  {
+    "id": "16977f1c-9b4c-4bea-a37e-b02f7fe7052c",
+    "date": "2026-11-14",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Trader Joe's",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "紅茶",
+    "amount": 3.77
+  },
+  {
+    "id": "d243da24-af3f-4529-8cab-33dcd387b105",
+    "date": "2026-11-13",
+    "type": "expense",
+    "category": "超市",
+    "merchant": "Publix",
+    "paymentMethod": "chase credit prime VISA",
+    "note": "炸雞/濱崎琳",
+    "amount": 9.4
+  },
+  {
     "id": "02ae6edc-bef0-44be-851c-4232e8d7980d",
     "date": "2026-11-12",
     "type": "expense",

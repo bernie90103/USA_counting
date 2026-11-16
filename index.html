@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>美國生活記帳</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -10,10 +10,29 @@
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20261115-1" />
+    <link rel="stylesheet" href="./styles.css?v=20261115-cloud-1" />
   </head>
-  <body>
-    <div class="page-shell">
+  <body class="view-mode">
+    <section class="auth-panel panel" id="authGate" aria-labelledby="loginTitle">
+      <span class="rate-tag">US LEDGER</span>
+      <h1 id="loginTitle">登入家庭帳本</h1>
+      <p>你的記帳、家人的安心，一起放在這裡。</p>
+      <form id="loginForm">
+        <input id="loginEmail" type="email" autocomplete="username" placeholder="Email" aria-label="Email" required />
+        <input id="loginPassword" type="password" autocomplete="current-password" placeholder="密碼" aria-label="密碼" required />
+        <button id="loginButton" type="submit">登入</button>
+        <button id="resetPassword" type="button">忘記密碼</button>
+      </form>
+    </section>
+    <div class="cloud-banner">
+      <div id="accountToolbar" hidden>
+        <span id="accountLabel"></span>
+        <button id="reloadLedger" type="button">重新載入</button>
+        <button id="logoutButton" type="button">登出</button>
+      </div>
+      <p id="cloudStatus" role="status" aria-live="polite">正在啟動…</p>
+    </div>
+    <div class="page-shell" hidden>
       <header class="site-header">
         <div class="header-brand">
           <div class="brand-badge">
@@ -350,7 +369,10 @@
       </div>
     </template>
 
-    <script src="./data/transactions.js"></script>
-    <script src="./app.js?v=20261115-1"></script>
+    <script src="./config.js"></script>
+    <script src="./vendor/supabase.js"></script>
+    <script src="./vendor/native.js"></script>
+    <script src="./cloud.js"></script>
+    <script src="./app.js?v=20261115-cloud-1"></script>
   </body>
 </html>

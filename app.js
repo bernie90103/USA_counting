@@ -1,14 +1,8 @@
-const STORAGE_KEY = "us-ledger-transactions";
-const RATE_KEY = "us-ledger-exchange-rate";
-const RATE_UPDATED_KEY = "us-ledger-exchange-rate-updated";
 const LIVE_RATE_URL = "https://fxapi.app/api/USD/TWD.json";
 const PRETRIP_FILTER = "pretrip";
 const ALL_MONTHS_FILTER = "all";
-const CAMPUS_CARD_DEPOSITS = [
-  { date: "2026-05-01", amount: 680, note: "初始開卡加值" },
-  { date: "2026-05-11", amount: 500, note: "加值 $500.00" },
-];
-const CAMPUS_CARD_STARTING_BALANCE = CAMPUS_CARD_DEPOSITS.reduce((sum, item) => sum + item.amount, 0);
+let CAMPUS_CARD_DEPOSITS = [];
+let CAMPUS_CARD_STARTING_BALANCE = 0;
 const CAMPUS_CARD_PAYMENT_METHOD = "學生證";
 const CASH_PAYMENT_METHOD = "現金";
 const TAIWAN_CARD_PAYMENT_METHOD = "台灣信用卡";
@@ -158,89 +152,12 @@ const CATEGORY_MERCHANTS = {
 const PAYMENT_METHODS = ["台灣信用卡", "chase debit card", "chase credit prime VISA", "學生證", "現金"];
 const CHASE_DEBIT_PAYMENT_METHOD = "chase debit card";
 const PRIME_VISA_PAYMENT_METHOD = "chase credit prime VISA";
-const isEditMode = isLocalEditingContext();
+let isEditMode = false;
+let formRevision = null;
+let draftId = "";
 
-const pretripExpenses = [
-  { group: "必要花費", item: "護照更新", twd: 1300 },
-  { group: "必要花費", item: "密封文件申請", twd: 169 },
-  { group: "必要花費", item: "IELTS-1", twd: 7700 },
-  { group: "必要花費", item: "IELTS-2", twd: 7700 },
-  { group: "必要花費", item: "IELTS-3", twd: 8300, note: "免讀語言學校" },
-  { group: "必要花費", item: "保證金", twd: 125859, rate: 31.607, usd: 3982 },
-  { group: "必要花費", item: "電匯手續費", twd: 600 },
-  {
-    group: "必要花費",
-    item: "學費+住宿+膳食計畫+保險(第一次)",
-    twd: 1260111,
-    rate: 31.95,
-    usd: 39393,
-    note: "03/17 繳費",
-  },
-  { group: "必要花費", item: "DS-160-AIT面試", twd: 5842 },
-  { group: "必要花費", item: "DS-160-AIT面試(高鐵票來回)", twd: 660 },
-  { group: "必要花費", item: "SEVIS I-901", twd: 11068, rate: 31.622, usd: 350 },
-  { group: "必要花費", item: "美簽5X5大頭照", twd: 400 },
-  { group: "必要花費", item: "學校疫苗-MMR", twd: 1200 },
-  { group: "必要花費", item: "學校疫苗-水痘", twd: 5649 },
-  { group: "必要花費", item: "財力證明+戶籍-英版", twd: 60 },
-  { group: "必要花費", item: "機票錢", twd: 36917 },
-  { group: "非必要花費", item: "IDP代辦", twd: 28000 },
-  { group: "非必要花費", item: "IELTS補習費用", twd: 30100 },
-  { group: "非必要花費", item: "IELTS-4", twd: 8300 },
-];
+let pretripExpenses = [];
 
-const sampleTransactions = [
-  {
-    id: "工作表1-2026-05-01-1",
-    date: "2026-05-01",
-    type: "expense",
-    category: "其他",
-    merchant: "",
-    note: "永豐信用卡",
-    amount: 91.2,
-    paymentMethod: "台灣信用卡",
-  },
-  {
-    id: "工作表1-2026-05-07-2",
-    date: "2026-05-07",
-    type: "expense",
-    category: "外食",
-    merchant: "",
-    note: "永豐信用卡",
-    amount: 7.8,
-    paymentMethod: "台灣信用卡",
-  },
-  {
-    id: "工作表1-2026-05-07-3",
-    date: "2026-05-07",
-    type: "expense",
-    category: "其他",
-    merchant: "",
-    note: "cash",
-    amount: 14.75,
-    paymentMethod: "現金",
-  },
-  {
-    id: "工作表1-2026-05-08-4",
-    date: "2026-05-08",
-    type: "expense",
-    category: "超市",
-    merchant: "Walmart",
-    note: "cash",
-    amount: 70.19,
-    paymentMethod: "現金",
-  },
-  {
-    id: "工作表1-2026-05-09-5",
-    date: "2026-05-09",
-    type: "expense",
-    category: "超市",
-    merchant: "Walmart",
-    note: "cash",
-    amount: 31.65,
-    paymentMethod: "現金",
-  },
-];
 
 const elements = {
   form: document.querySelector("#transactionForm"),
@@ -312,32 +229,29 @@ let justAddedId = "";
 
 document.body.classList.toggle("edit-mode", isEditMode);
 document.body.classList.toggle("view-mode", !isEditMode);
-if (isEditMode) {
-  document.querySelectorAll(".edit-only[hidden]").forEach((element) => {
-    element.hidden = false;
-  });
-}
 setDefaultFormValues();
-elements.exchangeRate.value = localStorage.getItem(RATE_KEY) || "32.50";
-setRateStatusFromStorage();
+elements.exchangeRate.value = "32.50";
+setRateStatus("登入後載入帳本匯率");
 
-elements.exchangeRate.addEventListener("input", () => {
-  localStorage.setItem(RATE_KEY, elements.exchangeRate.value);
-  localStorage.setItem(RATE_UPDATED_KEY, new Date().toISOString());
-  setRateStatus("手動匯率已套用。");
-  render();
+elements.exchangeRate.addEventListener("change", async () => {
+  if (!isEditMode) return;
+  const rate = Number(elements.exchangeRate.value);
+  if (!Number.isFinite(rate) || rate <= 0 || rate > 1000) {
+    elements.exchangeRate.value = LedgerCloud.settings.exchangeRate || 32.5;
+    setRateStatus("請輸入有效匯率。");
+    return;
+  }
+  await saveCloudRate(rate);
 });
-
-elements.refreshRate.addEventListener("click", () => {
-  refreshLiveRate();
-});
+elements.refreshRate.addEventListener("click", () => refreshLiveRate());
+elements.form.addEventListener("input", () => { formRevision ??= LedgerCloud.revision; LedgerCloud.dirty = true; });
 
 elements.monthFilter.addEventListener("change", (event) => {
   selectedMonth = event.target.value;
   render();
 });
 
-if (isEditMode) {
+{
   elements.type.addEventListener("change", () => {
     const isIncome = elements.type.value === "income";
     if (!editingId) {
@@ -358,11 +272,12 @@ if (isEditMode) {
     updateFormTone();
   });
 
-  elements.form.addEventListener("submit", (event) => {
+  elements.form.addEventListener("submit", async (event) => {
     event.preventDefault();
+    if (!isEditMode || LedgerCloud.busy) return;
 
     const transaction = {
-      id: editingId || makeId(),
+      id: editingId || (draftId ||= makeId()),
       date: elements.date.value,
       type: elements.type.value,
       category: elements.category.value,
@@ -372,16 +287,15 @@ if (isEditMode) {
       amount: Number(elements.amount.value),
     };
 
-    if (editingId) {
-      transactions = transactions.map((item) => (item.id === editingId ? transaction : item));
-    } else {
-      transactions = [transaction, ...transactions];
+    formRevision ??= LedgerCloud.revision;
+    try {
+      await LedgerCloud.write(editingId ? "update" : "insert", transaction, formRevision ?? LedgerCloud.revision);
       justAddedId = transaction.id;
-    }
+      resetForm();
+      formRevision = null;
+      render();
+    } catch (error) { LedgerCloud.showError(error); }
 
-    saveTransactions();
-    resetForm();
-    render();
   });
 
   elements.cancelEdit.addEventListener("click", () => {
@@ -389,7 +303,7 @@ if (isEditMode) {
   });
 
   elements.exportJson.addEventListener("click", () => {
-    downloadFile("us-ledger.json", JSON.stringify(transactions, null, 2), "application/json");
+    downloadFile("us-ledger.json", JSON.stringify({ format: "us-ledger-backup-v1", transactions, settings: LedgerCloud.settings }, null, 2), "application/json");
   });
 
   elements.exportCsv.addEventListener("click", () => {
@@ -411,32 +325,12 @@ if (isEditMode) {
     downloadFile("us-ledger.csv", csv, "text/csv;charset=utf-8");
   });
 
-  elements.importJson.addEventListener("change", async (event) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    const imported = JSON.parse(await file.text());
-    transactions = normalizeTransactions(imported);
-    saveTransactions();
-    resetForm();
-    render();
-    event.target.value = "";
-  });
-
-  elements.importCsv.addEventListener("change", async (event) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    transactions = normalizeTransactions(parseCsv(await file.text()));
-    saveTransactions();
-    resetForm();
-    render();
-    event.target.value = "";
-  });
+  elements.importJson.addEventListener("change", (event) => importCloudFile(event, "json"));
+  elements.importCsv.addEventListener("change", (event) => importCloudFile(event, "csv"));
 }
 
-elements.transactionRows.addEventListener("click", (event) => {
-  if (!isEditMode) return;
+elements.transactionRows.addEventListener("click", async (event) => {
+  if (!isEditMode || LedgerCloud.busy) return;
 
   const duplicateButton = event.target.closest("[data-duplicate-id]");
   if (duplicateButton) {
@@ -446,6 +340,7 @@ elements.transactionRows.addEventListener("click", (event) => {
 
   const editButton = event.target.closest("[data-edit-id]");
   if (editButton) {
+    formRevision = LedgerCloud.revision;
     beginEdit(editButton.dataset.editId);
     return;
   }
@@ -453,105 +348,91 @@ elements.transactionRows.addEventListener("click", (event) => {
   const deleteButton = event.target.closest("[data-delete-id]");
   if (!deleteButton) return;
 
-  transactions = transactions.filter((item) => item.id !== deleteButton.dataset.deleteId);
-  saveTransactions();
-  if (editingId === deleteButton.dataset.deleteId) resetForm();
-  render();
-});
-
-window.addEventListener("storage", (event) => {
-  if (!isEditMode) return;
-
-  if (event.key === STORAGE_KEY) {
-    transactions = normalizeTransactions(JSON.parse(event.newValue || "[]"));
+  if (!confirm("確定刪除這筆交易？")) return;
+  try {
+    await LedgerCloud.write("delete", { id: deleteButton.dataset.deleteId });
+    if (editingId === deleteButton.dataset.deleteId) resetForm();
     render();
-  }
-
-  if (event.key === RATE_KEY) {
-    elements.exchangeRate.value = event.newValue || "32.50";
-    render();
-  }
+  } catch (error) { LedgerCloud.showError(error); }
 });
 
 init();
 
 async function init() {
   setupTableControls();
-  transactions = await loadTransactions();
-  render();
-  refreshLiveRate({ quiet: true });
+  await LedgerCloud.start((snapshot) => {
+    isEditMode = snapshot?.role === "owner";
+    transactions = snapshot ? normalizeTransactions(snapshot.transactions) : [];
+    const settings = snapshot?.settings || {};
+    pretripExpenses = settings.pretripExpenses || [];
+    CAMPUS_CARD_DEPOSITS = settings.deposits || [];
+    CAMPUS_CARD_STARTING_BALANCE = CAMPUS_CARD_DEPOSITS.reduce((sum, item) => sum + Number(item.amount), 0);
+    elements.exchangeRate.value = settings.exchangeRate || 32.5;
+    elements.exchangeRate.disabled = !isEditMode;
+    elements.refreshRate.disabled = !isEditMode;
+    document.body.classList.toggle("edit-mode", isEditMode);
+    document.body.classList.toggle("view-mode", !isEditMode);
+    document.querySelectorAll(".edit-only").forEach((element) => { element.hidden = !isEditMode; });
+    if (!snapshot) {
+      resetForm();
+      selectedMonth = "";
+      searchQuery = "";
+      elements.searchFilter.value = "";
+      filterCategory = "";
+      formRevision = null;
+    }
+    setRateStatus(settings.rateUpdatedAt ? `帳本匯率更新：${formatRateTime(settings.rateUpdatedAt)}` : "帳本匯率尚未更新");
+    render();
+  });
 }
 
-async function refreshLiveRate(options = {}) {
-  const { quiet = false } = options;
-  const icon = elements.refreshRate?.querySelector(".refresh-icon");
+async function saveCloudRate(rate) {
+  try {
+    await LedgerCloud.write("settings", { ...LedgerCloud.settings, exchangeRate: rate, rateUpdatedAt: new Date().toISOString() });
+  } catch (error) {
+    elements.exchangeRate.value = LedgerCloud.settings.exchangeRate || 32.5;
+    LedgerCloud.showError(error);
+  }
+}
+
+async function refreshLiveRate() {
+  if (!isEditMode || LedgerCloud.busy) return;
   elements.refreshRate.disabled = true;
-  if (icon) icon.classList.add("spinning");
-  if (!quiet) setRateStatus("正在更新 USD → TWD 匯率...");
-
   try {
-    const response = await fetch(LIVE_RATE_URL, { cache: "no-store" });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-    const data = await response.json();
-    const rate = Number(data.rate);
-    if (!Number.isFinite(rate) || rate <= 0) throw new Error("Invalid rate");
-
-    const timestamp = data.timestamp || new Date().toISOString();
-    elements.exchangeRate.value = rate.toFixed(2);
-    localStorage.setItem(RATE_KEY, elements.exchangeRate.value);
-    localStorage.setItem(RATE_UPDATED_KEY, timestamp);
-    setRateStatus(`即時匯率已更新：${formatRateTime(timestamp)}，來源 fxapi.app。`);
-    render();
-  } catch {
-    const fallback = localStorage.getItem(RATE_KEY) || elements.exchangeRate.value;
-    elements.exchangeRate.value = fallback || "32.50";
-    setRateStatus("即時匯率暫時無法更新，已保留目前匯率，可手動調整。");
-    render();
-  } finally {
-    elements.refreshRate.disabled = false;
-    if (icon) icon.classList.remove("spinning");
-  }
+    const response = await fetch(LIVE_RATE_URL, { cache: "no-store", signal: AbortSignal.timeout(15000) });
+    if (!response.ok) throw new Error("匯率服務暫時無法使用");
+    const rate = Number((await response.json()).rate);
+    if (!Number.isFinite(rate) || rate <= 0 || rate > 1000) throw new Error("匯率資料無效");
+    await saveCloudRate(rate);
+  } catch (error) { setRateStatus(`${error.message}，已保留原匯率。`); }
+  finally { elements.refreshRate.disabled = !isEditMode; }
 }
 
-async function loadTransactions() {
-  if (!isEditMode) {
-    return loadPublicTransactions();
-  }
-
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (!stored) {
-    return loadPublicTransactions();
-  }
-
+async function importCloudFile(event, kind) {
+  const file = event.target.files?.[0];
+  const revision = LedgerCloud.revision;
+  if (!file || !isEditMode || LedgerCloud.busy) return;
   try {
-    return normalizeTransactions(JSON.parse(stored));
-  } catch {
-    return loadPublicTransactions();
-  }
-}
-
-async function loadPublicTransactions() {
-  try {
-    const response = await fetch("./data/transactions.json", { cache: "no-store" });
-    if (!response.ok) return loadBundledPublicTransactions();
-    const publicTransactions = normalizeTransactions(await response.json());
-    return publicTransactions.length ? publicTransactions : loadBundledPublicTransactions();
-  } catch {
-    return loadBundledPublicTransactions();
-  }
-}
-
-function loadBundledPublicTransactions() {
-  if (!Array.isArray(window.PUBLIC_TRANSACTIONS)) return sampleTransactions;
-
-  const bundledTransactions = normalizeTransactions(window.PUBLIC_TRANSACTIONS);
-  return bundledTransactions.length ? bundledTransactions : sampleTransactions;
-}
-
-function saveTransactions() {
-  if (!isEditMode) return;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
+    const raw = kind === "json" ? JSON.parse(await file.text()) : parseCsv(await file.text());
+    const source = Array.isArray(raw) ? raw : raw.transactions;
+    if (!Array.isArray(source) || !source.length) throw new Error("匯入檔沒有交易。");
+    const imported = normalizeTransactions(source);
+    if (source.length !== imported.length) throw new Error("有無效交易，已停止匯入，請檢查日期與金額。");
+    const ids = new Set(imported.map((item) => item.id));
+    if (ids.size !== imported.length) throw new Error("有重複交易 ID，已停止匯入。");
+    for (const item of imported) {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(item.date) || !Number.isFinite(item.amount) || item.amount <= 0 || Math.abs(item.amount * 100 - Math.round(item.amount * 100)) > 0.00001) throw new Error("交易日期或金額無效。");
+    }
+    const dates = imported.map((item) => item.date).sort();
+    const total = imported.reduce((sum, item) => sum + Math.round(item.amount * 100), 0) / 100;
+    const payload = { transactions: imported };
+    if (!Array.isArray(raw) && raw.settings) payload.settings = raw.settings;
+    if (!confirm(`將取代雲端 ${transactions.length} 筆交易。\n匯入 ${imported.length} 筆，${dates[0]} ～ ${dates.at(-1)}\n金額合計 $${total.toFixed(2)}${payload.settings ? "\n包含行前花費、加值與匯率設定" : "\n保留目前行前花費、加值與匯率設定"}\n請先匯出備份。確定繼續？`)) return;
+    await LedgerCloud.write("replace", payload, revision);
+    resetForm();
+    formRevision = null;
+  } catch (error) { LedgerCloud.showError(error); }
+  finally { event.target.value = ""; }
 }
 
 function normalizeTransactions(items) {
@@ -996,8 +877,8 @@ function renderPretripStats() {
   elements.monthlyBalance.textContent = formatTwdAmount(total);
   elements.monthlyBalanceTwd.textContent = `固定匯率已記錄 ${formatUsd(totalUsd)}`;
   elements.dailyAverageLabel.textContent = "最大項目";
-  elements.dailyAverage.textContent = formatTwdAmount(largest.twd);
-  elements.dailyAverageNote.textContent = `${largest.item}｜匯率 ${formatRate(largest.rate)}`;
+  elements.dailyAverage.textContent = formatTwdAmount(largest?.twd || 0);
+  elements.dailyAverageNote.textContent = largest ? `${largest.item}｜匯率 ${formatRate(largest.rate)}` : "尚未匯入行前花費";
   elements.debitCardTotal.textContent = "-";
   elements.debitCardTwd.textContent = "行前花費不適用";
   elements.primeVisaTotal.textContent = "-";
@@ -1047,6 +928,8 @@ function renderPretripRows() {
       <td class="amount">${formatTwdAmount(item.twd)}</td>
       <td class="edit-only row-actions"></td>
     `;
+    const labels = ["日期", "類型", "分類", "店家", "付款", "備註", "美元", "台幣", "操作"];
+    [...tr.cells].forEach((cell, index) => { cell.dataset.label = labels[index] || ""; });
     elements.transactionRows.append(tr);
   }
 }
@@ -1218,6 +1101,8 @@ function renderRows(items) {
       </td>
     `;
 
+    const labels = ["日期", "類型", "分類", "店家", "付款", "備註", "美元", "台幣", "操作"];
+    [...tr.cells].forEach((cell, index) => { cell.dataset.label = labels[index] || ""; });
     elements.transactionRows.append(tr);
   }
   justAddedId = "";
@@ -1240,10 +1125,15 @@ function beginEdit(id) {
   updateFormTone();
   elements.saveTransaction.textContent = transaction.type === "income" ? "儲存收入修改" : "儲存修改";
   elements.cancelEdit.hidden = false;
+  formRevision = LedgerCloud.revision;
+  LedgerCloud.dirty = true;
   elements.form.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function resetForm() {
+  draftId = "";
+  LedgerCloud.dirty = false;
+  formRevision = null;
   editingId = "";
   elements.form.reset();
   setDefaultFormValues();
@@ -1288,6 +1178,8 @@ function duplicateTransaction(id) {
   updateFormTone();
   elements.saveTransaction.textContent = "加入記帳 (已複製)";
   elements.cancelEdit.hidden = false;
+  formRevision = LedgerCloud.revision;
+  LedgerCloud.dirty = true;
   elements.form.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
@@ -1395,6 +1287,7 @@ function setupTableControls() {
   if (elements.clearFilters) {
     elements.clearFilters.addEventListener("click", () => {
       searchQuery = "";
+      elements.searchFilter.value = "";
       filterCategory = "";
       if (elements.searchFilter) elements.searchFilter.value = "";
       if (elements.categoryPills) {
@@ -1742,15 +1635,6 @@ function setRateStatus(message) {
   elements.rateStatus.textContent = message;
 }
 
-function setRateStatusFromStorage() {
-  const updatedAt = localStorage.getItem(RATE_UPDATED_KEY);
-  if (!updatedAt) {
-    setRateStatus("載入後會自動抓取即時匯率，也可手動調整。");
-    return;
-  }
-
-  setRateStatus(`目前使用上次匯率：${formatRateTime(updatedAt)}。`);
-}
 
 function formatRateTime(value) {
   const date = new Date(value);
@@ -1762,14 +1646,9 @@ function formatRateTime(value) {
   }).format(date);
 }
 
-function downloadFile(filename, content, type) {
-  const blob = new Blob([content], { type });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = filename;
-  link.click();
-  URL.revokeObjectURL(url);
+async function downloadFile(filename, content, type) {
+  try { await LedgerCloud.download(filename, content, type); }
+  catch (error) { LedgerCloud.showError(error); }
 }
 
 function csvCell(value) {
@@ -1778,41 +1657,32 @@ function csvCell(value) {
 }
 
 function parseCsv(text) {
-  const rows = text.trim().split(/\r?\n/).map(parseCsvLine);
-  const headers = rows.shift()?.map((header) => header.trim()) || [];
-
-  return rows.map((row) =>
-    headers.reduce((item, header, index) => {
-      item[header] = row[index] ?? "";
-      return item;
-    }, {}),
-  );
-}
-
-function parseCsvLine(line) {
-  const cells = [];
-  let cell = "";
-  let quoted = false;
-
-  for (let index = 0; index < line.length; index += 1) {
-    const char = line[index];
-    const next = line[index + 1];
-
-    if (char === '"' && quoted && next === '"') {
-      cell += '"';
-      index += 1;
-    } else if (char === '"') {
-      quoted = !quoted;
-    } else if (char === "," && !quoted) {
-      cells.push(cell);
-      cell = "";
-    } else {
-      cell += char;
-    }
+  const rows = [];
+  let row = [], cell = "", quoted = false;
+  text = text.replace(/^\uFEFF/, "");
+  for (let index = 0; index < text.length; index += 1) {
+    const char = text[index];
+    if (char === '"') {
+      if (quoted && text[index + 1] === '"') { cell += '"'; index += 1; }
+      else if (quoted || cell === "") quoted = !quoted;
+      else throw new Error("CSV 引號格式無效");
+    } else if (!quoted && (char === "," || char === "\n" || char === "\r")) {
+      row.push(cell); cell = "";
+      if (char !== ",") {
+        if (char === "\r" && text[index + 1] === "\n") index += 1;
+        if (row.some((value) => value !== "")) rows.push(row);
+        row = [];
+      }
+    } else cell += char;
   }
-
-  cells.push(cell);
-  return cells;
+  if (quoted) throw new Error("CSV 引號未結束");
+  if (cell || row.length) { row.push(cell); rows.push(row); }
+  const headers = rows.shift()?.map((value) => value.trim()) || [];
+  if (!["date", "type", "category", "merchant", "paymentMethod", "note", "amount"].every((key) => headers.includes(key))) throw new Error("CSV 欄位不完整");
+  return rows.map((values) => {
+    if (values.length !== headers.length) throw new Error("CSV 欄位數量不符");
+    return Object.fromEntries(headers.map((key, index) => [key, values[index]]));
+  });
 }
 
 function escapeHtml(value) {
@@ -1822,9 +1692,4 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
-}
-
-function isLocalEditingContext() {
-  const localHosts = new Set(["", "localhost", "127.0.0.1", "::1"]);
-  return location.protocol === "file:" || localHosts.has(location.hostname);
 }

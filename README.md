@@ -1,90 +1,61 @@
 # 美國生活記帳
 
-靜態繁體中文記帳網站，用美元記錄美國生活的收入與支出，並換算成台幣，方便台灣家人查看每月花費、收入、結餘、學生證餘額與行前總花費。
+[開啟記帳網站](https://bernie90103.github.io/USA_counting/)
 
-公開網站：<https://bernie90103.github.io/USA_counting/>
+私人家庭帳本，支援美元記帳、台幣換算、每月摘要、學生證餘額與行前花費。手機與電腦共用 Supabase 雲端資料；擁有者可以編輯，家人登入後只能查看。
 
-## 主要功能
+**日常記帳不用 commit、push 或重新發布。** 在 App 或網站儲存成功後，其他裝置重新載入就能看到更新。只有修改網站程式時才需要更新 GitHub 與部署。
 
-- 每月收入、支出、結餘、每日平均支出摘要，以及「全部歷史 (累計)」總覽統計。
-- 收支明細即時關鍵字搜尋（日期、店家、分類、付款方式、說明）與快速分類標籤篩選。
-- 明細表格欄位點擊排序（日期、USD、TWD 升降序）。
-- 依大分類與店家統計支出，水平長條圖即時顯示花費佔比百分比（%）。
-- 原生 SVG 輕量收支月度走勢對比圖（點擊可快速切換月份）。
-- 完整統計 5 大付款方式支出（Chase 金融卡、Prime Visa 信用卡、學生證、現金、台灣信用卡）。
-- 本機編輯模式支援新增、一鍵複製、修改、刪除、JSON/CSV 匯入與匯出。
-- 自動或手動設定 USD to TWD 匯率。
-- 動態計算學生證加值與即時餘額，以及行前總花費（固定歷史匯率）。
+## 使用與備份
 
-## 本機使用
+- 使用管理者建立的 Email／密碼登入，未登入無法查看帳目；網站不開放自行註冊。
+- 可新增、修改、刪除、複製交易，依月份、分類與關鍵字查詢。
+- 一般收支依帳本匯率換算；行前花費保留當時匯率。
+- 第一版需連網。儲存失敗會保留表單；其他裝置已修改時，須重新載入後再編輯。
+- 定期匯出 JSON 作私人備份，內含交易、行前花費、學生證加值與匯率設定。CSV 只包含交易。
 
-此專案不需要 npm、打包或本機伺服器。直接用瀏覽器開啟 `index.html` 即可執行（macOS 可直接雙擊 `開啟記帳網頁.command` 或 `index.html`）。
+交易資料存於 Supabase，不存放在 GitHub。舊公開交易副本與發布腳本已從目前版本移除；過去提交中的內容仍可能存在於 Git 歷史。
 
-### 一鍵發布（日常最推薦）
-- **macOS**：在 Finder 雙擊 `發布最新記帳資料.command`。它會自動搜尋「下載 (Downloads)」資料夾中最新匯出的 `us-ledger*.json`，完成發布並開啟 GitHub Pages。
-- **Windows**：雙擊根目錄的 `發布最新記帳資料.bat`。它會自動搜尋 Downloads 中最新匯出的 `us-ledger*.json`，完成發布並開啟 GitHub Pages。
+## 專案結構
 
-### 手動指令發布與語法檢查
+| 路徑 | 用途 |
+| --- | --- |
+| `index.html`、`styles.css`、`app.js` | 登入頁、記帳介面、分類與統計 |
+| `cloud.js`、`config.js` | Supabase 登入、角色、讀寫與連線設定 |
+| `supabase/` | 初始化資料表、RLS 與帳本成員設定 SQL |
+| `ios-app/` | 共用網頁程式的 Capacitor iOS 工程 |
+| `vendor/` | 本機載入的瀏覽器套件與授權聲明 |
+| `tools/`、`tests/` | 打包、連線檢查及測試 |
+| `docs/SETUP.md` | 環境、Supabase、部署與 iPhone 安裝教學 |
+
+沿用純 HTML、CSS、JavaScript 與 Python，沒有前端框架。網頁可以直接開啟 `index.html`；Node.js 用於測試、套件副本與 iOS 包裝。
+
+## 開發與檢查
+
+需要 Node.js 22+ 與 Python 3：
+
 ```bash
-# JavaScript 語法檢查（若有安裝 Node.js）
-node --check app.js
-node --check data/transactions.js
-
-# Python 工具語法檢查
-python3 -m py_compile tools/publish_ledger.py
-
-# 驗證資料更新（不提交/不推送）
-python3 tools/publish_ledger.py --json ~/Downloads/us-ledger.json --no-git   # macOS / Linux
-python tools/publish_ledger.py --json "C:\path\to\us-ledger.json" --no-git  # Windows
-
-# 完整發布到 GitHub Pages
-python3 tools/publish_ledger.py --json ~/Downloads/us-ledger.json            # macOS / Linux
-python tools/publish_ledger.py --json "C:\path\to\us-ledger.json"           # Windows
+git clone https://github.com/bernie90103/USA_counting.git
+cd USA_counting
+npm ci
+npm run check
+python3 -m unittest discover -s tests -p 'test_*.py'
+npm run package:web
 ```
 
-需要人工核對時，先以 `--json ... --no-git` 指定剛匯出的完整路徑。它會更新公開資料但不提交，並將同一份資料備份到 `exports/latest-us-ledger.json`。確認筆數、最新日期與內容正確後，再以相同 `--json` 指令完整發布。不要固定使用 `us-ledger.json`，因為瀏覽器可能將新匯出檔命名為 `us-ledger (1).json`。
+更新套件後執行 `npm run vendor`，將產生的瀏覽器套件與 lockfile 一起提交。`config.js` 只放 Project URL 和 publishable key；不放 secret key、資料庫密碼或 SMTP 密碼。
 
-## 檔案結構
+## 網站部署與 iOS 更新
 
-- `index.html`：頁面結構、輸入表單、摘要區、分析區與交易表格樣板。
-- `styles.css`：全部視覺樣式、RWD、表單、卡片、表格與按鈕狀態。
-- `app.js`：前端資料邏輯、localStorage、公開資料載入、匯入匯出、統計、編輯、匯率更新與資料正規化。
-- `data/transactions.json`：部署後公開網站載入的權威交易資料。
-- `data/transactions.js`：由發布工具產生的資料副本；供直接開啟本機 `index.html` 時使用，必須與 `transactions.json` 同步。
-- `tools/publish_ledger.py`：從指定匯出的 JSON 更新公開資料與本機資料副本、建立本機備份、自動維護前端版本號，並可同步 `gh-pages`。
-- `發布最新記帳資料.command`：macOS 專用雙擊發布入口（自動選取最新 Downloads 匯出檔）。
-- `發布最新記帳資料.bat`：Windows 專用雙擊發布入口（自動選取最新 Downloads 匯出檔）。
-- `開啟記帳網頁.command`：macOS 專用雙擊快速在瀏覽器開啟本地記帳頁面。
-- `exports/latest-us-ledger.json`：本機備份，方便刪除 Downloads 後復原；此資料夾已排除於 Git。
-- `AGENTS.md`：貢獻與代理工作規則。
+網站使用 GitHub Pages。程式修改提交到 `main` 後，到 **Actions → Deploy private ledger → Run workflow** 手動部署。流程只上傳 `dist/` 的允許清單，不會發布整個儲存庫、SQL 或私人備份。
 
-## 資料與分類規則
+iOS 使用完整 Xcode 與 Apple 帳號：
 
-交易資料保留 `date`、`type`、`category`、`merchant`、`paymentMethod`、`note`、`amount`。
+```bash
+npm run ios:sync
+npm run ios:open
+```
 
-支出使用「大分類 + 店家」兩層結構。支出分類包含 `房租`、`超市`、`學餐`、`外食`、`網購`、`3C`、`交通`、`學費`、`醫療`、`娛樂`、`其他`。店家選單會依分類動態篩選，例如 3C 顯示 `Apple Store`、`Best Buy`、`Micro Center`，超市顯示 `Walmart`、`Trader Joe's`、`ALDI`，學餐顯示 `Starbucks HSC`、`Mein Bowl`、`The Commons on the Green`。
+在 Xcode 選自己的 Personal Team 與 iPhone，按 Run。免費 Personal Team 簽署約 7 天到期，需重新簽署安裝；一般帳目更新不需要重新安裝。
 
-收入分類目前包含：
-
-- `代收代付`：`同學/朋友`、`個人`、`轉帳`、`其他`（分帳、聚餐代付還款）
-- `rec center`：`operation assisted`、`lifeguard`
-- `學校`：`UAB INTO`
-- `其他收入`：`轉帳`、`利息`、`獎學金`、`其他`
-
-匯入舊資料時，拼錯的 `lifegrade` 應正規化為 `lifeguard`。若備註包含「同學」、「代付」、「還款」、「分帳」，應智慧判斷為「代收代付」。
-
-## 介面風格
-
-網站採用溫潤玻璃擬物風（Warm Glassmorphism）視覺：米金底色、高質感毛玻璃面板、柔和暖調霓虹邊框、大量留白與精準網格。標題使用 `Space Grotesk`，內文與數字使用 `IBM Plex Mono`。修改 UI 時維持高可讀性，不加入大型框架、厚重裝飾或閃爍動畫。
-
-## 開發注意
-
-- 小型 UI、樣式或選單變更不需要完整讀取 `data/transactions.json`；先用 `rg` 搜尋關鍵字即可。
-- 修改前端 JS 後至少執行 `node --check app.js`。
-- 修改本機資料載入機制後也執行 `node --check data/transactions.js`。
-- 修改發布工具後執行 `python -m py_compile tools/publish_ledger.py`。
-- 發布公開資料前先以剛匯出的完整 JSON 路徑執行 `--no-git` 檢查輸出。
-
-## 安全提醒
-
-`data/transactions.json` 與 `data/transactions.js` 都會部署到公開網站，只能放可公開資料。不要提交私人試算表、`exports/` 下的本機備份、`.env`、密鑰、銀行帳號或完整信用卡資訊。
+詳細步驟見 [設定與維護教學](docs/SETUP.md)。

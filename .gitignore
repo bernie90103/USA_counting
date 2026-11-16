@@ -6,3 +6,21 @@ Thumbs.db
 .env
 __pycache__/
 *.pyc
+node_modules/
+dist/
+ios-app/www/
+ios-app/ios/App/Pods/
+ios-app/ios/App/build/
+*.xcuserstate
+xcuserdata/
+private-backup/
+ios-app/ios/App/App/public/
+ios-app/ios/App/App/capacitor.config.json
+ios-app/ios/App/App/config.xml
+.env.*
+*.p12
+*.p8
+*.mobileprovision
+# Retired public transaction snapshots must not return to source control.
+data/transactions.json
+data/transactions.js

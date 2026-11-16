@@ -1597,3 +1597,35 @@ td.amount {
     max-height: 320px;
   }
 }
+
+/* Authenticated mobile ledger */
+[hidden] { display: none !important; }
+body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
+.auth-panel { width: min(calc(100% - 32px), 440px); margin: 8vh auto 24px; }
+.auth-panel h1 { font-size: 1.7rem; margin: 16px 0; }
+.auth-panel p { line-height: 1.7; }
+#loginForm { display: grid; gap: 14px; margin-top: 24px; }
+#loginForm input { width: 100%; min-height: 48px; }
+.cloud-banner { width: min(calc(100% - 32px), 1180px); margin: 16px auto; overflow-wrap: anywhere; }
+#cloudStatus { line-height: 1.6; font-size: .85rem; color: #654f3c; }
+#accountToolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+#accountLabel { flex: 1; min-width: 160px; font-size: .85rem; }
+@media (max-width: 560px) {
+  input, select, textarea { font-size: 16px; }
+  button, .file-button { min-height: 44px; }
+  .auth-panel { margin-top: 5vh; }
+  .table-wrap, .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+@media (max-width: 560px) {
+  #transactions table, .view-mode #transactions table { min-width: 0; width: 100%; }
+  #transactions table thead { position: absolute; width: 1px; height: 1px; clip-path: inset(50%); overflow: hidden; }
+  #transactionRows { display: grid; gap: 14px; }
+  #transactionRows tr { display: block; border: 1px solid rgba(131, 99, 56, .15); border-radius: 16px; overflow: hidden; }
+  #transactionRows td, .edit-mode #transactionRows td.edit-only {
+    display: flex !important; align-items: baseline; justify-content: space-between;
+    gap: 14px; padding: 9px 12px; white-space: normal; overflow-wrap: anywhere; text-align: right;
+  }
+  #transactionRows td::before { content: attr(data-label); flex: 0 0 52px; text-align: left; font-size: .75rem; color: #806d58; }
+  #transactionRows td.row-actions { flex-wrap: wrap; }
+  .view-mode #transactionRows td.edit-only { display: none !important; }
+}

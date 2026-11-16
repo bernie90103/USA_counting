@@ -1,0 +1,25 @@
+{
+  "name": "us-ledger",
+  "private": true,
+  "scripts": {
+    "vendor": "node tools/vendor.mjs",
+    "check": "node --check app.js && node --check cloud.js && node --test tests/*.test.cjs",
+    "package:web": "python3 tools/package_private.py",
+    "ios:sync": "npm run package:web && cd ios-app && npx cap sync ios",
+    "ios:open": "cd ios-app && npx cap open ios"
+  },
+  "dependencies": {
+    "@capacitor/app": "8.1.2",
+    "@capacitor/core": "8.6.2",
+    "@capacitor/filesystem": "8.1.5",
+    "@capacitor/ios": "8.6.2",
+    "@capacitor/share": "8.0.3",
+    "@supabase/supabase-js": "2.119.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.6.2",
+    "@electric-sql/pglite": "0.5.16",
+    "esbuild": "0.28.2",
+    "jsdom": "31.0.1"
+  }
+}

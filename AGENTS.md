@@ -1,124 +1,68 @@
 # Repository Guidelines
 
-## 專案概述
+## 專案現況
 
-這個儲存庫是一個靜態繁體中文記帳網站，用來記錄美國生活的美元收支，並讓台灣家人查看台幣換算、每月摘要、學生證餘額與行前花費。維持純 HTML、CSS、JavaScript 與 Python，不要為小改動新增框架或建置流程。
+這是繁體中文私人家庭記帳網站與共用網頁程式的 Capacitor iOS App。保持純 HTML、CSS、JavaScript 與 Python，不為小改動加入框架或額外建置流程。
 
-## 專案結構
+交易、學生證加值、行前花費與帳本匯率的權威來源是 Supabase。日常記帳直接寫入雲端，不需要 Git commit 或發布。GitHub 只保存程式與 SQL 範本。
 
-- `index.html`：頁面結構、輸入表單、摘要區、分析區、交易表格與 template。
-- `styles.css`：所有視覺樣式、RWD、表單、卡片、表格與按鈕狀態。
-- `app.js`：前端資料邏輯，包括 localStorage、公開資料載入、匯入匯出、月份篩選、統計、編輯、匯率更新與資料正規化。
-- `data/transactions.json`：部署後公開顯示的權威交易資料。
-- `data/transactions.js`：由發布工具從 `transactions.json` 產生的本機載入副本。直接以 `file:` 開啟 `index.html` 時，瀏覽器可能禁止 `fetch()` JSON；此檔案讓頁面仍能載入公開資料。其內容必須與 `transactions.json` 相同，不可手動只更新其中一份。
-- `tools/publish_ledger.py`：從指定匯出的 JSON 更新公開資料、產生 `transactions.js`、備份最新匯出檔，可選擇提交、推送並同步 `gh-pages`。
-- `發布最新記帳資料.command`：可雙擊的 macOS 發布入口。它會自動選擇 Downloads 中修改時間最新的 `us-ledger*.json` 後執行完整發布，成功後開啟 GitHub Pages 並保留終端視窗。
-- `發布最新記帳資料.bat`：可雙擊的 Windows 發布入口。功能與 macOS 入口相同。
-- `開啟記帳網頁.command`：可雙擊的 macOS 入口，快速於預設瀏覽器開啟本地記帳頁面。
-- `exports/latest-us-ledger.json`：發布工具建立的本機最新匯出備份，只供復原與核對，絕不可提交。
+舊公開交易副本、localStorage 記帳流程與發布腳本已退役。不要重新建立公開交易 JSON／JavaScript、硬編碼私人花費、讀取私人備份當成執行時資料，或在載入失敗時退回範例交易。
 
-`.gitignore` 應持續排除本機試算表、`exports/` 匯出備份、暫存檔、`.env`、Python 快取與其他私人資料。
+## 結構
 
-## Agent 工作原則
+- `index.html`、`styles.css`、`app.js`：表單、篩選、統計、交易與資料正規化。
+- `cloud.js`：登入、工作階段、角色、雲端 RPC、版本衝突、原生檔案分享。
+- `config.js`：可公開的 Project URL／publishable key 與密碼重設回跳網址。
+- `supabase/`：資料表、RLS、讀寫 RPC 與不含真實帳號的成員設定範本。
+- `ios-app/`：Xcode／Capacitor 工程；保留使用者在 Xcode 設定的簽署與裝置設定。
+- `tools/package_private.py`：用明確允許清單產生 `dist/` 與 iOS `www/`。
+- `tools/vendor.mjs`、`vendor/`：產生與保存本機瀏覽器套件；保留授權聲明。
+- `tools/check_connection.mjs`、`tools/check_live_site.mjs`：不需密碼的連線檢查。
+- `tests/`：資料庫權限、原子匯入、登入與打包檢查。
+- `docs/SETUP.md`：設定、備份、發布與自用 iOS 安裝說明。
+- `private-backup/`、`exports/`：忽略的私人備份；不能提交或部署。
 
-一般 UI、樣式、選單或前端邏輯小改動時，不要讀取完整 `data/transactions.json`。需要確認資料欄位或是否存在特定值時，優先用 `rg` 搜尋關鍵字或讀取小段上下文。只有在使用者要求發布資料、修正公開交易資料、檢查資料完整性，或變更 `tools/publish_ledger.py` 的資料輸出行為時，才完整檢查 `data/transactions.json`。
+## 安全與資料存取
 
-變更公開資料或發布工具時，`data/transactions.json` 與 `data/transactions.js` 必須一起更新並維持相同筆數、順序與欄位內容。不要刪除 `transactions.js` 或把本機 `file:` 模式的載入失敗退回範例資料，否則直接開啟 `index.html` 會與 GitHub Pages 顯示不同內容。
+- 不提交密碼、secret／service_role key、SMTP 憑證、私人帳目、試算表、匯出檔或個人驗證紀錄。
+- 只在使用者要求資料遷移、修復或完整性核對時讀取私人交易；一般 UI 修改不需讀取帳目。
+- 權限在 Supabase RLS 與 RPC 中執行：匿名與非成員不能讀取，viewer 不能寫入或自行提升角色。
+- 雲端確認成功後才顯示儲存完成；失敗保留表單。保留 revision 衝突檢查及整批匯入的原子性。
+- 登出清除敏感畫面。不要為診斷索取使用者登入密碼或放寬資料庫權限。
+- 既有密碼登入不套用新密碼的長度要求；密碼重設才檢查新密碼規則。
+- 匯入前顯示筆數、日期範圍、金額與是否包含設定，保留確認及備份提示。
 
-## 開發與發布指令
-
-此專案不需要 npm install、打包或本機伺服器。
-
-- 直接用瀏覽器開啟 `index.html`：本機執行網站（macOS 可雙擊 `開啟記帳網頁.command`）。
-- `node --check app.js`：檢查 JavaScript 語法（若環境有安裝 Node.js）。
-- `node --check data/transactions.js`：檢查本機公開資料副本的 JavaScript 語法。
-- `python3 -m py_compile tools/publish_ledger.py`：檢查 Python 語法。
-- `python3 tools/publish_ledger.py --json ~/Downloads/us-ledger.json --no-git`：用指定 JSON 更新 `data/transactions.json`、`data/transactions.js` 與 `exports/latest-us-ledger.json`，但不提交或推送（Windows 請用 `python` 與 Windows 路徑）。
-- `python3 tools/publish_ledger.py --json ~/Downloads/us-ledger.json`：用指定 JSON 更新資料、建立本機備份、提交、推送並同步 `gh-pages`。
-- 雙擊 `發布最新記帳資料.command`（macOS）或 `發布最新記帳資料.bat`（Windows）：自動選擇 Downloads 中最新的 `us-ledger*.json` 並執行完整發布；這是日常發布的建議方式。
-- `git push origin main`：推送原始碼。
-- `git push origin main:gh-pages`：同步公開網站分支。
-
-### 發布資料的固定流程
-
-1. 在記帳頁面完成新增、修改或刪除後，按「匯出 JSON」。瀏覽器若發現同名檔案存在，可能建立 `us-ledger (1).json`、`us-ledger (2).json` 等檔名；不可假設永遠是 `us-ledger.json`。
-2. 日常情況直接雙擊 `發布最新記帳資料.command`（macOS）或 `發布最新記帳資料.bat`（Windows）。它依修改時間選最新檔，避免固定讀到舊的 `us-ledger.json`。
-3. 需要人工核對時，明確指定剛匯出的完整路徑並先執行 `--no-git`。確認 `data/transactions.json` 的筆數、最新日期與預期資料後，再以相同來源執行完整發布。
-4. 發布成功後，確認 `exports/latest-us-ledger.json` 已更新；這是刪除 Downloads 後可保留的本機備份，不會上傳 GitHub。
-5. 命令視窗會開啟 GitHub Pages。若網站尚未立即反映，稍候後重新整理；若仍不符，先比較最新匯出檔與 `data/transactions.json`，不要立刻再發布其他舊檔。
-
-不要在沒有 `--json` 的情況下讓工具自行猜測資料來源，也不要直接用可能含範例資料的本機頁面結果覆蓋公開資料。若最新匯出檔的筆數或最新日期異常，先停止發布並確認來源。
-
-## 程式風格
-
-JavaScript 使用兩格縮排、分號、雙引號與 `camelCase`。DOM 參照集中在 `elements`，儲存鍵、固定 URL、特殊篩選值與固定選項使用大寫常數。資料正規化應集中在既有 normalize / infer helper，不要把規則散落在渲染函式。
-
-Python 使用四格縮排、`snake_case`、`pathlib.Path`，讀寫檔案時明確指定 UTF-8。修改發布工具時保留既有 CLI 行為，避免讓 `--no-git` 產生提交或推送。
-
-## UI 與版面
-
-網站風格為溫潤玻璃擬物風（Warm Glassmorphism）：暖米色調背景、柔和光影、微透明高質感毛玻璃面板、俐落圓角與細緻線條。修改 UI 時維持：
-
-- 純 HTML/CSS，字體使用 `Space Grotesk` 作為標題、`IBM Plex Mono` 作為內文與數字。
-- Warm Palette：以米白、淺金、暖琥珀與柔和深棕文字為主，搭配綠調（收入）、粉橙（支出/警示）與金黃點綴。
-- 毛玻璃與卡片：適度 backdrop-filter 模糊、柔和陰影與多層次微透明面板。
-- 清楚的 section 分隔、清晰 RWD，並支援快捷搜尋、標籤篩選與即時走勢圖。
-- 約 `0.2s` 到 `0.3s` 的平滑 hover / transition。
-- 表格與表單優先可讀性，各項圖表與長條圖清晰呈現金額與百分比。
-- 表格日期欄位包含星期標籤（`週一` 至 `週日`），並依平日與假日區分專屬美學配色：平日使用溫潤琥珀咖（Warm Amber Latte），假日（週六、週日）使用舒心紫藤晶（Dreamy Amethyst Violet），且不可覆蓋或破壞原本的收入列淡綠底、Marshall 珊瑚紅底、支出膠囊標籤等既有色彩體系。
-- 不加入大型框架、厚重裝飾或干擾閱讀的過度動畫。
-
-## 資料模型與分類規則
-
-月度收支資料來自 `data/transactions.json` 或瀏覽器 localStorage。交易資料必須保留：
-
-- `date`
-- `type`
-- `category`
-- `merchant`
-- `paymentMethod`
-- `note`
-- `amount`
-
-支出使用「大分類 + 店家」兩層結構。支出分類包含 `房租`、`超市`、`學餐`、`外食`、`網購`、`3C`、`交通`、`學費`、`醫療`、`娛樂`、`其他`。`merchant` 放實際店家，例如 `Apple Store`、`Trader Joe's`、`Walmart`、`Amazon`、`Starbucks HSC`、`校園餐車`。3C 店家包含 Apple Store、Best Buy、Amazon 與 Micro Center。網購店家選單包含 Amazon、Walmart.com、Target.com、Costco.com、Best Buy、eBay、Etsy、Temu、SHEIN 與 AliExpress。店家選單依分類動態篩選；更新匯入、匯出、正規化或發布工具時必須保留 `merchant` 欄位。
-
-付款方式應隨表單分類自動帶入：選擇 `學餐` 時使用 `學生證`，其餘分類使用 `美國信用卡`。編輯既有交易時則保留原本記錄的付款方式。
-
-收入類型目前允許 `代收代付`、`rec center`、`學校` 與 `其他收入` 作為分類。收入來源規則：
-
-- `同學/朋友`、`個人`、`轉帳` 屬於 `代收代付`（朋友聚餐分帳、代付還款）
-- `operation assisted` 與 `lifeguard` 屬於 `rec center`
-- `UAB INTO` 屬於 `學校`
-- `轉帳`、`利息`、`獎學金` 屬於 `其他收入`
-
-若匯入舊資料出現拼錯的 `lifegrade`，應正規化為 `lifeguard`。若備註包含「同學」、「代付」、「還款」、「分帳」，應智慧判斷為「代收代付」，來源設為「同學/朋友」。
-
-選擇 `income` 時，表單應只顯示收入分類與收入來源；匯入舊資料時也應正規化到這套收入規則。
-
-## 匯率與行前花費
-
-一般生活收支使用頁面上方目前的 USD to TWD 匯率換算。匯率可自動更新，也可手動調整並保存到 localStorage。
-
-行前總花費寫在 `app.js` 的 `pretripExpenses`，來源是 `總花費.xlsx`。其中有記錄「當時匯率」的項目必須固定使用該匯率，不可改用頁面上方的即時匯率。沒有歷史匯率的項目應標示未記錄匯率。
-
-## 測試準則
-
-目前沒有正式測試框架。修改行為後至少執行：
+## 開發與發布
 
 ```bash
-node --check app.js               # 若環境有安裝 Node.js
-node --check data/transactions.js # 若環境有安裝 Node.js
-python3 -m py_compile tools/publish_ledger.py
+npm ci
+npm run check
+python3 -m unittest discover -s tests -p 'test_*.py'
+npm run package:web
 ```
 
-若只改前端 JS，可檢查受影響的 JS 檔案。若改發布工具，必須跑 Python 語法檢查，並以 `--json ... --no-git` 驗證它會同步更新 JSON、JavaScript 資料副本與 `exports` 備份。重要行為仍需在瀏覽器手動驗證：新增、編輯、刪除、JSON/CSV 匯入匯出、月份篩選、收入來源選單、行前總花費與匯率更新，以及直接開啟 `index.html` 時資料不會退回範例交易。
+只改前端時可執行受影響 JS 語法檢查與 `node --test tests/frontend.test.cjs`。改 SQL 時須執行資料庫權限／衝突／原子匯入測試。改打包時須核對輸出允許清單與私人資料排除。
 
-發布資料前先使用 `--no-git`，確認 `data/transactions.json` 與 `data/transactions.js` 的內容一致後再執行完整發布。若使用日常腳本（macOS 的 `.command` 或 Windows 的 `.bat`）發布，發布前應確認 Downloads 的最新匯出檔時間確實是剛完成匯出後的時間。
+依賴異動後執行 `npm run vendor` 並提交 lockfile 與對應 vendor 檔案。iOS 更新執行 `npm run ios:sync`，再於 Xcode Run；不要宣稱僅同步資源就已更新手機上的 App。
+
+網站從 `main` 透過 **Deploy private ledger** 手動 Actions 部署，只上傳 `dist/`。不要使用 `git push origin main:gh-pages`，也不要部署整個原始碼目錄。一般記帳不觸發 Git 或網站部署。
+
+發布前確認測試通過、輸出不含交易／SQL／備份；發布後檢查登入頁及舊交易 URL 的 404。不得將伺服器／測試失敗解讀為已通過，也不得把角色 SQL 核對當成真實帳號登入驗證。
+
+## 程式風格與 UI
+
+JavaScript 使用兩格縮排、分號、雙引號與 camelCase。DOM 參照集中管理，固定選項與儲存鍵使用大寫常數，正規化規則集中於 normalize／infer helpers。Python 使用四格縮排、snake_case、pathlib.Path 與明確 UTF-8。
+
+保持 Warm Glassmorphism：暖米色、淺金與柔和深棕、透明面板、圓角和柔和陰影。標題用 Space Grotesk，內文數字用 IBM Plex Mono。保留收入淡綠、Marshall 珊瑚紅、支出膠囊、平日 Warm Amber Latte 與週末 Dreamy Amethyst Violet；各配色不可相互覆蓋。支援手機安全區域與可讀明細，hover／transition 約 0.2–0.3 秒，不加入過度動畫。
+
+## 資料模型與既有行為
+
+保留交易 `id`、`date`、`type`、`category`、`merchant`、`paymentMethod`、`note`、`amount`。支出分類為房租、超市、學餐、外食、網購、3C、交通、學費、醫療、娛樂、其他；店家依分類篩選。選學餐自動帶入學生證，其餘使用既有信用卡預設；編輯時保留原付款方式。
+
+收入分類為代收代付、rec center、學校、其他收入。保留 operation assisted／lifeguard、UAB INTO 等來源；舊 lifegrade 正規化為 lifeguard。依同學、代付、還款、分帳等備註判斷代收代付。收入表單只顯示收入分類與來源，匯入匯出保留 merchant。
+
+一般生活收支使用帳本目前匯率；行前花費有歷史匯率時固定使用當時匯率，未記錄時顯示未記錄。資料來自受保護帳本設定，不寫回程式常數。
 
 ## Commit 與 PR
 
-Commit 採短句、祈使語氣與標題式大小寫，例如 `Update public ledger data`、`Add rec center income options`。每個 commit 聚焦單一變更。PR 應說明使用者可見變化、列出驗證方式、標明是否更新公開資料；若改 UI，附上截圖。
-
-## 安全提醒
-
-不要提交私人試算表、`exports/` 下的匯出備份、`.env`、密鑰、銀行帳號或完整信用卡資訊。`data/transactions.json` 與 `data/transactions.js` 都會隨靜態網站公開部署，只能放可公開資料。
+Commit 使用短句、祈使語氣與標題式大小寫，聚焦單一變更。PR 說明可見行為與驗證；UI 修改附實際截圖，無法取得時誠實標示。不要把個人診斷紀錄或真實帳目放入公開 PR。
